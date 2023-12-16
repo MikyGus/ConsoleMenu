@@ -9,9 +9,9 @@ flowchart TD
         Render(("Render()"))
         AreaNeeded(("AreaNeeded()"))
 
-        AddRenderComposite("AddRenderComposite()")
-        RemoveRenderComposite("RemoveRenderComposite()")
-        SortedListOfRenderComposite[("SortedListOfRenderComposites")]
+        AddRenderComposite("AddRender\nComposite()")
+        RemoveRenderComposite("RemoveRender\nComposite()")
+        SortedListOfRenderComposite[("SortedListOf\nRenderComposites")]
 
         IncrementSelection(("Increment\nSelection()"))
         DecrementSelection(("Decrement\nSelection()"))
@@ -20,10 +20,12 @@ flowchart TD
         MarkedSetIndex(("Marked\nSetIndex()"))
         MarkedManager("MarkedManager")
 
-        SelectionComposite([Selection<BR> Composite])
-        MarkedComposite([Marked<BR> Composite])
-        NormalComposite([Normal<BR> Composite])
-        ContainerComposite([Container<BR> Composite])
+        subgraph Composites
+            SelectionComposite([Selection<BR> Composite])
+            MarkedComposite([Marked<BR> Composite])
+            NormalComposite([Normal<BR> Composite])
+            ContainerComposite([Container<BR> Composite])
+        end
 
     end
 
@@ -49,11 +51,11 @@ sequenceDiagram
         participant C as ContentComposition
     end
 
-    Note over A,C: Content Start position, and each composite have a position offset
+    Note over A,C: Content Start position, and each composite have a position offset where to place its content
     A ->> S: Vector2(2,2)
     S ->> M: Vector2(3,3)
     M ->> N: Vector2(3,3)
-    N ->> C: Vector2(3,3)
+    N ->> C: Vector2(3,4)
     Note over C: The container have an internal offset<BR>where to place all the children.
 
     loop for every children
