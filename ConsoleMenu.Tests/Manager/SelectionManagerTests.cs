@@ -116,4 +116,57 @@ public class SelectionManagerTests
         // Assert
         eventInvokedCount.Should().Be(expectedInvokedCount);
     }
+
+    [Theory]
+    [InlineData(0,5,new int[] {1,2,3}, new[] {1,4}, new int[] {2,3,4})]
+    [InlineData(3,3,new int[] {1,2,3}, new[] {1,4}, new int[] {2,3,4})]
+    [InlineData(0,5,new int[] {1,2,3}, new[] {1,2}, new int[] {1,2,3})]
+    [InlineData(0,5,new int[] {1,2,3}, new[] {0,4}, new int[] {1,2,3})]
+    [InlineData(0,5,new int[] {1,2,3}, new[] {2,0}, new int[] {0,1,3})]
+    public void MoveSelection_MoveSelectionToNewIndex_ReturnsExpectedCollection(
+        int selectionMin,
+        int selectionMax,
+        int[] preInputs,
+        int[] moveItems,
+        int[] expectedCollection)
+    {
+        // Arrange
+        if (moveItems.Length != 2)
+            throw new ArgumentException("May only be 2 values! From and To!");
+        _sut.SetSelectionMinMax(selectionMin, selectionMax);
+        foreach (var input in preInputs)
+            _sut.Add(input);
+        // Act
+        _sut.MoveSelection(moveItems[0], moveItems[1]);
+        // Assert
+        _sut.SelectedItems().Should().BeEquivalentTo(expectedCollection);
+    }
+
+    [Theory]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 1, 4 }, true)]
+    [InlineData(3, 3, new int[] { 1, 2, 3 }, new[] { 1, 4 }, true)]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 1, 2 }, false)]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 0, 4 }, false)]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 2, 0 }, true)]
+    public void MoveSelection_MoveSelectionToNewIndex_InvokesSelectionChangedEvent(
+    int selectionMin,
+    int selectionMax,
+    int[] preInputs,
+    int[] moveItems,
+    bool expectedTheEventToBeInvoked)
+    {
+        // Arrange
+        if (moveItems.Length != 2)
+            throw new ArgumentException("May only be 2 values! From and To!");
+        _sut.SetSelectionMinMax(selectionMin, selectionMax);
+        foreach (var input in preInputs)
+            _sut.Add(input);
+        var eventHaveBeenInvoked = false;
+        _sut.SelectionChanged += (x => eventHaveBeenInvoked = true);
+        // Act
+        var result = _sut.MoveSelection(moveItems[0], moveItems[1]);
+        // Assert
+        eventHaveBeenInvoked.Should().Be(expectedTheEventToBeInvoked);
+        result.Should().Be(expectedTheEventToBeInvoked);
+    }
 }

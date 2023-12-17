@@ -42,4 +42,19 @@ internal class SelectionManager : ISelectionManager
         }
         return false;
     }
+
+    public bool MoveSelection(int removeSelection, int addSelection)
+    {
+        if (_selectedItems.Contains(removeSelection) == false)
+            return false;
+        if (_selectedItems.Contains(addSelection))
+            return false;
+
+        if (_selectedItems.Remove(removeSelection) && _selectedItems.Add(addSelection))
+        {
+            SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender = this });
+            return true;
+        }
+        return false;
+    }
 }

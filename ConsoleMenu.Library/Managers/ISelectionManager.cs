@@ -8,6 +8,7 @@ internal interface ISelectionManager
 
     bool Add(int index);
     bool Remove(int index);
+    bool MoveSelection(int removeSelection, int addSelection);
     IEnumerable<int> SelectedItems();
     void SetSelectionMinMax(int min, int max);
 }
