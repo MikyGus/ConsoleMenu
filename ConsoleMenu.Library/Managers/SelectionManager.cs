@@ -36,4 +36,18 @@ internal class SelectionManager : ISelectionManager
         }
         return false;
     }
+
+    public bool Remove(int index)
+    {
+        if (_selectedItems.Count > _selectionMin)
+        {
+            if (_selectedItems.Remove(index))
+            {
+                SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender= this });
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }

@@ -14,9 +14,9 @@ public class SelectionManagerTests
     [Theory]
     [InlineData(1, 1, 1)]
     [InlineData(1, 2, 1)]
-    [InlineData(2, 2, 1,2)]
-    [InlineData(1, 1, 1,2)]
-    [InlineData(1, 2, 1,1)]
+    [InlineData(2, 2, 1, 2)]
+    [InlineData(1, 1, 1, 2)]
+    [InlineData(1, 2, 1, 1)]
     public void Add_AddItemToCollection_ReturnsExpectedCount(int expectedCount, int selectionMax, params int[] inputs)
     {
         // Arrange
@@ -27,6 +27,23 @@ public class SelectionManagerTests
         // Assert
         _sut.SelectedItems().Should().HaveCount(expectedCount);
     }
+
+    [Theory]
+    [InlineData(false, 1, new int[] { 1 }, 2)]
+    [InlineData(true, 2, new int[] { 1 }, 2)]
+    [InlineData(true, 1, new int[] { }, 2)]
+    public void Add_AddItemToCollection_ReturnsExpectedBool(bool expectedBool, int selectionMax, int[] preInputs, int testInput)
+    {
+        // Arrange
+        _sut.SetSelectionMinMax(0, selectionMax);
+        foreach(var inputItem in preInputs)
+            _sut.Add(inputItem);
+        // Act
+        var result = _sut.Add(testInput);
+        // Assert
+        result.Should().Be(expectedBool);
+    }
+
 
     [Theory]
     [InlineData(1, 1, 1)]
@@ -47,5 +64,56 @@ public class SelectionManagerTests
         eventInvoked.Should().Be(expectedCount);
     }
 
+    [Theory]
+    [InlineData(0, 0, new int[] {1}, new int[] {1})]
+    [InlineData(1, 1, new int[] {1}, new int[] {1})]
+    [InlineData(1, 0, new int[] {1}, new int[] {2})]
+    public void Remove_RemoveItemsFromCollection_ReturnsExpectedCount(int expectedCount, int selectionMin, int[] inputs, int[] removeItems)
+    {
+        // Arrange
+        _sut.SetSelectionMinMax(selectionMin, 10);
+        foreach (var input in inputs)
+            _sut.Add(input);
+        // Act
+        foreach (var remove in removeItems)
+            _sut.Remove(remove);
+        // Assert
+        _sut.SelectedItems().Should().HaveCount(expectedCount);
+    }
 
+    [Theory]
+    [InlineData(false, 0, new int[] { 1 }, 2)]
+    [InlineData(true, 0, new int[] { 1 }, 1)]
+    [InlineData(false, 1, new int[] { 1 }, 2)]
+    [InlineData(false, 1, new int[] { 1 }, 1)]
+    public void Remove_RemoveItemFromCollection_ReturnsExpectedBool(bool expectedBool, int selectionMin, int[] preInputs, int testInput)
+    {
+        // Arrange
+        _sut.SetSelectionMinMax(selectionMin,10);
+        foreach (var inputItem in preInputs)
+            _sut.Add(inputItem);
+        // Act
+        var result = _sut.Remove(testInput);
+        // Assert
+        result.Should().Be(expectedBool);
+    }
+
+    [Theory]
+    [InlineData(1, 0, new int[] { 1 }, new int[] { 1 })]
+    [InlineData(0, 1, new int[] { 1 }, new int[] { 1 })]
+    [InlineData(0, 0, new int[] { 1 }, new int[] { 2 })]
+    public void Remove_RemoveItemsFromCollection_InvokesSelectionChangedEvent(int expectedInvokedCount, int selectionMin, int[] inputs, int[] removeItems)
+    {
+        // Arrange
+        _sut.SetSelectionMinMax(selectionMin, 10);
+        foreach (var input in inputs)
+            _sut.Add(input);
+        var eventInvokedCount = 0;
+        _sut.SelectionChanged += ((x) => eventInvokedCount++);
+        // Act
+        foreach (var remove in removeItems)
+            _sut.Remove(remove);
+        // Assert
+        eventInvokedCount.Should().Be(expectedInvokedCount);
+    }
 }
