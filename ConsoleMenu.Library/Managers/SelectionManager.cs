@@ -18,35 +18,27 @@ internal class SelectionManager : ISelectionManager
     {
         if (min < 0)
             throw new ArgumentOutOfRangeException(nameof(min), "May not be less than 0");
-        if (max <= min)
+        if (max < min || max <= 0)
             throw new ArgumentOutOfRangeException(nameof(max), "May not be less or equal to min");
         _selectionMin = min;
         _selectionMax = max;
     }
     public bool Add(int index)
     {
-        if (_selectedItems.Count < _selectionMax)
+        if (_selectedItems.Count < _selectionMax && _selectedItems.Add(index))
         {
-            if (_selectedItems.Add(index))
-            {
-                SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender = this });
-                return true;
-            }
-            return false;
+            SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender = this });
+            return true;
         }
         return false;
     }
 
     public bool Remove(int index)
     {
-        if (_selectedItems.Count > _selectionMin)
+        if (_selectedItems.Count > _selectionMin && _selectedItems.Remove(index))
         {
-            if (_selectedItems.Remove(index))
-            {
-                SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender= this });
-                return true;
-            }
-            return false;
+            SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender= this });
+            return true;
         }
         return false;
     }
