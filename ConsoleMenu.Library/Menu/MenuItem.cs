@@ -30,5 +30,21 @@ internal class MenuItem : IMenuItem
         => _renderComposites.OrderBy(x => x.RenderPriority);
 
     public Vector2 AreaNeeded() => throw new NotImplementedException();
-    public void Render() => throw new NotImplementedException();
+    public void Render()
+    {
+        var position = Position.Duplicate();
+        var composites = GetRenderComposites();
+        var stack = new Stack<RenderComposite>();
+        foreach (var composite in composites)
+        {
+            position += composite.Render.ContentPositionOffset;
+            stack.Push(composite);
+        }
+
+        foreach (var composite in stack)
+        {
+            composite.Render.Render(position);
+        }
+
+    }
 }
