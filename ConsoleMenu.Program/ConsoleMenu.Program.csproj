@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleMenu.Library\ConsoleMenu.Library.csproj" />
+  </ItemGroup>
+
 </Project>

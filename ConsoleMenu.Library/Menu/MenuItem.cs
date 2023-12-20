@@ -1,50 +1,33 @@
 ﻿using ConsoleMenu.Library.Models;
-using ConsoleMenu.Library.RenderComposites;
+using ConsoleMenu.Library.Render.Contents;
 
 namespace ConsoleMenu.Library.Menu;
-internal class MenuItem : IMenuItem
+public class MenuItem : IMenuItem
 {
-    private readonly List<RenderComposite> _renderComposites;
+    private IContentRender _contentRender;
+    private List<IChildItem> _children;
     public Vector2 Position { get; set; }
 
-    public MenuItem()
+    public MenuItem(string title)
     {
-        _renderComposites = new();
+        _contentRender = new BasicContentRender(title);
+        _children = new List<IChildItem>();
     }
-
-    public void AddRenderComposite(int priority, IRenderComposite render)
-    {
-        var composite = new RenderComposite(this, render, priority);
-        _renderComposites.Add(composite);
-    }
-
-    public void RemoveRenderComposite(IRenderComposite render)
-    {
-        var composite = _renderComposites.Where(x => x.Render == render).FirstOrDefault();
-        if (composite is null)
-            throw new ArgumentNullException(nameof(composite));
-        _renderComposites.Remove(composite);
-    }
-
-    public IEnumerable<RenderComposite> GetRenderComposites() 
-        => _renderComposites.OrderBy(x => x.RenderPriority);
 
     public Vector2 AreaNeeded() => throw new NotImplementedException();
-    public void Render()
+    public void SetRender(IContentRender contentRender) => _contentRender = contentRender;
+
+    public void Render() => _contentRender.Render(Position);
+    public IContentRender ContentRenderer() => _contentRender;
+    public void AddChildItem(int priority, IMenuItem item) => _children.Add(new ChildItem(this, item, priority));
+
+    public void RemoveChildItem(IMenuItem item)
     {
-        var position = Position.Duplicate();
-        var composites = GetRenderComposites();
-        var stack = new Stack<RenderComposite>();
-        foreach (var composite in composites)
-        {
-            position += composite.Render.ContentPositionOffset;
-            stack.Push(composite);
-        }
-
-        foreach (var composite in stack)
-        {
-            composite.Render.Render(position);
-        }
-
+        var findItem = _children.Where(x => x.Item == item).FirstOrDefault();
+        if (findItem is null)
+            throw new ArgumentException();
+        _children.Remove(findItem);
     }
+
+    public IEnumerable<IChildItem> GetChildren() => _children;
 }
