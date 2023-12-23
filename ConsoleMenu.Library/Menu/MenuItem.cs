@@ -1,33 +1,33 @@
-﻿using ConsoleMenu.Library.Models;
+﻿using ConsoleMenu.Library.Managers;
+using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render.Contents;
 
 namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
     private IContentRender _contentRender;
-    private List<IChildItem> _children;
+    private IChildrenManager _childrenManager;
     public Vector2 Position { get; set; }
 
     public MenuItem(string title)
     {
         _contentRender = new BasicContentRender(title);
-        _children = new List<IChildItem>();
+        _childrenManager = new ChildrenManager();
     }
 
-    public Vector2 AreaNeeded() => throw new NotImplementedException();
+    public Vector2 AreaNeeded() => _contentRender.AreaNeeded();
+
     public void SetRender(IContentRender contentRender) => _contentRender = contentRender;
 
-    public void Render() => _contentRender.Render(Position);
-    public IContentRender ContentRenderer() => _contentRender;
-    public void AddChildItem(int priority, IMenuItem item) => _children.Add(new ChildItem(this, item, priority));
-
-    public void RemoveChildItem(IMenuItem item)
+    public void Render()
     {
-        var findItem = _children.Where(x => x.Item == item).FirstOrDefault();
-        if (findItem is null)
-            throw new ArgumentException();
-        _children.Remove(findItem);
+        _contentRender.Render(Position);
+        var areaNeeded = _contentRender.AreaNeeded();
+        _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
+        _childrenManager.Render();
     }
 
-    public IEnumerable<IChildItem> GetChildren() => _children;
+    public IContentRender ContentRenderer => _contentRender;
+
+    public IChildrenManager Children => _childrenManager;
 }
