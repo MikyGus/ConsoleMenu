@@ -17,9 +17,9 @@ public class MenuItemTests
         // Arrange
 
         // Act
-        _sut.AddChildItem(1, new MenuItem("TEST2"));
+        _sut.Children.Add(1, new MenuItem("TEST2"));
         // Assert
-        var result = _sut.GetChildren();
+        var result = _sut.Children.GetChildren();
         result.Should().HaveCount(1);
         result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
     }
@@ -29,11 +29,11 @@ public class MenuItemTests
     {
         // Arrange
         var menuItem = new MenuItem("TEST2");
-        _sut.AddChildItem(1, menuItem);
+        _sut.Children.Add(1, menuItem);
         // Act
-        _sut.RemoveChildItem(menuItem);
+        _sut.Children.Remove(menuItem);
         // Assert
-        var result = _sut.GetChildren();
+        var result = _sut.Children.GetChildren();
         result.Should().BeEmpty();
         result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
     }

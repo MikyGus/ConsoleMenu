@@ -11,8 +11,4 @@
 			<_Parameter1>ConsoleMenu.Tests</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Render\Composites\" />
-	</ItemGroup>
 </Project>

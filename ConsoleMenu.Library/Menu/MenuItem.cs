@@ -12,7 +12,7 @@ public class MenuItem : IMenuItem
     public MenuItem(string title)
     {
         _contentRender = new BasicContentRender(title);
-        _childrenManager = new ChildrenManager();
+        _childrenManager = new ChildrenManager(this);
     }
 
     public Vector2 AreaNeeded() => _contentRender.AreaNeeded();
