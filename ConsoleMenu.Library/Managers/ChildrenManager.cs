@@ -21,11 +21,19 @@ public class ChildrenManager : IChildrenManager
         _children.Remove(findItemToRemove);
     }
     public IEnumerable<IChildItem> GetChildren() => _children.OrderBy(c => c.Priority);
+    public IChildItem GetSelectedChild()
+    {
+        if (HaveChildren() == false)
+            throw new InvalidOperationException();
+        return _children[_selectedIndex];
+    }
 
-    public int CurrentSelection() => _selectedIndex;
+    public bool HaveChildren() => _children.Any();
+
+    public int CurrentSelection => _selectedIndex;
     public void DecrementSelection()
     {
-        if (_selectedIndex >= 0)
+        if (_selectedIndex > 0)
         {
             RenderSelection(_children[_selectedIndex]?.Item, false);
             _selectedIndex--;

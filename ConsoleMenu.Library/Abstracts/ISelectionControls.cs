@@ -3,5 +3,5 @@ public interface ISelectionControls
 {
     void IncrementSelection();
     void DecrementSelection();
-    int CurrentSelection();
+    int CurrentSelection { get; }
 }

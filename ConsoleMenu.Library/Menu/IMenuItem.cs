@@ -7,6 +7,7 @@ namespace ConsoleMenu.Library.Menu;
 public interface IMenuItem : IRenderContent
 {
     Vector2 Position { get; set; }
+    void PerformAction(ConsoleKeyInfo key);
     void SetRender(IContentRender contentRender);
     IContentRender ContentRenderer { get; }
     IChildrenManager Children { get; }

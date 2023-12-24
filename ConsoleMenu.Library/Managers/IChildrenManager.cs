@@ -14,5 +14,6 @@ public interface IChildrenManager : IRenderContent, ISelectionControls
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
     IEnumerable<IChildItem> GetChildren();
-
+    bool HaveChildren();
+    IChildItem GetSelectedChild();
 }

@@ -1,20 +1,25 @@
 ﻿using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
+using ConsoleMenu.Library.PerformAction;
 using ConsoleMenu.Library.Render.Contents;
 
 namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
     private IContentRender _contentRender;
-    private IChildrenManager _childrenManager;
+    private readonly IChildrenManager _childrenManager;
+    private readonly Func<ConsoleKeyInfo, IMenuItem, bool> _onKeyPressed;
+
     public Vector2 Position { get; set; }
 
     public MenuItem(string title)
     {
         _contentRender = new BasicContentRender(title);
         _childrenManager = new ChildrenManager(this);
+        _onKeyPressed = ActionToPerform.MoveSelection;
     }
 
+    // TODO: Add AreaNeeded for Children to this?
     public Vector2 AreaNeeded() => _contentRender.AreaNeeded();
 
     public void SetRender(IContentRender contentRender) => _contentRender = contentRender;
@@ -30,4 +35,11 @@ public class MenuItem : IMenuItem
     public IContentRender ContentRenderer => _contentRender;
 
     public IChildrenManager Children => _childrenManager;
+
+    public void PerformAction(ConsoleKeyInfo key)
+    {
+        if (_onKeyPressed?.Invoke(key, this) ?? true)
+            if (Children.HaveChildren())
+                Children.GetSelectedChild().Item.PerformAction(key);
+    }
 }

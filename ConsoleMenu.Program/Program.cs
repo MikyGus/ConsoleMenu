@@ -24,12 +24,14 @@ menu.Children.Add(1, subMenu);
 menu.Children.ContentOrientation = ContentOrientation.Horizontal;
 menu.Children.PositionOffsetToNextChild = 15;
 menu.Render();
-menu.Children.IncrementSelection();
-menu.Children.IncrementSelection();
-menu.Children.IncrementSelection();
-menu.Children.IncrementSelection();
-menu.Children.DecrementSelection();
-menu.Children.IncrementSelection();
+
+ConsoleKeyInfo keyInput;
+do
+{
+    keyInput = Console.ReadKey();
+    menu.PerformAction(keyInput);
+} while (keyInput.Key != ConsoleKey.Escape);
 
 
+Console.WriteLine("Press a key to exit");
 Console.ReadKey();
