@@ -8,9 +8,11 @@ namespace ConsoleMenu.Tests.Manager;
 public class ChildrenManagerTests
 {
     IChildrenManager _sut;
+    IMenuItem _menuItem;
     public ChildrenManagerTests()
     {
-        _sut = new ChildrenManager()
+        _menuItem = A.Fake<IMenuItem>();
+        _sut = new ChildrenManager(_menuItem)
         {
             PositionOfFirstChild = Vector2.ZERO,
             PositionOffsetToNextChild = 1
@@ -71,5 +73,26 @@ public class ChildrenManagerTests
         var result = _sut.AreaNeeded();
         // Assert
         result.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData(new int[] {1,2,3}, new int[] { 1,2,3 })]
+    [InlineData(new int[] {3,2,1}, new int[] { 1,2,3 })]
+    [InlineData(new int[] {1,4,1}, new int[] { 1,1,4 })]
+    public void GetChildren_AddChildrenWithPositionInList_ReturnsChildrenInOrder(
+        int[] positionInListInput,
+        int[] expectedOrderOfChildren)
+    {
+        // Arrange
+        var menuItems = A.CollectionOfFake<IMenuItem>(positionInListInput.Length);
+        for (int i = 0; i < menuItems.Count; i++)
+        {
+            A.CallTo(() => menuItems[i].AreaNeeded()).Returns(new Vector2(8, 1));
+            _sut.Add(positionInListInput[i], menuItems[i]);
+        }
+        // Act
+        var result = _sut.GetChildren();
+        // Assert
+        result.Select(x => x.Priority).Should().BeEquivalentTo(expectedOrderOfChildren);
     }
 }

@@ -5,7 +5,7 @@ using ConsoleMenu.Library.Models;
 namespace ConsoleMenu.Library.Managers;
 public class ChildrenManager : IChildrenManager
 {
-    private readonly List<IChildItem> _children = new();
+    private List<IChildItem> _children = new();
     private int _selectedIndex = 0;
     public IMenuItem Parent { get; init; }
     public Vector2 PositionOfFirstChild { get; set; } = Vector2.ZERO;
@@ -14,13 +14,18 @@ public class ChildrenManager : IChildrenManager
 
     public ChildrenManager(IMenuItem parent) => Parent = parent;
 
-    public void Add(int positionInList, IMenuItem item) => _children.Add(new ChildItem(Parent, item, positionInList));
+    public void Add(int positionInList, IMenuItem item)
+    {
+        _children.Add(new ChildItem(Parent, item, positionInList));
+        _children = _children.OrderBy(c => c.Priority).ToList();
+    }
+
     public void Remove(IMenuItem item)
     {
         var findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
         _children.Remove(findItemToRemove);
     }
-    public IEnumerable<IChildItem> GetChildren() => _children.OrderBy(c => c.Priority);
+    public IEnumerable<IChildItem> GetChildren() => _children;
     public IChildItem GetSelectedChild()
     {
         if (HaveChildren() == false)

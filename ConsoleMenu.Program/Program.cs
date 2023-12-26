@@ -11,18 +11,27 @@ var menu = new MenuItem("Settings")
 {
     Position = new Vector2(1, 1)
 };
+
+var subMenu = new MenuItem("My SubMenu");
+subMenu.Children.Add(1, new MenuItem("Sub1"));
+subMenu.Children.Add(4, new MenuItem("Sub2"));
+subMenu.Children.Add(1, new MenuItem("Sub3"));
+subMenu.Children.ContentOrientation = ContentOrientation.Horizontal;
+
+var subMenu2 = new MenuItem("My SubMenu2");
+subMenu2.Children.Add(6, new MenuItem("Sub1"));
+subMenu2.Children.Add(4, new MenuItem("Sub2"));
+subMenu2.Children.Add(1, new MenuItem("Sub3"));
+
 menu.ContentRenderer.IsSelected = true;
 menu.ContentRenderer.IsMarked = true;
 menu.Children.Add(1, new MenuItem("Players"));
 menu.Children.Add(1, new MenuItem("Pl"));
 menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
-var subMenu = new MenuItem("My SubMenu");
-subMenu.Children.Add(1, new MenuItem("Sub1"));
-subMenu.Children.Add(4, new MenuItem("Sub2"));
-subMenu.Children.Add(1, new MenuItem("Sub3"));
 menu.Children.Add(1, subMenu);
-menu.Children.ContentOrientation = ContentOrientation.Horizontal;
-menu.Children.PositionOffsetToNextChild = 15;
+menu.Children.Add(1, subMenu2);
+menu.Children.ContentOrientation = ContentOrientation.Vetical;
+menu.Children.PositionOffsetToNextChild = 1;
 menu.Render();
 
 ConsoleKeyInfo keyInput;
