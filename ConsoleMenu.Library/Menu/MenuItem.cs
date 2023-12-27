@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Managers;
+﻿using ConsoleMenu.Library.Extensions;
+using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.PerformAction;
 using ConsoleMenu.Library.Render.Contents;
@@ -19,8 +20,12 @@ public class MenuItem : IMenuItem
         _onKeyPressed = ActionToPerform.MoveSelection;
     }
 
-    // TODO: Add AreaNeeded for Children to this?
-    public Vector2 AreaNeeded() => _contentRender.AreaNeeded();
+    public Vector2 AreaNeeded()
+    {
+        var contentArea = _contentRender.AreaNeeded();
+        var childrenArea = _childrenManager.AreaNeeded();
+        return contentArea.MaxAdd_Vertical(childrenArea);
+    }
 
     public void SetRender(IContentRender contentRender) => _contentRender = contentRender;
 
