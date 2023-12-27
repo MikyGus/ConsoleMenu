@@ -109,9 +109,9 @@ public class ChildrenManager : IChildrenManager
     {
         var offset = OffsetToNextChild();
         if (ContentOrientation == ContentOrientation.Vetical)
-            position.Y += areaNeeded.Y - 1 > offset.Y ? areaNeeded.Y - 1 : offset.Y;
+            position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
         else
-            position.X += areaNeeded.X - 1 > offset.X ? areaNeeded.X - 1 : offset.X;
+            position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
         return position;
     }
 }
