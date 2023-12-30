@@ -24,6 +24,6 @@
     "**/*.svg",
     "**/*.zip",
     "**/*.bin",
-    "**/ConsoleMenu.Tests/**"
+    "ConsoleMenu.Tests/**"
   ]
 }
