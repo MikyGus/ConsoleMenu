@@ -6,6 +6,11 @@ on:
         branches: [master]
 
 
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+
 jobs:
     super-lint:
         name: Code Tests
@@ -20,8 +25,8 @@ jobs:
             - name: Build
               run: dotnet build --configuration Release --no-restore
 
-            # - name: Run Tests
-            #   run: dotnet test --no-restore --verbosity normal
+            - name: Run Tests
+              run: dotnet test --no-restore --verbosity normal
   
             - name: Run Super-Linter
               uses: github/super-linter@v4
