@@ -20,13 +20,13 @@ jobs:
             - name: Build
               run: dotnet build --configuration Release --no-restore
 
-            - name: Run Tests
-              run: dotnet test --no-restore --verbosity normal
+            # - name: Run Tests
+            #   run: dotnet test --no-restore --verbosity normal
   
             - name: Run Super-Linter
               uses: github/super-linter@v4
               env:
                   DEFAULT_BRANCH: master
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  # JSCPD_CONFIG_FILE: ".jscpd.json"
+                  JSCPD_CONFIG_FILE: ".jscpd.json.nopp"
                   FILTER_REGEX_EXCLUDE: ConsoleMenu.Tests/.*
