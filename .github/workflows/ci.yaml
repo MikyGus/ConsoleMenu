@@ -33,5 +33,5 @@ jobs:
               env:
                   DEFAULT_BRANCH: master
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  JSCPD_CONFIG_FILE: ".jscpd.json.nopp"
+                  # JSCPD_CONFIG_FILE: ".jscpd.json.nopp"
                   FILTER_REGEX_EXCLUDE: ConsoleMenu.Tests/.*
