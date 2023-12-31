@@ -36,7 +36,7 @@ public class SelectionManagerTests
     {
         // Arrange
         _sut.SetSelectionMinMax(0, selectionMax);
-        foreach(var inputItem in preInputs)
+        foreach (var inputItem in preInputs)
             _sut.Add(inputItem);
         // Act
         var result = _sut.Add(testInput);
@@ -65,9 +65,9 @@ public class SelectionManagerTests
     }
 
     [Theory]
-    [InlineData(0, 0, new int[] {1}, new int[] {1})]
-    [InlineData(1, 1, new int[] {1}, new int[] {1})]
-    [InlineData(1, 0, new int[] {1}, new int[] {2})]
+    [InlineData(0, 0, new int[] { 1 }, new int[] { 1 })]
+    [InlineData(1, 1, new int[] { 1 }, new int[] { 1 })]
+    [InlineData(1, 0, new int[] { 1 }, new int[] { 2 })]
     public void Remove_RemoveItemsFromCollection_ReturnsExpectedCount(int expectedCount, int selectionMin, int[] inputs, int[] removeItems)
     {
         // Arrange
@@ -89,7 +89,7 @@ public class SelectionManagerTests
     public void Remove_RemoveItemFromCollection_ReturnsExpectedBool(bool expectedBool, int selectionMin, int[] preInputs, int testInput)
     {
         // Arrange
-        _sut.SetSelectionMinMax(selectionMin,10);
+        _sut.SetSelectionMinMax(selectionMin, 10);
         foreach (var inputItem in preInputs)
             _sut.Add(inputItem);
         // Act
@@ -118,11 +118,11 @@ public class SelectionManagerTests
     }
 
     [Theory]
-    [InlineData(0,5,new int[] {1,2,3}, new[] {1,4}, new int[] {2,3,4})]
-    [InlineData(3,3,new int[] {1,2,3}, new[] {1,4}, new int[] {2,3,4})]
-    [InlineData(0,5,new int[] {1,2,3}, new[] {1,2}, new int[] {1,2,3})]
-    [InlineData(0,5,new int[] {1,2,3}, new[] {0,4}, new int[] {1,2,3})]
-    [InlineData(0,5,new int[] {1,2,3}, new[] {2,0}, new int[] {0,1,3})]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 1, 4 }, new int[] { 2, 3, 4 })]
+    [InlineData(3, 3, new int[] { 1, 2, 3 }, new[] { 1, 4 }, new int[] { 2, 3, 4 })]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 1, 2 }, new int[] { 1, 2, 3 })]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 0, 4 }, new int[] { 1, 2, 3 })]
+    [InlineData(0, 5, new int[] { 1, 2, 3 }, new[] { 2, 0 }, new int[] { 0, 1, 3 })]
     public void MoveSelection_MoveSelectionToNewIndex_ReturnsExpectedCollection(
         int selectionMin,
         int selectionMax,

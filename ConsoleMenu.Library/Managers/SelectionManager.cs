@@ -37,7 +37,7 @@ internal class SelectionManager : ISelectionManager
     {
         if (_selectedItems.Count > _selectionMin && _selectedItems.Remove(index))
         {
-            SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender= this });
+            SelectionChanged?.Invoke(new SelectionChangedEventArgs() { Sender = this });
             return true;
         }
         return false;

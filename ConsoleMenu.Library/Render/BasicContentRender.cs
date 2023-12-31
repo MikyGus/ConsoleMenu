@@ -46,7 +46,7 @@ public class BasicContentRender : IContentRender
 
     private void WriteAtPosition(Vector2 position, string text, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
     {
-        Console.SetCursorPosition(position.X,position.Y);
+        Console.SetCursorPosition(position.X, position.Y);
         Console.ForegroundColor = foregroundColor;
         Console.BackgroundColor = backgroundColor;
         Console.Write(text);

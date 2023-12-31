@@ -36,7 +36,7 @@ public class ChildrenManagerTests
 
         foreach (var child in menuItems)
         {
-            A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8,1));
+            A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8, 1));
             _sut.Add(1, child);
         }
         _sut.PositionOffsetToNextChild = offsetToNextChild;
@@ -47,12 +47,12 @@ public class ChildrenManagerTests
     }
 
     [Theory]
-    [InlineData(0,1, new int[] { 0, 0 })]
-    [InlineData(1,1, new int[] { 8, 1 })]
-    [InlineData(1,10, new int[] { 10, 1 })]
-    [InlineData(2,1, new int[] { 16, 1 })]
-    [InlineData(2,10, new int[] { 20, 1 })]
-    [InlineData(3,10, new int[] { 30, 1 })]
+    [InlineData(0, 1, new int[] { 0, 0 })]
+    [InlineData(1, 1, new int[] { 8, 1 })]
+    [InlineData(1, 10, new int[] { 10, 1 })]
+    [InlineData(2, 1, new int[] { 16, 1 })]
+    [InlineData(2, 10, new int[] { 20, 1 })]
+    [InlineData(3, 10, new int[] { 30, 1 })]
     public void AreaNeeded_WithChildrensAreaNeededHorizontalOrientation_ReturnsTotalAreaNeeded(
     int menuItemsChildrenCount,
     int offsetToNextChild,
@@ -76,9 +76,9 @@ public class ChildrenManagerTests
     }
 
     [Theory]
-    [InlineData(new int[] {1,2,3}, new int[] { 1,2,3 })]
-    [InlineData(new int[] {3,2,1}, new int[] { 1,2,3 })]
-    [InlineData(new int[] {1,4,1}, new int[] { 1,1,4 })]
+    [InlineData(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 })]
+    [InlineData(new int[] { 3, 2, 1 }, new int[] { 1, 2, 3 })]
+    [InlineData(new int[] { 1, 4, 1 }, new int[] { 1, 1, 4 })]
     public void GetChildren_AddChildrenWithPositionInList_ReturnsChildrenInOrder(
         int[] positionInListInput,
         int[] expectedOrderOfChildren)

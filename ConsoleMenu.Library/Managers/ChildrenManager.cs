@@ -59,13 +59,13 @@ public class ChildrenManager : IChildrenManager
     private void RenderSelection(IMenuItem menuItem, bool isSelected)
     {
         if (menuItem is null)
-            throw new ArgumentNullException(nameof(menuItem),$"{nameof(menuItem)} may not be null!");
+            throw new ArgumentNullException(nameof(menuItem), $"{nameof(menuItem)} may not be null!");
         menuItem.ContentRenderer.IsSelected = isSelected;
         menuItem.Render();
     }
-    private Vector2 OffsetToNextChild() 
-        => ContentOrientation == ContentOrientation.Vetical 
-        ? new(0, PositionOffsetToNextChild) 
+    private Vector2 OffsetToNextChild()
+        => ContentOrientation == ContentOrientation.Vetical
+        ? new(0, PositionOffsetToNextChild)
         : new(PositionOffsetToNextChild, 0);
 
     public Vector2 AreaNeeded()
@@ -95,12 +95,12 @@ public class ChildrenManager : IChildrenManager
         var index = 0;
         foreach (var menuItem in GetChildren().Select(m => m.Item))
         {
-            menuItem.ContentRenderer.IsSelected = Parent is null 
-                ? _selectedIndex == index 
+            menuItem.ContentRenderer.IsSelected = Parent is null
+                ? _selectedIndex == index
                 : _selectedIndex == index && Parent.ContentRenderer.IsSelected;
             menuItem.Position = position.Duplicate();
             menuItem.Render();
-            position = NextChildPosition(position,menuItem.AreaNeeded());
+            position = NextChildPosition(position, menuItem.AreaNeeded());
             index++;
         }
     }
