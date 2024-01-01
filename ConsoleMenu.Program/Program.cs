@@ -25,9 +25,9 @@ subMenu2.Children.Add(1, new MenuItem("Sub3"));
 
 menu.ContentRenderer.IsSelected = true;
 menu.ContentRenderer.IsMarked = true;
-menu.Children.Add(1, new MenuItem("Players"));
-menu.Children.Add(1, new MenuItem("Pl"));
-menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
+//menu.Children.Add(1, new MenuItem("Players"));
+//menu.Children.Add(1, new MenuItem("Pl"));
+//menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
 menu.Children.Add(1, subMenu);
 menu.Children.Add(1, subMenu2);
 menu.Children.ContentOrientation = ContentOrientation.Vetical;
