@@ -9,15 +9,14 @@ public class MenuItem : IMenuItem
 {
     private IContentRender _contentRender;
     private readonly IChildrenManager _childrenManager;
-    private readonly Func<ConsoleKeyInfo, IMenuItem, bool> _onKeyPressed;
 
     public Vector2 Position { get; set; }
-
+    public IMenuItem Parent { get; set; }
     public MenuItem(string title)
     {
+        Parent = null;
         _contentRender = new BasicContentRender(title);
         _childrenManager = new ChildrenManager(this);
-        _onKeyPressed = ActionToPerform.MoveSelection;
     }
 
     public Vector2 AreaNeeded()
@@ -33,7 +32,7 @@ public class MenuItem : IMenuItem
     {
         _contentRender.Render(Position);
         var areaNeeded = _contentRender.AreaNeeded();
-        _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
+        _childrenManager.PositionOfFirstChild = new Vector2(Position.X + 2, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
     }
 
@@ -41,10 +40,19 @@ public class MenuItem : IMenuItem
 
     public IChildrenManager Children => _childrenManager;
 
-    public void PerformAction(ConsoleKeyInfo key)
+    public bool PerformAction(ConsoleKeyInfo key)
     {
-        if (_onKeyPressed?.Invoke(key, this) ?? true)
-            if (Children.HaveChildren())
-                Children.GetSelectedChild().Item.PerformAction(key);
+        bool actionUsed = false;
+        if (Children.HaveChildren())
+        {
+            actionUsed = Children.GetSelectedChild().Item.PerformAction(key);
+            if (actionUsed)
+                return true;
+        }
+        if (actionUsed == false)
+        {
+            actionUsed = ActionToPerform.MoveSelection(key, this);
+        }
+        return actionUsed;
     }
 }
