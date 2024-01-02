@@ -13,7 +13,6 @@ public class BasicContentRender : IContentRender
 
     public bool IsSelected { get; set; }
     public bool IsMarked { get; set; }
-
     public BasicContentRender(string title)
     {
         _title = title;
