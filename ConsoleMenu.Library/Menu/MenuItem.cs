@@ -51,8 +51,7 @@ public class MenuItem : IMenuItem
         }
         if (actionUsed == false)
         {
-            actionUsed = ActionToPerform.MoveSelection(key,this);
-
+            actionUsed = ActionToPerform.MoveSelection(key, this);
         }
         return actionUsed;
     }
