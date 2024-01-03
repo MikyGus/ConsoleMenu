@@ -45,17 +45,11 @@ public class MenuItem : IMenuItem
 
     public bool PerformAction(ConsoleKeyInfo key)
     {
-        bool actionUsed = false;
         if (Children.HaveChildren())
         {
-            actionUsed = Children.GetSelectedChild().Item.PerformAction(key);
-            if (actionUsed)
+            if (Children.GetSelectedChild().Item.PerformAction(key))
                 return true;
         }
-        if (actionUsed == false)
-        {
-            actionUsed = ActionToPerform.MoveSelection(key, this);
-        }
-        return actionUsed;
+        return ActionToPerform.MoveSelection(key, this);
     }
 }
