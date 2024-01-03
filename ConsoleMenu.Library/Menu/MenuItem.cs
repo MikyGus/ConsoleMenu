@@ -45,6 +45,9 @@ public class MenuItem : IMenuItem
 
     public bool PerformAction(ConsoleKeyInfo key)
     {
+
+
+
         bool actionUsed = false;
         if (Children.HaveChildren())
         {
