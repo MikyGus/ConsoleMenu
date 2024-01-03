@@ -11,8 +11,8 @@ public abstract class ContentRender : IContentRender
     public abstract Vector2 AreaNeeded();
 
     public abstract void Render(Vector2 position);
-    
-    protected void Render(Vector2 position, Action<Vector2> action) 
+
+    protected void Render(Vector2 position, Action<Vector2> action)
     {
         if (position is null)
             throw new ArgumentNullException(nameof(position));
@@ -21,7 +21,7 @@ public abstract class ContentRender : IContentRender
         var tempFgColor = Console.ForegroundColor;
 
         action(position);
-        
+
         Console.BackgroundColor = tempBgColor;
         Console.ForegroundColor = tempFgColor;
     }

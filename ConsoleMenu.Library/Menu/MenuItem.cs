@@ -28,7 +28,7 @@ public class MenuItem : IMenuItem
         return contentArea.MaxAdd_Vertical(childrenArea);
     }
 
-    public void SetRenderer<T>() where T : ContentRender, new() 
+    public void SetRenderer<T>() where T : ContentRender, new()
         => _contentRender = new T() { Content = _title };
 
     public void Render()
