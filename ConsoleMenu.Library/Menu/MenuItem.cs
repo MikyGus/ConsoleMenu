@@ -2,11 +2,12 @@
 using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.PerformAction;
-using ConsoleMenu.Library.Render.Contents;
+using ConsoleMenu.Library.Render;
 
 namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
+    private readonly string _title;
     private IContentRender _contentRender;
     private readonly IChildrenManager _childrenManager;
 
@@ -14,8 +15,9 @@ public class MenuItem : IMenuItem
     public IMenuItem Parent { get; set; }
     public MenuItem(string title)
     {
+        _title = title;
         Parent = null;
-        _contentRender = new BasicContentRender(title);
+        _contentRender = new DefaultContentRender() { Content = _title };
         _childrenManager = new ChildrenManager(this);
     }
 
@@ -26,7 +28,8 @@ public class MenuItem : IMenuItem
         return contentArea.MaxAdd_Vertical(childrenArea);
     }
 
-    public void SetRender(IContentRender contentRender) => _contentRender = contentRender;
+    public void SetRenderer<T>() where T : ContentRender, new()
+        => _contentRender = new T() { Content = _title };
 
     public void Render()
     {
