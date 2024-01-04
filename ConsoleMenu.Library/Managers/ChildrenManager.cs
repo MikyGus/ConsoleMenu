@@ -7,8 +7,11 @@ public class ChildrenManager : IChildrenManager
 {
     private List<IChildItem> _children = new();
     private int _selectedIndex = 0;
+    private Vector2 _positionOfFirstChild = Vector2.ZERO;
+
     public IMenuItem Owner { get; init; }
-    public Vector2 PositionOfFirstChild { get; set; } = Vector2.ZERO;
+    internal Vector2 PositionOfFirstChild { get => _positionOfFirstChild; set => _positionOfFirstChild = value + PositionOffsetOfFirstChild; }
+    public Vector2 PositionOffsetOfFirstChild { get; set; } = Vector2.RIGHT;
     public int PositionOffsetToNextChild { get; set; } = 1;
     public ContentOrientation ContentOrientation { get; set; } = ContentOrientation.Vetical;
 
@@ -37,6 +40,7 @@ public class ChildrenManager : IChildrenManager
     public bool HaveChildren() => _children.Any();
 
     public int CurrentSelection => _selectedIndex;
+
     public bool DecrementSelection()
     {
         if (_selectedIndex > 0)
@@ -81,13 +85,13 @@ public class ChildrenManager : IChildrenManager
                 if (_children.Any())
                     return _children
                         .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
-                        .Aggregate((a1, a2) => a1.MaxAdd_Vertical(a2));
+                        .Aggregate((a1, a2) => a1.MaxAdd_Vertical(a2)) + PositionOffsetOfFirstChild;
                 break;
             case ContentOrientation.Horizontal:
                 if (_children.Any())
                     return _children
                         .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
-                        .Aggregate((a1, a2) => a1.AddMax_Horizontal(a2));
+                        .Aggregate((a1, a2) => a1.AddMax_Horizontal(a2)) + PositionOffsetOfFirstChild;
                 break;
         }
         return Vector2.ZERO;

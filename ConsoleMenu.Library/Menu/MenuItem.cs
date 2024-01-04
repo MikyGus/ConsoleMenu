@@ -9,7 +9,7 @@ public class MenuItem : IMenuItem
 {
     private readonly string _title;
     private IContentRender _contentRender;
-    private readonly IChildrenManager _childrenManager;
+    private readonly ChildrenManager _childrenManager;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
@@ -35,7 +35,7 @@ public class MenuItem : IMenuItem
     {
         _contentRender.Render(Position);
         var areaNeeded = _contentRender.AreaNeeded();
-        _childrenManager.PositionOfFirstChild = new Vector2(Position.X + 2, Position.Y + areaNeeded.Y);
+        _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
     }
 

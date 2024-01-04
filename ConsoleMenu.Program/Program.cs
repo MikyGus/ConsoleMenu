@@ -30,12 +30,19 @@ subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
 subsubMenu3.Children.Add(4, new MenuItem("Sub2"));
 subsubMenu3.Children.Add(1, new MenuItem("Sub3"));
 subsubMenu3.Children.ContentOrientation = ContentOrientation.Horizontal;
+subsubMenu3.Children.PositionOffsetOfFirstChild = new Vector2(5, 0);
+
+var subsubMenu4 = new MenuItem("My SubSubMenu2");
+subsubMenu4.Children.Add(6, new MenuItem("Sub1"));
+subsubMenu4.Children.Add(4, new MenuItem("Sub2"));
+subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
+subsubMenu4.Children.ContentOrientation = ContentOrientation.Horizontal;
 
 var subsubsubMenu = new MenuItem("My SubSubMenu");
 subsubsubMenu.Children.Add(6, subsubMenu2);
 subsubsubMenu.Children.Add(4, subsubMenu3);
-subsubsubMenu.Children.Add(1, new MenuItem("Sub3"));
-
+subsubsubMenu.Children.Add(1, subsubMenu4);
+subsubsubMenu.Children.ContentOrientation = ContentOrientation.Vetical;
 
 var subMenu2 = new MenuItem("My SubMenu2");
 subMenu2.Children.Add(6, subsubsubMenu);
