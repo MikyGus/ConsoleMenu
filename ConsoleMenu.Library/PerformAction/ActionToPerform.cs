@@ -25,7 +25,7 @@ public class ActionToPerform
             case (ConsoleKey.Enter, ContentOrientation.Horizontal) or (ConsoleKey.Enter, ContentOrientation.Vetical):
                 menuItem.PerformAction();
                 return false;
-            default: 
+            default:
                 return false;
         }
     }
