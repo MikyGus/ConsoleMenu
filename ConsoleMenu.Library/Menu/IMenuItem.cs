@@ -13,7 +13,18 @@ public interface IMenuItem : IRenderContent
     /// </summary>
     /// <param name="key"></param>
     /// <returns>Returns a bool stating if the key were used for an action or not (true=used)</returns>
-    bool PerformAction(ConsoleKeyInfo key);
+    bool KeyPressed(ConsoleKeyInfo key);
+
+    /// <summary>
+    /// Perform acton specified in OnAction
+    /// </summary>
+    void PerformAction();
+
+    /// <summary>
+    /// Specify what to happen when user presses Enter-key with this MenuItem selected.
+    /// </summary>
+    event Action<IMenuItem> OnAction;
+
     /// <summary>
     /// Sets the renderer of the content of the item. 
     /// </summary>

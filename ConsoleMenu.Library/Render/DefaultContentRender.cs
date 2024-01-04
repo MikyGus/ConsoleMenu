@@ -17,6 +17,11 @@ public class DefaultContentRender : ContentRender
                 _backgroundColor = _markedColor;
                 _foregroundColor = _normalFgColor;
             }
+            else
+            {
+                _backgroundColor = ConsoleColor.Gray;
+                _foregroundColor = _normalFgColor;
+            }
 
             WriteAtPosition(position, "[", IsSelected ? _selectedColor : _backgroundColor, _backgroundColor);
 

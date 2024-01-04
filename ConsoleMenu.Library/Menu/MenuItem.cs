@@ -13,6 +13,8 @@ public class MenuItem : IMenuItem
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
+    public event Action<IMenuItem> OnAction;
+
     public MenuItem(string title)
     {
         _title = title;
@@ -43,13 +45,15 @@ public class MenuItem : IMenuItem
 
     public IChildrenManager Children => _childrenManager;
 
-    public bool PerformAction(ConsoleKeyInfo key)
+    public bool KeyPressed(ConsoleKeyInfo key)
     {
         if (Children.HaveChildren())
         {
-            if (Children.GetSelectedChild().Item.PerformAction(key))
+            if (Children.GetSelectedChild().Item.KeyPressed(key))
                 return true;
         }
         return ActionToPerform.MoveSelection(key, this);
     }
+
+    public void PerformAction() => OnAction?.Invoke(this);
 }
