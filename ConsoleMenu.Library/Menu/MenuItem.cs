@@ -9,10 +9,12 @@ public class MenuItem : IMenuItem
 {
     private readonly string _title;
     private IContentRender _contentRender;
-    private readonly ChildrenManager _childrenManager;
+    private readonly IChildrenManager _childrenManager;
+    private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
+
     public MenuItem(string title)
     {
         _title = title;
@@ -43,13 +45,16 @@ public class MenuItem : IMenuItem
 
     public IChildrenManager Children => _childrenManager;
 
-    public bool PerformAction(ConsoleKeyInfo key)
+    public bool KeyPressed(ConsoleKeyInfo key)
     {
         if (Children.HaveChildren())
         {
-            if (Children.GetSelectedChild().Item.PerformAction(key))
+            if (Children.GetSelectedChild().Item.KeyPressed(key))
                 return true;
         }
         return ActionToPerform.MoveSelection(key, this);
     }
+
+    public bool PerformAction(ConsoleKeyInfo key) => _onAction?.Invoke(this, key) ?? false;
+    public void SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action) => _onAction = action;
 }

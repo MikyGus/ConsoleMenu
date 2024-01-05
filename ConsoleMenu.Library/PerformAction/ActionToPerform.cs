@@ -23,6 +23,7 @@ public class ActionToPerform
             case (ConsoleKey.LeftArrow, ContentOrientation.Horizontal):
                 return menuItem.Children.DecrementSelection();
         }
-        return false;
+
+        return menuItem.PerformAction(key);
     }
 }

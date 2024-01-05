@@ -25,10 +25,13 @@ subsubMenu2.Children.Add(4, new MenuItem("Sub2"));
 subsubMenu2.Children.Add(1, new MenuItem("Sub3"));
 subsubMenu2.Children.ContentOrientation = ContentOrientation.Horizontal;
 
+var myActionPackedMenuItem = new MenuItem("ActionMenu");
+myActionPackedMenuItem.SetAction(SetItemMark);
+
 var subsubMenu3 = new MenuItem("My SubSubMenu2");
 subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
 subsubMenu3.Children.Add(4, new MenuItem("Sub2"));
-subsubMenu3.Children.Add(1, new MenuItem("Sub3"));
+subsubMenu3.Children.Add(1, myActionPackedMenuItem);
 subsubMenu3.Children.ContentOrientation = ContentOrientation.Horizontal;
 subsubMenu3.Children.PositionOffsetOfFirstChild = new Vector2(5, 0);
 
@@ -49,6 +52,7 @@ subMenu2.Children.Add(6, subsubsubMenu);
 subMenu2.Children.Add(4, new MenuItem("Sub2"));
 subMenu2.Children.Add(1, new MenuItem("Sub3"));
 subMenu2.SetRenderer<CheckboxContentRender>();
+subMenu2.SetAction(SetItemMark);
 subMenu2.ContentRenderer.IsMarked = true;
 
 menu.Children.Add(1, subMenu);
@@ -66,10 +70,37 @@ menu.Render();
 ConsoleKeyInfo keyInput;
 do
 {
-    keyInput = Console.ReadKey();
-    menu.PerformAction(keyInput);
+    keyInput = Console.ReadKey(true);
+    menu.KeyPressed(keyInput);
 } while (keyInput.Key != ConsoleKey.Escape);
 
 
 Console.WriteLine("Press a key to exit");
 Console.ReadKey();
+
+
+bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+{
+    if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.E)
+        return false;
+
+    //if (item.Parent is not null)
+    //{
+    //    item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
+    //    item.Parent.ContentRenderer.Render(item.Parent.Position);
+    //}
+    if (item.Children.HaveChildren())
+    {
+        foreach (var child in item.Children.GetChildren())
+        {
+            child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+        }
+        item.Render();
+    }
+
+    //item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
+    //item.SetRenderer<DefaultContentRender>();
+
+    //item.ContentRenderer.Render(item.Position);
+    return false;
+}
