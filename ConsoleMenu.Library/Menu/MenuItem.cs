@@ -37,7 +37,7 @@ public class MenuItem : IMenuItem
     {
         _contentRender.Render(Position);
         var areaNeeded = _contentRender.AreaNeeded();
-        _childrenManager.PositionOfFirstChild = new Vector2(Position.X + 2, Position.Y + areaNeeded.Y);
+        _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
     }
 
