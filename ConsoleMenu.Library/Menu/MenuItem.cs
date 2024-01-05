@@ -9,7 +9,7 @@ public class MenuItem : IMenuItem
 {
     private readonly string _title;
     private IContentRender _contentRender;
-    private readonly IChildrenManager _childrenManager;
+    private readonly ChildrenManager _childrenManager;
     private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
 
     public Vector2 Position { get; set; }
