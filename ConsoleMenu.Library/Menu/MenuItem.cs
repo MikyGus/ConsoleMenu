@@ -10,10 +10,10 @@ public class MenuItem : IMenuItem
     private readonly string _title;
     private IContentRender _contentRender;
     private readonly IChildrenManager _childrenManager;
+    private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
-    public event Func<IMenuItem, ConsoleKeyInfo, bool> OnAction;
 
     public MenuItem(string title)
     {
@@ -55,5 +55,6 @@ public class MenuItem : IMenuItem
         return ActionToPerform.MoveSelection(key, this);
     }
 
-    public bool PerformAction(ConsoleKeyInfo key) => OnAction?.Invoke(this, key) ?? false;
+    public bool PerformAction(ConsoleKeyInfo key) => _onAction?.Invoke(this, key) ?? false;
+    public void SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action) => _onAction = action;
 }

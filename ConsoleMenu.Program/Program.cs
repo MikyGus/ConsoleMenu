@@ -26,7 +26,7 @@ subsubMenu2.Children.Add(1, new MenuItem("Sub3"));
 subsubMenu2.Children.ContentOrientation = ContentOrientation.Horizontal;
 
 var myActionPackedMenuItem = new MenuItem("ActionMenu");
-myActionPackedMenuItem.OnAction += SetItemMark;
+myActionPackedMenuItem.SetAction(SetItemMark);
 
 var subsubMenu3 = new MenuItem("My SubSubMenu2");
 subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
@@ -45,7 +45,7 @@ subMenu2.Children.Add(6, subsubsubMenu);
 subMenu2.Children.Add(4, new MenuItem("Sub2"));
 subMenu2.Children.Add(1, new MenuItem("Sub3"));
 subMenu2.SetRenderer<CheckboxContentRender>();
-subMenu2.OnAction += SetItemMark;
+subMenu2.SetAction(SetItemMark);
 subMenu2.ContentRenderer.IsMarked = true;
 
 menu.Children.Add(1, subMenu);
