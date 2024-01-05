@@ -18,12 +18,12 @@ public interface IMenuItem : IRenderContent
     /// <summary>
     /// Perform acton specified in OnAction
     /// </summary>
-    void PerformAction();
+    bool PerformAction(ConsoleKeyInfo key);
 
     /// <summary>
     /// Specify what to happen when user presses Enter-key with this MenuItem selected.
     /// </summary>
-    event Action<IMenuItem> OnAction;
+    event Func<IMenuItem, ConsoleKeyInfo, bool> OnAction;
 
     /// <summary>
     /// Sets the renderer of the content of the item. 

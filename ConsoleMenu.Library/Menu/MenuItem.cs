@@ -13,7 +13,7 @@ public class MenuItem : IMenuItem
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
-    public event Action<IMenuItem> OnAction;
+    public event Func<IMenuItem, ConsoleKeyInfo, bool> OnAction;
 
     public MenuItem(string title)
     {
@@ -55,5 +55,5 @@ public class MenuItem : IMenuItem
         return ActionToPerform.MoveSelection(key, this);
     }
 
-    public void PerformAction() => OnAction?.Invoke(this);
+    public bool PerformAction(ConsoleKeyInfo key) => OnAction?.Invoke(this, key) ?? false;
 }

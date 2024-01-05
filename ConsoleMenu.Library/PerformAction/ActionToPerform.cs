@@ -22,11 +22,8 @@ public class ActionToPerform
                 return menuItem.Children.IncrementSelection();
             case (ConsoleKey.LeftArrow, ContentOrientation.Horizontal):
                 return menuItem.Children.DecrementSelection();
-            case (ConsoleKey.Enter, ContentOrientation.Horizontal) or (ConsoleKey.Enter, ContentOrientation.Vetical):
-                menuItem.PerformAction();
-                return false;
-            default:
-                return false;
         }
+
+        return menuItem.PerformAction(key);
     }
 }

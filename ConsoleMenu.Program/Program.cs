@@ -63,7 +63,7 @@ menu.Render();
 ConsoleKeyInfo keyInput;
 do
 {
-    keyInput = Console.ReadKey();
+    keyInput = Console.ReadKey(true);
     menu.KeyPressed(keyInput);
 } while (keyInput.Key != ConsoleKey.Escape);
 
@@ -72,8 +72,28 @@ Console.WriteLine("Press a key to exit");
 Console.ReadKey();
 
 
-void SetItemMark(IMenuItem item)
+bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
 {
-    item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
-    item.Render();
+    if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.E)
+        return false;
+
+    //if (item.Parent is not null)
+    //{
+    //    item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
+    //    item.Parent.ContentRenderer.Render(item.Parent.Position);
+    //}
+    if (item.Children.HaveChildren())
+    {
+        foreach (var child in item.Children.GetChildren())
+        {
+            child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+        }
+        item.Render();
+    }
+
+    //item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
+    //item.SetRenderer<DefaultContentRender>();
+
+    //item.ContentRenderer.Render(item.Position);
+    return false;
 }
