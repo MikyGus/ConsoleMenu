@@ -19,6 +19,7 @@ public class MenuItem : IMenuItem
     {
         _title = title;
         Parent = null;
+        Position = Vector2.ZERO;
         _contentRender = new DefaultContentRender() { Content = _title };
         _childrenManager = new ChildrenManager(this);
     }
