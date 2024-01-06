@@ -50,6 +50,21 @@ The options for ContentOrientation are ```Vertical``` (default) and ```Horizonta
 menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Vetical;
 menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
 ```
+
+**Output - Vertical**
+```bash
+ Simple menu 
+  Menu 1
+  Menu 2
+  Menu 3
+```
+
+**Output - Horizontal**
+```bash
+ Simple menu 
+  Menu 1  Menu 2  Menu 3 
+```
+
 ## Position
 The first menuItem is by default placed at the coordinates 0,0. With the ```Vector2``` class. To change position use the ```Position``` property on menuItem. 
 
@@ -66,7 +81,7 @@ The first menuItem is by default placed at the coordinates 0,0. With the ```Vect
 ```
 
 ## Add children
-
+To add children to a menuItem we use the method ```Add()```.
 ```csharp
 	MenuItem subMenu = new MenuItem("My SubMenu #1");
 	subMenu.Children.Add(1, new MenuItem("Sub1"));
