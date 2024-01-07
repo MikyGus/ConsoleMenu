@@ -5,6 +5,7 @@
 
 - [Console Menu](#console-menu)
 	- [Create a simple menu](#create-a-simple-menu)
+	- [Vector2](#vector2)
 	- [Position](#position)
 	- [Children of MenuItem](#children-of-menuitem)
 		- [Add children](#add-children)
@@ -33,7 +34,33 @@ Below is an example of a simple menu. This will print a simple menu with three i
   Menu 3
 ```
 
+## Vector2
+```class Vector2 : IEquatable<Vector2>```
 
+Represents a point in a 2D space or 2D area with integers for X and Y.
+
+**Properties**
+```csharp
+    public int X { get; set; }
+    public int Y { get; set; }
+```
+
+**Methods**
+```csharp
+	Vector2 Duplicate();
+```
+**Static**
+```csharp
+	public static Vector2 ZERO => new(0, 0);
+	public static Vector2 UP => new(0, -1);
+	public static Vector2 DOWN => new(0, 1);
+	public static Vector2 LEFT => new(-1, 0);
+	public static Vector2 RIGHT => new(1, 0);
+	public static Vector2 LEFT_UP => new(-1, -1);
+	public static Vector2 LEFT_DOWN => new(-1, 1);
+	public static Vector2 RIGHT_UP => new(1, -1);
+	public static Vector2 RIGHT_DOWN => new(1, 1);
+```
 
 ## Position
 ```(Vector2) MenuItem.Position```
