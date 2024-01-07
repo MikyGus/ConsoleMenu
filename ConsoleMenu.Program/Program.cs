@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
-using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Render;
 
 Console.WriteLine("******** Console Menu ***********");
@@ -82,7 +82,9 @@ Console.ReadKey();
 bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
 {
     if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.E)
+    {
         return false;
+    }
 
     //if (item.Parent is not null)
     //{
@@ -91,7 +93,7 @@ bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     //}
     if (item.Children.HaveChildren())
     {
-        foreach (var child in item.Children.GetChildren())
+        foreach (IChildItem child in item.Children.GetChildren())
         {
             child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
         }
