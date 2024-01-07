@@ -104,14 +104,14 @@ public class ChildrenManagerTests
         int[] expectedOrderOfChildren)
     {
         // Arrange
-        var menuItems = A.CollectionOfFake<IMenuItem>(positionInListInput.Length);
+        IList<IMenuItem> menuItems = A.CollectionOfFake<IMenuItem>(positionInListInput.Length);
         for (int i = 0; i < menuItems.Count; i++)
         {
             A.CallTo(() => menuItems[i].AreaNeeded()).Returns(new Vector2(8, 1));
             _sut.Add(positionInListInput[i], menuItems[i]);
         }
         // Act
-        var result = _sut.GetChildren();
+        IEnumerable<IChildItem> result = _sut.GetChildren();
         // Assert
         result.Select(x => x.Priority).Should().BeEquivalentTo(expectedOrderOfChildren);
     }
