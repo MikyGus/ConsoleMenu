@@ -28,7 +28,7 @@ jobs:
   
             - name: EditorConfig - Download
               uses: editorconfig-checker/action-editorconfig-checker@main
-            - name: EdiorConfig - Check
+            - name: EditorConfig - Check
               run: editorconfig-checker
             # - name: Run Super-Linter
             #   uses: github/super-linter@v4
