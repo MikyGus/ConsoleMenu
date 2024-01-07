@@ -63,7 +63,7 @@ public class ChildrenManagerTests
     [InlineData(2, 1, new int[] { 0, 0 }, new int[] { 16, 1 })]
     [InlineData(2, 10, new int[] { 0, 0 }, new int[] { 20, 1 })]
     [InlineData(3, 10, new int[] { 0, 0 }, new int[] { 30, 1 })]
-    
+
     [InlineData(0, 1, new int[] { 1, 0 }, new int[] { 0, 0 })]
     [InlineData(1, 1, new int[] { 1, 0 }, new int[] { 9, 1 })]
     [InlineData(1, 10, new int[] { 1, 0 }, new int[] { 11, 1 })]

@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
-using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Render;
 
 Console.WriteLine("******** Console Menu ***********");

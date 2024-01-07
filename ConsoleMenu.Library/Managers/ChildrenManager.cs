@@ -29,7 +29,7 @@ public class ChildrenManager : IChildrenManager
         _children.Remove(findItemToRemove);
     }
     public IEnumerable<IChildItem> GetChildren() => _children;
-    public IChildItem GetSelectedChild() 
+    public IChildItem GetSelectedChild()
         => HaveChildren() == false ? throw new InvalidOperationException() : _children[CurrentSelection];
 
     public bool HaveChildren() => _children.Any();
