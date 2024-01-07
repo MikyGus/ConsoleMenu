@@ -1,5 +1,5 @@
 # Console Menu
-**Helps you display a menu in your Console-app.**
+**Display a menu in your Console-app.**
 
 [![Code Tests](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml)
 
@@ -12,6 +12,9 @@
 		- [Remove children](#remove-children)
 		- [Content orientation](#content-orientation)
 		- [PositionOffsetOfFirstChild](#positionoffsetoffirstchild)
+	- [Renderers](#renderers)
+		- [SetRenderer](#setrenderer)
+		- [Render](#render)
 
 
 
@@ -192,4 +195,50 @@ Offsets the first child and the rest follows. If set to Vector2(0,0), the first 
 ```bash
 Simple menu]
           [Menu 1][Menu 2][Menu 3]
+```
+
+## Renderers
+### SetRenderer
+```void IMenuItem.SetRenderer<T>() where T : ContentRender, new();```
+**Default**: DefaultContentRender
+
+```csharp
+	IMenuItem menuItem1 = new MenuItem("Menu 1");
+->> menuItem1.SetRenderer<CheckboxContentRender>();
+	IMenuItem menuItem2 = new MenuItem("Menu 2");
+->> menuItem2.SetRenderer<CheckboxContentRender>();
+	menuItem2.ContentRenderer.IsMarked = true;
+	IMenuItem menuItem3 = new MenuItem("Menu 3");
+->> menuItem3.SetRenderer<CheckboxContentRender>();
+
+	MenuItem menu = new MenuItem("Simple menu");
+	menu.Position = new Vector2(0, 1);
+	menu.Children.Add(1, menuItem1);
+	menu.Children.Add(2, menuItem2);
+	menu.Children.Add(3, menuItem3);
+	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Render();
+```
+
+**Output**
+```bash
+[Simple menu]
+ [ ] Menu 1[X] Menu 2[ ] Menu 3
+```
+
+### Render
+- ```void IMenuItem.Render()```: Renders the menuItem **and** all its children.
+- ```void IMenuItem.ContentRenderer.Render(Vector2)```: Renders the menuItem.
+- ```void IMenuItem.Children.Render()```: Renders the menuItems children.
+
+```csharp
+	MenuItem menu = new MenuItem("Simple menu");
+	menu.Position = new Vector2(0, 1);
+	menu.Children.Add(1, new MenuItem("Menu 1"));
+	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Render();
+	
+->> menu.ContentRenderer.Render(menu.Position);
+->> menu.Children.Render();
+
 ```

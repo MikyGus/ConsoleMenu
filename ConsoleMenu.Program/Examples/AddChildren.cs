@@ -22,5 +22,9 @@ internal class AddChildren
         menu.Children.Add(3, new MenuItem("Menu 3"));
         menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
         menu.Render();
+
+        // Render() use these to render
+        //menu.ContentRenderer.Render(menu.Position);
+        //menu.Children.Render();
     }
 }
