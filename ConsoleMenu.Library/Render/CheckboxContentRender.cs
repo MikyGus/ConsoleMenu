@@ -13,7 +13,7 @@ public class CheckboxContentRender : ContentRender
     public override void Render(Vector2 position) =>
         Render(position, x =>
         {
-            var IsMarkedChar = IsMarked ? "X" : " ";
+            string IsMarkedChar = IsMarked ? "X" : " ";
             _foregroundColor = IsSelected ? _selectedColor : _normalFgColor;
 
             WriteAtPosition(position, $"[{IsMarkedChar}] {Content}", _foregroundColor, _backgroundColor);

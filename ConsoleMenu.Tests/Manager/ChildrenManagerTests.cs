@@ -40,9 +40,9 @@ public class ChildrenManagerTests
         // Arrange
         var firstChOffset = new Vector2(firstChildOffset[0], firstChildOffset[1]);
         var expected = new Vector2(expectedTotalAreaNeeded[0], expectedTotalAreaNeeded[1]);
-        var menuItems = A.CollectionOfFake<IMenuItem>(menuItemsChildrenCount);
+        IList<IMenuItem> menuItems = A.CollectionOfFake<IMenuItem>(menuItemsChildrenCount);
 
-        foreach (var child in menuItems)
+        foreach (IMenuItem child in menuItems)
         {
             A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8, 1));
             _sut.Add(1, child);
@@ -51,7 +51,7 @@ public class ChildrenManagerTests
         _sut.PositionOffsetOfFirstChild = firstChOffset;
 
         // Act
-        var result = _sut.AreaNeeded();
+        Vector2 result = _sut.AreaNeeded();
         // Assert
         result.Should().Be(expected);
     }
@@ -79,9 +79,9 @@ public class ChildrenManagerTests
         // Arrange
         var expected = new Vector2(expectedTotalAreaNeeded[0], expectedTotalAreaNeeded[1]);
         var firstChOffset = new Vector2(firstChildOffset[0], firstChildOffset[1]);
-        var menuItems = A.CollectionOfFake<IMenuItem>(menuItemsChildrenCount);
+        IList<IMenuItem> menuItems = A.CollectionOfFake<IMenuItem>(menuItemsChildrenCount);
 
-        foreach (var child in menuItems)
+        foreach (IMenuItem child in menuItems)
         {
             A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8, 1));
             _sut.Add(1, child);
@@ -90,7 +90,7 @@ public class ChildrenManagerTests
         _sut.ContentOrientation = ContentOrientation.Horizontal;
         _sut.PositionOffsetOfFirstChild = firstChOffset;
         // Act
-        var result = _sut.AreaNeeded();
+        Vector2 result = _sut.AreaNeeded();
         // Assert
         result.Should().Be(expected);
     }
