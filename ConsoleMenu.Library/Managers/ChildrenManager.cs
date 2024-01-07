@@ -6,7 +6,6 @@ namespace ConsoleMenu.Library.Managers;
 public class ChildrenManager : IChildrenManager
 {
     private List<IChildItem> _children = new();
-    private int _selectedIndex = 0;
     private Vector2 _positionOfFirstChild = Vector2.ZERO;
 
     public IMenuItem Owner { get; init; }
@@ -26,28 +25,24 @@ public class ChildrenManager : IChildrenManager
 
     public void Remove(IMenuItem item)
     {
-        var findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
+        IChildItem findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
         _children.Remove(findItemToRemove);
     }
     public IEnumerable<IChildItem> GetChildren() => _children;
-    public IChildItem GetSelectedChild()
-    {
-        if (HaveChildren() == false)
-            throw new InvalidOperationException();
-        return _children[_selectedIndex];
-    }
+    public IChildItem GetSelectedChild() 
+        => HaveChildren() == false ? throw new InvalidOperationException() : _children[CurrentSelection];
 
     public bool HaveChildren() => _children.Any();
 
-    public int CurrentSelection => _selectedIndex;
+    public int CurrentSelection { get; private set; } = 0;
 
     public bool DecrementSelection()
     {
-        if (_selectedIndex > 0)
+        if (CurrentSelection > 0)
         {
-            RenderSelection(_children[_selectedIndex]?.Item, false);
-            _selectedIndex--;
-            RenderSelection(_children[_selectedIndex]?.Item, true);
+            RenderSelection(_children[CurrentSelection]?.Item, false);
+            CurrentSelection--;
+            RenderSelection(_children[CurrentSelection]?.Item, true);
             return true;
         }
         return false;
@@ -55,11 +50,11 @@ public class ChildrenManager : IChildrenManager
 
     public bool IncrementSelection()
     {
-        if (_selectedIndex < _children.Count - 1)
+        if (CurrentSelection < _children.Count - 1)
         {
-            RenderSelection(_children[_selectedIndex]?.Item, false);
-            _selectedIndex++;
-            RenderSelection(_children[_selectedIndex]?.Item, true);
+            RenderSelection(_children[CurrentSelection]?.Item, false);
+            CurrentSelection++;
+            RenderSelection(_children[CurrentSelection]?.Item, true);
             return true;
         }
         return false;
@@ -68,7 +63,10 @@ public class ChildrenManager : IChildrenManager
     private void RenderSelection(IMenuItem menuItem, bool isSelected)
     {
         if (menuItem is null)
+        {
             throw new ArgumentNullException(nameof(menuItem), $"{nameof(menuItem)} may not be null!");
+        }
+
         menuItem.ContentRenderer.IsSelected = isSelected;
         menuItem.Render();
     }
@@ -83,15 +81,21 @@ public class ChildrenManager : IChildrenManager
         {
             case ContentOrientation.Vetical:
                 if (_children.Any())
+                {
                     return _children
                         .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
                         .Aggregate((a1, a2) => a1.MaxAdd_Vertical(a2)) + PositionOffsetOfFirstChild;
+                }
+
                 break;
             case ContentOrientation.Horizontal:
                 if (_children.Any())
+                {
                     return _children
                         .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
                         .Aggregate((a1, a2) => a1.AddMax_Horizontal(a2)) + PositionOffsetOfFirstChild;
+                }
+
                 break;
         }
         return Vector2.ZERO;
@@ -100,13 +104,13 @@ public class ChildrenManager : IChildrenManager
 
     public void Render()
     {
-        var position = PositionOfFirstChild.Duplicate();
-        var index = 0;
-        foreach (var menuItem in GetChildren().Select(m => m.Item))
+        Vector2 position = PositionOfFirstChild.Duplicate();
+        int index = 0;
+        foreach (IMenuItem menuItem in GetChildren().Select(m => m.Item))
         {
             menuItem.ContentRenderer.IsSelected = Owner is null
-                ? _selectedIndex == index
-                : _selectedIndex == index && Owner.ContentRenderer.IsSelected;
+                ? CurrentSelection == index
+                : CurrentSelection == index && Owner.ContentRenderer.IsSelected;
             menuItem.Position = position.Duplicate();
             menuItem.Render();
             position = NextChildPosition(position, menuItem.AreaNeeded());
@@ -116,11 +120,16 @@ public class ChildrenManager : IChildrenManager
 
     private Vector2 NextChildPosition(Vector2 position, Vector2 areaNeeded)
     {
-        var offset = OffsetToNextChild();
+        Vector2 offset = OffsetToNextChild();
         if (ContentOrientation == ContentOrientation.Vetical)
+        {
             position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
+        }
         else
+        {
             position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
+        }
+
         return position;
     }
 }
