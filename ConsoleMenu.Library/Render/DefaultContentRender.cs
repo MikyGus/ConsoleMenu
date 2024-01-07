@@ -23,11 +23,11 @@ public class DefaultContentRender : ContentRender
                 _foregroundColor = _normalFgColor;
             }
 
-            WriteAtPosition(position, "[", IsSelected ? _selectedColor : _backgroundColor, _backgroundColor);
+            WriteAtPosition(position, IsSelected ? "[" : " ", _selectedColor, _backgroundColor);
 
             WriteAtPosition(new Vector2(position.X + 1, position.Y), Content, _foregroundColor, _backgroundColor);
 
             WriteAtPosition(new Vector2(position.X + 1 + Content.Length, position.Y),
-                "]", IsSelected ? _selectedColor : _backgroundColor, _backgroundColor);
+                IsSelected ? "]" : " ", _selectedColor, _backgroundColor);
         });
 }
