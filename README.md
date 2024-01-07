@@ -10,6 +10,7 @@
 		- [Add children](#add-children)
 		- [Remove children](#remove-children)
 		- [Content orientation](#content-orientation)
+		- [PositionOffsetOfFirstChild](#positionoffsetoffirstchild)
 
 
 
@@ -142,4 +143,26 @@ menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizonta
 ```bash
  Simple menu 
   Menu 1  Menu 2  Menu 3 
+```
+
+
+### PositionOffsetOfFirstChild
+```Vector2 IChildrenManager.PositionOffsetOfFirstChild { get; set; }```
+
+Offsets the first child and the rest follows. If set to Vector2(0,0), the first child is positioned directly below the parent menuItem.
+```csharp
+	MenuItem menu = new MenuItem("Simple menu");
+	menu.Position = new Vector2(0, 1);
+	menu.Children.Add(1, new MenuItem("Menu 1"));
+	menu.Children.Add(2, new MenuItem("Menu 2"));
+	menu.Children.Add(3, new MenuItem("Menu 3"));
+	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+->> menu.Children.PositionOffsetOfFirstChild = new Vector2(10, 0);
+	menu.Render();
+```
+
+**Output**
+```bash
+Simple menu]
+          [Menu 1][Menu 2][Menu 3]
 ```

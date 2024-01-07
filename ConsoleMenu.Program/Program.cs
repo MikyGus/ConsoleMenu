@@ -9,6 +9,8 @@ Console.WriteLine("\n\n\n");
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
 //AddChildren.Run();
-RemoveChildren.Run();
+//RemoveChildren.Run();
+
+PositionOffsetOfFirstChild.Run();
 
 Console.WriteLine("\n\n\n\n\n\n\n\n\n");
