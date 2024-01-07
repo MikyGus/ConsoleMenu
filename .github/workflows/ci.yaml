@@ -27,4 +27,4 @@ jobs:
               run: dotnet test --no-restore --verbosity normal
   
             - name: Format
-              run: dotnet format --verbosity diagnostic
+              run: dotnet format --verify-no-changes --verbosity diagnostic
