@@ -19,7 +19,7 @@ public class DefaultContentRender : ContentRender
             }
             else
             {
-                _backgroundColor = ConsoleColor.Gray;
+                _backgroundColor = ConsoleColor.DarkGray;
                 _foregroundColor = _normalFgColor;
             }
 
