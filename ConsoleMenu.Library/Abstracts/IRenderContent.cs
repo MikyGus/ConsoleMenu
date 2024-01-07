@@ -3,6 +3,6 @@
 namespace ConsoleMenu.Library.Abstracts;
 public interface IRenderContent
 {
-    void Render();
+    void Render(); 
     Vector2 AreaNeeded();
 }
