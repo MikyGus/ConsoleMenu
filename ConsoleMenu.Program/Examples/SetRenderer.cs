@@ -15,8 +15,10 @@ internal class SetRenderer
         IMenuItem menuItem3 = new MenuItem("Menu 3");
         menuItem3.SetRenderer<CheckboxContentRender>();
 
-        MenuItem menu = new MenuItem("Simple menu");
-        menu.Position = new Vector2(0, 1);
+        IMenuItem menu = new MenuItem("Simple menu")
+        {
+            Position = new Vector2(0, 1)
+        };
         menu.Children.Add(1, menuItem1);
         menu.Children.Add(2, menuItem2);
         menu.Children.Add(3, menuItem3);

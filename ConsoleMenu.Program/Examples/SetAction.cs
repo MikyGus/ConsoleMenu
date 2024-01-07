@@ -6,22 +6,24 @@ internal class SetAction
 {
     public static void Run()
     {
-        MenuItem subMenu = new MenuItem("My SubMenu #1");
+        IMenuItem subMenu = new MenuItem("My SubMenu #1");
         subMenu.Children.Add(1, new MenuItem("Sub1"));
         subMenu.Children.Add(2, new MenuItem("Sub2"));
         subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
         subMenu.SetAction(SetItemMarkOnParent);
 
-        MenuItem subMenu2 = new MenuItem("My SubMenu #2");
+        IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
         subMenu2.Children.Add(1, new MenuItem("Sub1"));
         subMenu2.Children.Add(2, new MenuItem("Sub2"));
         subMenu2.SetAction(SetItemMarkChildren);
 
-        MenuItem subMenu3 = new MenuItem("My SubMenu #3");
+        IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
         subMenu3.SetAction(SetItemMark);
 
-        MenuItem menu = new MenuItem("Simple menu");
-        menu.Position = new Vector2(0, 1);
+        IMenuItem menu = new MenuItem("Simple menu")
+        {
+            Position = new Vector2(0, 1)
+        };
         menu.Children.Add(1, subMenu);
         menu.Children.Add(2, subMenu2);
         menu.Children.Add(3, subMenu3);
@@ -78,7 +80,7 @@ internal class SetAction
 
         if (item.Children.HaveChildren())
         {
-            foreach (var child in item.Children.GetChildren())
+            foreach (IChildItem child in item.Children.GetChildren())
             {
                 child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
             }

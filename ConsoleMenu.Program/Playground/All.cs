@@ -84,7 +84,9 @@ internal class All
     static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.E)
+        {
             return false;
+        }
 
         //if (item.Parent is not null)
         //{
@@ -93,7 +95,7 @@ internal class All
         //}
         if (item.Children.HaveChildren())
         {
-            foreach (var child in item.Children.GetChildren())
+            foreach (IChildItem child in item.Children.GetChildren())
             {
                 child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
             }

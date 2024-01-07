@@ -6,8 +6,10 @@ internal class PositionOffsetOfFirstChild
 {
     public static void Run()
     {
-        MenuItem menu = new MenuItem("Simple menu");
-        menu.Position = new Vector2(0, 1);
+        IMenuItem menu = new MenuItem("Simple menu")
+        {
+            Position = new Vector2(0, 1)
+        };
         menu.Children.Add(1, new MenuItem("Menu 1"));
         menu.Children.Add(2, new MenuItem("Menu 2"));
         menu.Children.Add(3, new MenuItem("Menu 3"));
