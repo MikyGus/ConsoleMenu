@@ -8,7 +8,6 @@ namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
     private readonly string _title;
-    private IContentRender _contentRender;
     private readonly ChildrenManager _childrenManager;
     private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
 
@@ -19,29 +18,30 @@ public class MenuItem : IMenuItem
     {
         _title = title;
         Parent = null;
-        _contentRender = new DefaultContentRender() { Content = _title };
+        Position = Vector2.ZERO;
+        ContentRenderer = new DefaultContentRender() { Content = _title };
         _childrenManager = new ChildrenManager(this);
     }
 
     public Vector2 AreaNeeded()
     {
-        var contentArea = _contentRender.AreaNeeded();
-        var childrenArea = _childrenManager.AreaNeeded();
+        Vector2 contentArea = ContentRenderer.AreaNeeded();
+        Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
     }
 
     public void SetRenderer<T>() where T : ContentRender, new()
-        => _contentRender = new T() { Content = _title };
+        => ContentRenderer = new T() { Content = _title };
 
     public void Render()
     {
-        _contentRender.Render(Position);
-        var areaNeeded = _contentRender.AreaNeeded();
+        ContentRenderer.Render(Position);
+        Vector2 areaNeeded = ContentRenderer.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
     }
 
-    public IContentRender ContentRenderer => _contentRender;
+    public IContentRender ContentRenderer { get; private set; }
 
     public IChildrenManager Children => _childrenManager;
 
@@ -50,7 +50,9 @@ public class MenuItem : IMenuItem
         if (Children.HaveChildren())
         {
             if (Children.GetSelectedChild().Item.KeyPressed(key))
+            {
                 return true;
+            }
         }
         return ActionToPerform.MoveSelection(key, this);
     }

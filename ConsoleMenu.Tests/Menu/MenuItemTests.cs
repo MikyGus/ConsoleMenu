@@ -19,7 +19,7 @@ public class MenuItemTests
         // Act
         _sut.Children.Add(1, new MenuItem("TEST2"));
         // Assert
-        var result = _sut.Children.GetChildren();
+        IEnumerable<IChildItem> result = _sut.Children.GetChildren();
         result.Should().HaveCount(1);
         result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
     }
@@ -33,9 +33,8 @@ public class MenuItemTests
         // Act
         _sut.Children.Remove(menuItem);
         // Assert
-        var result = _sut.Children.GetChildren();
+        IEnumerable<IChildItem> result = _sut.Children.GetChildren();
         result.Should().BeEmpty();
         result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
     }
-
 }

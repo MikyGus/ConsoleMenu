@@ -25,18 +25,30 @@ public class Vector2 : IEquatable<Vector2>
     public bool Equals(Vector2 other)
     {
         if (other is null)
+        {
             return false;
+        }
+
         if (ReferenceEquals(this, other))
+        {
             return true;
+        }
+
         return X == other.X && Y == other.Y;
     }
 
     public override bool Equals(object other)
     {
         if (other is null)
+        {
             return false;
+        }
+
         if (ReferenceEquals(this, other))
+        {
             return true;
+        }
+
         return other is Vector2 vector2 && Equals(vector2);
     }
 

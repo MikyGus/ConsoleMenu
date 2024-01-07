@@ -1,5 +1,5 @@
-﻿using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Managers;
+﻿using ConsoleMenu.Library.Managers;
+using ConsoleMenu.Library.Menu;
 
 namespace ConsoleMenu.Library.PerformAction;
 public class ActionToPerform

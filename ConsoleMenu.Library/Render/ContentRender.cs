@@ -15,10 +15,12 @@ public abstract class ContentRender : IContentRender
     protected void Render(Vector2 position, Action<Vector2> action)
     {
         if (position is null)
+        {
             throw new ArgumentNullException(nameof(position));
+        }
 
-        var tempBgColor = Console.BackgroundColor;
-        var tempFgColor = Console.ForegroundColor;
+        ConsoleColor tempBgColor = Console.BackgroundColor;
+        ConsoleColor tempFgColor = Console.ForegroundColor;
 
         action(position);
 
