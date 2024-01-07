@@ -11,6 +11,8 @@ Console.WriteLine("\n\n\n");
 //RemoveChildren.Run();
 
 //PositionOffsetOfFirstChild.Run();
-SetRenderer.Run();
+//SetRenderer.Run();
+
+SetAction.Run();
 
 Console.WriteLine("\n\n\n\n\n\n\n\n\n");

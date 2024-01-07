@@ -15,6 +15,9 @@
 	- [Renderers](#renderers)
 		- [SetRenderer](#setrenderer)
 		- [Render](#render)
+	- [Actions](#actions)
+		- [KeyPressed](#keypressed)
+		- [SetAction](#setaction)
 
 
 
@@ -240,5 +243,131 @@ Simple menu]
 	
 ->> menu.ContentRenderer.Render(menu.Position);
 ->> menu.Children.Render();
+```
 
+## Actions
+### KeyPressed
+```bool IMenuItem.KeyPressed(ConsoleKeyInfo key);```
+Through all the menuItems **selected** children, starting at the leaf item, an action to move selection or perform a custom action is made. Each menuItem decides if the parent menuItem should move selection or perform a custom action.
+
+A selection is moved by UP, DOWN, LEFT and RIGHT arrows.
+
+The first rendered selection is not automatic, but is instead rendered first time the selection moves. Use ```IMenuItem.ContentRenderer.IsSelected``` property to set the first selection and the selection will be rendered at the next call of ```Render()```
+
+```csharp
+	MenuItem subMenu = new MenuItem("My SubMenu #1");
+	subMenu.Children.Add(1, new MenuItem("Sub1"));
+	subMenu.Children.Add(2, new MenuItem("Sub2"));
+	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+
+	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
+	subMenu2.Children.Add(1, new MenuItem("Sub1"));
+	subMenu2.Children.Add(2, new MenuItem("Sub2"));
+
+	MenuItem menu = new MenuItem("Simple menu");
+	menu.Position = new Vector2(0, 1);
+	menu.Children.Add(1, subMenu);
+	menu.Children.Add(2, subMenu2);
+	menu.Children.Add(3, new MenuItem("Menu 3"));
+	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+->> menu.ContentRenderer.IsSelected = true;
+	menu.Render();
+		
+->> ConsoleKeyInfo keyInput;
+->> do
+->> {
+->> 	keyInput = Console.ReadKey(true);
+->> 	menu.KeyPressed(keyInput);
+->> } while (keyInput.Key != ConsoleKey.Escape);
+```
+
+### SetAction
+```void IMenuItem.SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action);```
+
+If another key is pressed than the arrow-keys the custom action is invoked (if set). 
+
+Here are some example actions
+
+```csharp
+	MenuItem subMenu = new MenuItem("My SubMenu #1");
+	subMenu.Children.Add(1, new MenuItem("Sub1"));
+	subMenu.Children.Add(2, new MenuItem("Sub2"));
+	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+->> subMenu.SetAction(SetItemMarkOnParent);
+
+	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
+	subMenu2.Children.Add(1, new MenuItem("Sub1"));
+	subMenu2.Children.Add(2, new MenuItem("Sub2"));
+->> subMenu2.SetAction(SetItemMarkChildren);
+
+	MenuItem subMenu3 = new MenuItem("My SubMenu #3");
+->> subMenu3.SetAction(SetItemMark);
+
+	MenuItem menu = new MenuItem("Simple menu");
+	menu.Position = new Vector2(0, 1);
+	menu.Children.Add(1, subMenu);
+	menu.Children.Add(2, subMenu2);
+	menu.Children.Add(3, subMenu3);
+	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.ContentRenderer.IsSelected = true;
+	menu.Render();
+
+	ConsoleKeyInfo keyInput;
+	do
+	{
+		keyInput = Console.ReadKey(true);
+		menu.KeyPressed(keyInput);
+	} while (keyInput.Key != ConsoleKey.Escape);
+```
+
+```csharp
+	static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+	{
+		if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+		{
+			return false;
+		}
+
+		item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
+		item.ContentRenderer.Render(item.Position);
+		return false;
+	}
+```
+
+```csharp
+    static bool SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return false;
+        }
+
+        if (item.Parent is not null)
+        {
+            item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
+            item.Parent.ContentRenderer.Render(item.Parent.Position);
+        }
+        item.ContentRenderer.Render(item.Position);
+        return false;
+    }
+```
+
+```csharp
+    static bool SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return false;
+        }
+
+        if (item.Children.HaveChildren())
+        {
+            foreach (var child in item.Children.GetChildren())
+            {
+                child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+            }
+            item.Render();
+        }
+        return false;
+    }
 ```

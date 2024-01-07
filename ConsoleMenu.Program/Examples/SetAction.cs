@@ -1,0 +1,89 @@
+﻿using ConsoleMenu.Library.Menu;
+using ConsoleMenu.Library.Models;
+
+namespace ConsoleMenu.Program.Examples;
+internal class SetAction
+{
+    public static void Run()
+    {
+        MenuItem subMenu = new MenuItem("My SubMenu #1");
+        subMenu.Children.Add(1, new MenuItem("Sub1"));
+        subMenu.Children.Add(2, new MenuItem("Sub2"));
+        subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+        subMenu.SetAction(SetItemMarkOnParent);
+
+        MenuItem subMenu2 = new MenuItem("My SubMenu #2");
+        subMenu2.Children.Add(1, new MenuItem("Sub1"));
+        subMenu2.Children.Add(2, new MenuItem("Sub2"));
+        subMenu2.SetAction(SetItemMarkChildren);
+
+        MenuItem subMenu3 = new MenuItem("My SubMenu #3");
+        subMenu3.SetAction(SetItemMark);
+
+        MenuItem menu = new MenuItem("Simple menu");
+        menu.Position = new Vector2(0, 1);
+        menu.Children.Add(1, subMenu);
+        menu.Children.Add(2, subMenu2);
+        menu.Children.Add(3, subMenu3);
+        menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+        menu.ContentRenderer.IsSelected = true;
+        menu.Render();
+
+        // Render() use these to render
+        //menu.ContentRenderer.Render(menu.Position);
+        //menu.Children.Render();
+
+        ConsoleKeyInfo keyInput;
+        do
+        {
+            keyInput = Console.ReadKey(true);
+            menu.KeyPressed(keyInput);
+        } while (keyInput.Key != ConsoleKey.Escape);
+    }
+
+    static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return false;
+        }
+
+        item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
+        item.ContentRenderer.Render(item.Position);
+        return false;
+    }
+
+    static bool SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return false;
+        }
+
+        if (item.Parent is not null)
+        {
+            item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
+            item.Parent.ContentRenderer.Render(item.Parent.Position);
+        }
+        item.ContentRenderer.Render(item.Position);
+        return false;
+    }
+
+    static bool SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return false;
+        }
+
+        if (item.Children.HaveChildren())
+        {
+            foreach (var child in item.Children.GetChildren())
+            {
+                child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+            }
+            item.Render();
+        }
+        return false;
+    }
+}
