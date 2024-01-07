@@ -26,6 +26,10 @@ jobs:
             - name: Run Tests
               run: dotnet test --no-restore --verbosity normal
   
+            - name: EditorConfig - Download
+              uses: editorconfig-checker/action-editorconfig-checker@main
+            - name: EdiorConfig - Check
+              run: editorconfig-checker
             # - name: Run Super-Linter
             #   uses: github/super-linter@v4
             #   env:
