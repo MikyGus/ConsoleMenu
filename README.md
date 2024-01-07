@@ -35,9 +35,11 @@ Below is an example of a simple menu. This will print a simple menu with three i
 
 
 ## Position
+```(Vector2) MenuItem.Position```
+
 The first menuItem is by default placed at the coordinates 0,0. With the ```Vector2``` class. To change position use the ```Position``` property on menuItem. 
 
-	**NOTE!!**
+	**WARNING!!**
 	The positions of the menuItems children will be overwritten! 
 	You can therefore not change the position of the children.
 
@@ -53,7 +55,7 @@ The first menuItem is by default placed at the coordinates 0,0. With the ```Vect
 ### Add children
 To add children to a menuItem we use the method ```Add()```.
 
-The method ```Add(int, IMenuItem)``` takes 2 arguments. 
+The method ```(void) Add(int, IMenuItem)``` takes 2 arguments. 
 1. **Position in list**: An integer value stating the order to display the children. Lowest number is displayed first. Children may have the same position-number.
 2. **MenuItem**: \<IMenuItem> The menuItem to add as a child. 
 
