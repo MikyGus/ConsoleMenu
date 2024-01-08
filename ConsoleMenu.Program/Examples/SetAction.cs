@@ -7,7 +7,18 @@ internal class SetAction
     public static void Run()
     {
         IMenuItem subMenu = new MenuItem("My SubMenu #1");
-        subMenu.Children.Add(1, new MenuItem("Sub1"));
+        IMenuItem subsubMenu1 = new MenuItem("Sub1");
+        subsubMenu1.SetAction((m, k) =>
+        {
+            if (k.Key == ConsoleKey.Enter)
+            {
+                m.Content.IsMarked = !m.Content.IsMarked;
+                m.Content.Render();
+                return true;
+            }
+            return false;
+        });
+        subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
         subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
         subMenu.SetAction(SetItemMarkOnParent);
