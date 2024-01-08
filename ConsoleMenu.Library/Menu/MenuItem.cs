@@ -7,7 +7,6 @@ using ConsoleMenu.Library.Render;
 namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
-    private readonly string _title;
     private readonly ChildrenManager _childrenManager;
     private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
 
@@ -16,32 +15,34 @@ public class MenuItem : IMenuItem
 
     public MenuItem(string title)
     {
-        _title = title;
         Parent = null;
         Position = Vector2.ZERO;
-        ContentRenderer = new DefaultContentRender() { Content = _title };
+        Content = new Content() { Owner = this, Title = title };
         _childrenManager = new ChildrenManager(this);
     }
 
     public Vector2 AreaNeeded()
     {
-        Vector2 contentArea = ContentRenderer.AreaNeeded();
+        Vector2 contentArea = Content.AreaNeeded();
         Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
     }
 
-    public void SetRenderer<T>() where T : ContentRender, new()
-        => ContentRenderer = new T() { Content = _title };
+    public void SetRenderer<T>() where T : IContentRenderer, new()
+    {
+        IContentRenderer contentRenderer = new T();
+        Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+    }
 
     public void Render()
     {
-        ContentRenderer.Render(Position);
-        Vector2 areaNeeded = ContentRenderer.AreaNeeded();
+        Content.Render();
+        Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
     }
 
-    public IContentRender ContentRenderer { get; private set; }
+    public IContent Content { get; private set; }
 
     public IChildrenManager Children => _childrenManager;
 

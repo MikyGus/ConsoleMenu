@@ -2,14 +2,13 @@
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
+using ConsoleMenu.Program.Examples.Renderer;
 
 namespace ConsoleMenu.Program.Playground;
 internal class All
 {
     public static void Run()
     {
-
-
         var menu = new MenuItem("Settings")
         {
             Position = new Vector2(1, 1)
@@ -42,6 +41,17 @@ internal class All
         subsubMenu4.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
         subsubMenu4.Children.ContentOrientation = ContentOrientation.Horizontal;
+        subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
+        subsubMenu4.SetAction((m, k) =>
+        {
+            if (k.Key == ConsoleKey.Enter)
+            {
+                m.Content.IsMarked = !m.Content.IsMarked;
+                m.Content.Render();
+                return true;
+            }
+            return false;
+        });
 
         var subsubsubMenu = new MenuItem("My SubSubMenu");
         subsubsubMenu.Children.Add(6, subsubMenu2);
@@ -55,7 +65,7 @@ internal class All
         subMenu2.Children.Add(1, new MenuItem("Sub3"));
         subMenu2.SetRenderer<CheckboxContentRender>();
         subMenu2.SetAction(SetItemMark);
-        subMenu2.ContentRenderer.IsMarked = true;
+        subMenu2.Content.IsMarked = true;
 
         menu.Children.Add(1, subMenu);
         menu.Children.Add(1, subMenu2);
@@ -65,8 +75,8 @@ internal class All
         menu.Children.ContentOrientation = ContentOrientation.Vetical;
         menu.Children.PositionOffsetToNextChild = 1;
         menu.SetRenderer<DefaultContentRender>();
-        //menu.ContentRenderer.IsSelected = true;
-        //menu.ContentRenderer.IsMarked = false;
+        menu.Content.IsSelected = true;
+        //menu.Content.IsMarked = false;
         menu.Render();
 
         ConsoleKeyInfo keyInput;
@@ -83,7 +93,7 @@ internal class All
 
     static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     {
-        if (key.Key != ConsoleKey.Enter && key.Key != ConsoleKey.E)
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
             return false;
         }
@@ -97,7 +107,7 @@ internal class All
         {
             foreach (IChildItem child in item.Children.GetChildren())
             {
-                child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+                child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
             }
             item.Render();
         }

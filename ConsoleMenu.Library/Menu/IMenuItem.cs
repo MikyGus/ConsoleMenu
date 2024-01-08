@@ -29,8 +29,8 @@ public interface IMenuItem : IRenderContent
     /// Sets the renderer of the content of the item. 
     /// </summary>
     /// <typeparam name="T">ContentRenderer</typeparam>
-    void SetRenderer<T>() where T : ContentRender, new();
+    void SetRenderer<T>() where T : IContentRenderer, new();
 
-    IContentRender ContentRenderer { get; }
+    IContent Content { get; }
     IChildrenManager Children { get; }
 }

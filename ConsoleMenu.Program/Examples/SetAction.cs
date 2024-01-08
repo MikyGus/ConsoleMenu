@@ -28,7 +28,7 @@ internal class SetAction
         menu.Children.Add(2, subMenu2);
         menu.Children.Add(3, subMenu3);
         menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
-        menu.ContentRenderer.IsSelected = true;
+        menu.Content.IsSelected = true;
         menu.Render();
 
         // Render() use these to render
@@ -50,8 +50,8 @@ internal class SetAction
             return false;
         }
 
-        item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
-        item.ContentRenderer.Render(item.Position);
+        item.Content.IsMarked = !item.Content.IsMarked;
+        item.Content.Render();
         return false;
     }
 
@@ -64,10 +64,10 @@ internal class SetAction
 
         if (item.Parent is not null)
         {
-            item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
-            item.Parent.ContentRenderer.Render(item.Parent.Position);
+            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
+            item.Parent.Content.Render();
         }
-        item.ContentRenderer.Render(item.Position);
+        item.Content.Render();
         return false;
     }
 
@@ -82,7 +82,7 @@ internal class SetAction
         {
             foreach (IChildItem child in item.Children.GetChildren())
             {
-                child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+                child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
             }
             item.Render();
         }

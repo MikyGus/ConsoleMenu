@@ -11,7 +11,7 @@ internal class SetRenderer
         menuItem1.SetRenderer<CheckboxContentRender>();
         IMenuItem menuItem2 = new MenuItem("Menu 2");
         menuItem2.SetRenderer<CheckboxContentRender>();
-        menuItem2.ContentRenderer.IsMarked = true;
+        menuItem2.Content.IsMarked = true;
         IMenuItem menuItem3 = new MenuItem("Menu 3");
         menuItem3.SetRenderer<CheckboxContentRender>();
 
