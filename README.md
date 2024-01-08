@@ -231,7 +231,7 @@ Simple menu]
 
 ### Render
 - ```void IMenuItem.Render()```: Renders the menuItem **and** all its children.
-- ```void IMenuItem.ContentRenderer.Render(Vector2)```: Renders the menuItem.
+- ```void IMenuItem.Content.Render()```: Renders the menuItem.
 - ```void IMenuItem.Children.Render()```: Renders the menuItems children.
 
 ```csharp
@@ -241,7 +241,7 @@ Simple menu]
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 	
-->> menu.ContentRenderer.Render(menu.Position);
+->> menu.Content.Render();
 ->> menu.Children.Render();
 ```
 
@@ -252,7 +252,7 @@ Through all the menuItems **selected** children, starting at the leaf item, an a
 
 A selection is moved by UP, DOWN, LEFT and RIGHT arrows.
 
-The first rendered selection is not automatic, but is instead rendered first time the selection moves. Use ```IMenuItem.ContentRenderer.IsSelected``` property to set the first selection and the selection will be rendered at the next call of ```Render()```
+The first rendered selection is not automatic, but is instead rendered first time the selection moves. Use ```IMenuItem.Content.IsSelected``` property to set the first selection and the selection will be rendered at the next call of ```Render()```
 
 ```csharp
 	MenuItem subMenu = new MenuItem("My SubMenu #1");
@@ -270,7 +270,7 @@ The first rendered selection is not automatic, but is instead rendered first tim
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, new MenuItem("Menu 3"));
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
-->> menu.ContentRenderer.IsSelected = true;
+->> menu.Content.IsSelected = true;
 	menu.Render();
 		
 ->> ConsoleKeyInfo keyInput;
@@ -309,7 +309,7 @@ Here are some example actions
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, subMenu3);
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
-	menu.ContentRenderer.IsSelected = true;
+	menu.Content.IsSelected = true;
 	menu.Render();
 
 	ConsoleKeyInfo keyInput;
@@ -328,8 +328,8 @@ Here are some example actions
 			return false;
 		}
 
-		item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
-		item.ContentRenderer.Render(item.Position);
+		item.Content.IsMarked = !item.Content.IsMarked;
+		item.Content.Render();
 		return false;
 	}
 ```
@@ -344,10 +344,9 @@ Here are some example actions
 
         if (item.Parent is not null)
         {
-            item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
-            item.Parent.ContentRenderer.Render(item.Parent.Position);
+            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
+            item.Parent.Content.Render();
         }
-        item.ContentRenderer.Render(item.Position);
         return false;
     }
 ```
