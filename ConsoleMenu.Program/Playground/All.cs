@@ -18,13 +18,13 @@ internal class All
         subMenu.Children.Add(1, new MenuItem("Sub1"));
         subMenu.Children.Add(4, new MenuItem("Sub2"));
         subMenu.Children.Add(1, new MenuItem("Sub3"));
-        subMenu.Children.ContentOrientation = ContentOrientation.Horizontal;
+        subMenu.Children.Orientation = ContentOrientation.Horizontal;
 
         var subsubMenu2 = new MenuItem("My SubSubMenu2");
         subsubMenu2.Children.Add(6, new MenuItem("Sub1"));
         subsubMenu2.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu2.Children.Add(1, new MenuItem("Sub3"));
-        subsubMenu2.Children.ContentOrientation = ContentOrientation.Horizontal;
+        subsubMenu2.Children.Orientation = ContentOrientation.Horizontal;
 
         var myActionPackedMenuItem = new MenuItem("ActionMenu");
         myActionPackedMenuItem.SetAction(SetItemMark);
@@ -33,14 +33,14 @@ internal class All
         subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
         subsubMenu3.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu3.Children.Add(1, myActionPackedMenuItem);
-        subsubMenu3.Children.ContentOrientation = ContentOrientation.Horizontal;
+        subsubMenu3.Children.Orientation = ContentOrientation.Horizontal;
         subsubMenu3.Children.PositionOffsetOfFirstChild = new Vector2(5, 0);
 
         var subsubMenu4 = new MenuItem("My SubSubMenu2");
         subsubMenu4.Children.Add(6, new MenuItem("Sub1"));
         subsubMenu4.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
-        subsubMenu4.Children.ContentOrientation = ContentOrientation.Horizontal;
+        subsubMenu4.Children.Orientation = ContentOrientation.Horizontal;
         subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
         subsubMenu4.SetAction((m, k) =>
         {
@@ -57,7 +57,7 @@ internal class All
         subsubsubMenu.Children.Add(6, subsubMenu2);
         subsubsubMenu.Children.Add(4, subsubMenu3);
         subsubsubMenu.Children.Add(1, subsubMenu4);
-        subsubsubMenu.Children.ContentOrientation = ContentOrientation.Vetical;
+        subsubsubMenu.Children.Orientation = ContentOrientation.Vetical;
 
         var subMenu2 = new MenuItem("My SubMenu2");
         subMenu2.Children.Add(6, subsubsubMenu);
@@ -72,7 +72,7 @@ internal class All
         menu.Children.Add(1, new MenuItem("Players"));
         menu.Children.Add(1, new MenuItem("Pl"));
         menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
-        menu.Children.ContentOrientation = ContentOrientation.Vetical;
+        menu.Children.Orientation = ContentOrientation.Vetical;
         menu.Children.PositionOffsetToNextChild = 1;
         menu.SetRenderer<DefaultContentRender>();
         menu.Content.IsSelected = true;
