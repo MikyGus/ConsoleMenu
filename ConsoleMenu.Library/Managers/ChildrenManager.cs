@@ -13,8 +13,12 @@ public class ChildrenManager : IChildrenManager
     public Vector2 PositionOffsetOfFirstChild { get; set; } = Vector2.RIGHT;
     public int PositionOffsetToNextChild { get; set; } = 1;
     public ContentOrientation Orientation { get; set; } = ContentOrientation.Vetical;
+    public bool IsVisible { get; set; } = true;
 
-    public ChildrenManager(IMenuItem owner) => Owner = owner;
+    public ChildrenManager(IMenuItem owner)
+    {
+        Owner = owner;
+    }
 
     public void Add(int positionInList, IMenuItem item)
     {
@@ -38,7 +42,7 @@ public class ChildrenManager : IChildrenManager
 
     public bool DecrementSelection()
     {
-        if (CurrentSelection > 0)
+        if (IsVisible && CurrentSelection > 0)
         {
             RenderSelection(_children[CurrentSelection]?.Item, false);
             CurrentSelection--;
@@ -50,7 +54,7 @@ public class ChildrenManager : IChildrenManager
 
     public bool IncrementSelection()
     {
-        if (CurrentSelection < _children.Count - 1)
+        if (IsVisible && CurrentSelection < _children.Count - 1)
         {
             RenderSelection(_children[CurrentSelection]?.Item, false);
             CurrentSelection++;
@@ -102,8 +106,10 @@ public class ChildrenManager : IChildrenManager
     }
 
 
-    public void Render()
+    public void Render(bool hideChildren = false)
     {
+        hideChildren = hideChildren || IsVisible == false;
+
         Vector2 position = PositionOfFirstChild.Duplicate();
         int index = 0;
         foreach (IMenuItem menuItem in GetChildren().Select(m => m.Item))
@@ -112,11 +118,13 @@ public class ChildrenManager : IChildrenManager
                 ? CurrentSelection == index
                 : CurrentSelection == index && Owner.Content.IsSelected;
             menuItem.Position = position.Duplicate();
-            menuItem.Render();
+            menuItem.Render(hideChildren);
             position = NextChildPosition(position, menuItem.AreaNeeded());
             index++;
         }
     }
+
+
 
     private Vector2 NextChildPosition(Vector2 position, Vector2 areaNeeded)
     {

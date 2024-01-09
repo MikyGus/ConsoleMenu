@@ -24,9 +24,24 @@ internal class SetAction
         subMenu.SetAction(SetItemMarkOnParent);
 
         IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
-        subMenu2.Children.Add(1, new MenuItem("Sub1"));
+        subMenu2.SetAction((m, k) =>
+        {
+            if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
+            {
+                m.Children.IsVisible = !m.Children.IsVisible;
+                m.Children.Render();
+                return true;
+            }
+            return false;
+        });
+        IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
+        IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
+        IMenuItem subMenu2111 = new MenuItem("My SubMenu #2111");
+        subMenu2.Children.Add(1, subMenu21);
+        subMenu21.Children.Add(1, subMenu211);
+        subMenu211.Children.Add(1, subMenu2111);
         subMenu2.Children.Add(2, new MenuItem("Sub2"));
-        subMenu2.SetAction(SetItemMarkChildren);
+        //subMenu2.SetAction(SetItemMarkChildren);
 
         IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
         subMenu3.SetAction(SetItemMark);
@@ -41,6 +56,10 @@ internal class SetAction
         menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
         menu.Content.IsSelected = true;
         menu.Render();
+
+        _ = Console.ReadKey();
+        subMenu2.Children.IsVisible = false;
+        subMenu2.Render();
 
         // Render() use these to render
         //menu.ContentRenderer.Render(menu.Position);

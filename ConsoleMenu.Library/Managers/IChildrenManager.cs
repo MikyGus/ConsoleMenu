@@ -26,6 +26,7 @@ public interface IChildrenManager : IRenderContent, ISelectionControls
     /// Set if the children should be rendered in a horizontal or vertical orientation.
     /// </summary>
     ContentOrientation Orientation { get; set; }
+    bool IsVisible { get; set; }
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
     IEnumerable<IChildItem> GetChildren();

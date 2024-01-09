@@ -15,8 +15,8 @@ public class MenuItem : IMenuItem
 
     public MenuItem(string title)
     {
-        Parent = null;
         Position = Vector2.ZERO;
+        Parent = null;
         Content = new Content() { Owner = this, Title = title };
         _childrenManager = new ChildrenManager(this);
     }
@@ -34,12 +34,12 @@ public class MenuItem : IMenuItem
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
     }
 
-    public void Render()
+    public void Render(bool hideChildren = false)
     {
-        Content.Render();
+        Content.Render(hideChildren);
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
-        _childrenManager.Render();
+        _childrenManager.Render(hideChildren);
     }
 
     public IContent Content { get; private set; }
