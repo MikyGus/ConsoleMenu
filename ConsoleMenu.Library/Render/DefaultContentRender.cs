@@ -1,33 +1,41 @@
-﻿using ConsoleMenu.Library.Models;
+﻿using ConsoleMenu.Library.Menu;
+using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Render;
-public class DefaultContentRender : ContentRender
+public class DefaultContentRender : IContentRenderer
 {
-    private static ConsoleColor _normalFgColor = ConsoleColor.Black;
-    private static ConsoleColor _markedColor = ConsoleColor.Green;
-    private static ConsoleColor _selectedColor = ConsoleColor.Blue;
-    private ConsoleColor _foregroundColor = _normalFgColor;
-    private ConsoleColor _backgroundColor = ConsoleColor.Gray;
+    public Vector2 AreaNeeded(IMenuItem menuItem) => new(menuItem.Content.Title.Length + 2, 1);
 
-    public override Vector2 AreaNeeded() => new(Content.Length + 2, 1);
-    public override void Render(Vector2 position) => Render(position, x =>
+    public void Render(IMenuItem menuItem)
+    {
+
+        ConsoleColor selectedColor = ConsoleColor.Blue;
+        ConsoleColor bgColor;
+        ConsoleColor fgColor;
+        if (menuItem.Content.IsMarked)
         {
-            if (IsMarked)
-            {
-                _backgroundColor = _markedColor;
-                _foregroundColor = _normalFgColor;
-            }
-            else
-            {
-                _backgroundColor = ConsoleColor.DarkGray;
-                _foregroundColor = _normalFgColor;
-            }
-
-            WriteAtPosition(position, IsSelected ? "[" : " ", _selectedColor, _backgroundColor);
-
-            WriteAtPosition(new Vector2(position.X + 1, position.Y), Content, _foregroundColor, _backgroundColor);
-
-            WriteAtPosition(new Vector2(position.X + 1 + Content.Length, position.Y),
-                IsSelected ? "]" : " ", _selectedColor, _backgroundColor);
-        });
+            bgColor = ConsoleColor.Green;
+            fgColor = ConsoleColor.Black;
+        }
+        else
+        {
+            bgColor = ConsoleColor.Gray;
+            fgColor = ConsoleColor.Black;
+        }
+        ContentHelpers.WriteAtPosition(
+            menuItem.Position,
+            menuItem.Content.IsSelected ? "[" : " ",
+            selectedColor,
+            bgColor);
+        ContentHelpers.WriteAtPosition(
+            new Vector2(menuItem.Position.X + 1, menuItem.Position.Y),
+            menuItem.Content.Title,
+            fgColor,
+            bgColor);
+        ContentHelpers.WriteAtPosition(
+            new Vector2(menuItem.Position.X + 1 + menuItem.Content.Title.Length, menuItem.Position.Y),
+            menuItem.Content.IsSelected ? "]" : " ",
+            selectedColor,
+            bgColor);
+    }
 }

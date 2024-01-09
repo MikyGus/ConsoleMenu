@@ -207,12 +207,12 @@ Simple menu]
 
 ```csharp
 	IMenuItem menuItem1 = new MenuItem("Menu 1");
-->> menuItem1.SetRenderer<CheckboxContentRender>();
+->> menuItem1.SetRenderer<MyOwnCheckboxContentRender>();
 	IMenuItem menuItem2 = new MenuItem("Menu 2");
-->> menuItem2.SetRenderer<CheckboxContentRender>();
+->> menuItem2.SetRenderer<MyOwnCheckboxContentRender>();
 	menuItem2.ContentRenderer.IsMarked = true;
 	IMenuItem menuItem3 = new MenuItem("Menu 3");
-->> menuItem3.SetRenderer<CheckboxContentRender>();
+->> menuItem3.SetRenderer<MyOwnCheckboxContentRender>();
 
 	MenuItem menu = new MenuItem("Simple menu");
 	menu.Position = new Vector2(0, 1);
@@ -221,6 +221,22 @@ Simple menu]
 	menu.Children.Add(3, menuItem3);
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
+```
+To have your own renderer of MenuItem. Create a class that implements ```IContentRenderer```. 
+- **AreaNeeded()** returns the total area the menuItem needs.
+- **Render()** prints the menuItem to the screen.
+```csharp
+public class MyOwnCheckboxContentRender : IContentRenderer
+{
+    public Vector2 AreaNeeded(IMenuItem menuItem) => new(menuItem.Content.Title.Length + 4, 1);
+
+    public void Render(IMenuItem menuItem)
+    {
+        string IsMarkedChar = menuItem.Content.IsMarked ? "X" : " ";
+        ConsoleColor fgColor = menuItem.Content.IsSelected ? ConsoleColor.Blue : ConsoleColor.Black;
+        ContentHelpers.WriteAtPosition(menuItem.Position, $"[{IsMarkedChar}] {menuItem.Content.Title}", fgColor, ConsoleColor.Gray);
+    }
+}
 ```
 
 **Output**
@@ -231,7 +247,7 @@ Simple menu]
 
 ### Render
 - ```void IMenuItem.Render()```: Renders the menuItem **and** all its children.
-- ```void IMenuItem.ContentRenderer.Render(Vector2)```: Renders the menuItem.
+- ```void IMenuItem.Content.Render()```: Renders the menuItem.
 - ```void IMenuItem.Children.Render()```: Renders the menuItems children.
 
 ```csharp
@@ -241,7 +257,7 @@ Simple menu]
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 	
-->> menu.ContentRenderer.Render(menu.Position);
+->> menu.Content.Render();
 ->> menu.Children.Render();
 ```
 
@@ -252,7 +268,7 @@ Through all the menuItems **selected** children, starting at the leaf item, an a
 
 A selection is moved by UP, DOWN, LEFT and RIGHT arrows.
 
-The first rendered selection is not automatic, but is instead rendered first time the selection moves. Use ```IMenuItem.ContentRenderer.IsSelected``` property to set the first selection and the selection will be rendered at the next call of ```Render()```
+The first rendered selection is not automatic, but is instead rendered first time the selection moves. Use ```IMenuItem.Content.IsSelected``` property to set the first selection and the selection will be rendered at the next call of ```Render()```
 
 ```csharp
 	MenuItem subMenu = new MenuItem("My SubMenu #1");
@@ -270,7 +286,7 @@ The first rendered selection is not automatic, but is instead rendered first tim
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, new MenuItem("Menu 3"));
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
-->> menu.ContentRenderer.IsSelected = true;
+->> menu.Content.IsSelected = true;
 	menu.Render();
 		
 ->> ConsoleKeyInfo keyInput;
@@ -289,27 +305,38 @@ If another key is pressed than the arrow-keys the custom action is invoked (if s
 Here are some example actions
 
 ```csharp
-	MenuItem subMenu = new MenuItem("My SubMenu #1");
-	subMenu.Children.Add(1, new MenuItem("Sub1"));
+	IMenuItem subMenu = new MenuItem("My SubMenu #1");
+	IMenuItem subsubMenu1 = new MenuItem("Sub1");
+	subsubMenu1.SetAction((m, k) =>
+	{
+		if (k.Key == ConsoleKey.Enter)
+		{
+			m.Content.IsMarked = !m.Content.IsMarked;
+			m.Content.Render();
+			return true;
+		}
+		return false;
+	});
+	subMenu.Children.Add(1, subsubMenu1);
 	subMenu.Children.Add(2, new MenuItem("Sub2"));
 	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
 ->> subMenu.SetAction(SetItemMarkOnParent);
 
-	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
+	IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
 	subMenu2.Children.Add(1, new MenuItem("Sub1"));
 	subMenu2.Children.Add(2, new MenuItem("Sub2"));
 ->> subMenu2.SetAction(SetItemMarkChildren);
 
-	MenuItem subMenu3 = new MenuItem("My SubMenu #3");
+	IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
 ->> subMenu3.SetAction(SetItemMark);
 
-	MenuItem menu = new MenuItem("Simple menu");
+	IMenuItem menu = new MenuItem("Simple menu");
 	menu.Position = new Vector2(0, 1);
 	menu.Children.Add(1, subMenu);
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, subMenu3);
 	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
-	menu.ContentRenderer.IsSelected = true;
+	menu.Content.IsSelected = true;
 	menu.Render();
 
 	ConsoleKeyInfo keyInput;
@@ -328,8 +355,8 @@ Here are some example actions
 			return false;
 		}
 
-		item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
-		item.ContentRenderer.Render(item.Position);
+		item.Content.IsMarked = !item.Content.IsMarked;
+		item.Content.Render();
 		return false;
 	}
 ```
@@ -344,10 +371,9 @@ Here are some example actions
 
         if (item.Parent is not null)
         {
-            item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
-            item.Parent.ContentRenderer.Render(item.Parent.Position);
+            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
+            item.Parent.Content.Render();
         }
-        item.ContentRenderer.Render(item.Position);
         return false;
     }
 ```

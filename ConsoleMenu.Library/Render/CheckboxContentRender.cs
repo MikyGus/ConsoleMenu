@@ -1,21 +1,15 @@
-﻿using ConsoleMenu.Library.Models;
+﻿using ConsoleMenu.Library.Menu;
+using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Render;
-public class CheckboxContentRender : ContentRender
+public class CheckboxContentRender : IContentRenderer
 {
-    private static ConsoleColor _normalFgColor = ConsoleColor.Black;
-    private static ConsoleColor _selectedColor = ConsoleColor.Blue;
-    private ConsoleColor _foregroundColor = _normalFgColor;
-    private ConsoleColor _backgroundColor = ConsoleColor.Gray;
+    public Vector2 AreaNeeded(IMenuItem menuItem) => new(menuItem.Content.Title.Length + 4, 1);
 
-    public override Vector2 AreaNeeded() => new(Content.Length + 4, 1);
-
-    public override void Render(Vector2 position) =>
-        Render(position, x =>
-        {
-            string IsMarkedChar = IsMarked ? "X" : " ";
-            _foregroundColor = IsSelected ? _selectedColor : _normalFgColor;
-
-            WriteAtPosition(position, $"[{IsMarkedChar}] {Content}", _foregroundColor, _backgroundColor);
-        });
+    public void Render(IMenuItem menuItem)
+    {
+        string IsMarkedChar = menuItem.Content.IsMarked ? "X" : " ";
+        ConsoleColor fgColor = menuItem.Content.IsSelected ? ConsoleColor.Blue : ConsoleColor.Black;
+        ContentHelpers.WriteAtPosition(menuItem.Position, $"[{IsMarkedChar}] {menuItem.Content.Title}", fgColor, ConsoleColor.Gray);
+    }
 }
