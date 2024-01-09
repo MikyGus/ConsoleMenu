@@ -22,7 +22,7 @@ internal class SetRenderer
         menu.Children.Add(1, menuItem1);
         menu.Children.Add(2, menuItem2);
         menu.Children.Add(3, menuItem3);
-        menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+        menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
         menu.Render();
 
         ConsoleKeyInfo keyInput;

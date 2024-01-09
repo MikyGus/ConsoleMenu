@@ -12,7 +12,7 @@ public class ChildrenManager : IChildrenManager
     internal Vector2 PositionOfFirstChild { get => _positionOfFirstChild; set => _positionOfFirstChild = value + PositionOffsetOfFirstChild; }
     public Vector2 PositionOffsetOfFirstChild { get; set; } = Vector2.RIGHT;
     public int PositionOffsetToNextChild { get; set; } = 1;
-    public ContentOrientation ContentOrientation { get; set; } = ContentOrientation.Vetical;
+    public ContentOrientation Orientation { get; set; } = ContentOrientation.Vetical;
 
     public ChildrenManager(IMenuItem owner) => Owner = owner;
 
@@ -71,13 +71,13 @@ public class ChildrenManager : IChildrenManager
         menuItem.Render();
     }
     private Vector2 OffsetToNextChild()
-        => ContentOrientation == ContentOrientation.Vetical
+        => Orientation == ContentOrientation.Vetical
         ? new(0, PositionOffsetToNextChild)
         : new(PositionOffsetToNextChild, 0);
 
     public Vector2 AreaNeeded()
     {
-        switch (ContentOrientation)
+        switch (Orientation)
         {
             case ContentOrientation.Vetical:
                 if (_children.Any())
@@ -121,7 +121,7 @@ public class ChildrenManager : IChildrenManager
     private Vector2 NextChildPosition(Vector2 position, Vector2 areaNeeded)
     {
         Vector2 offset = OffsetToNextChild();
-        if (ContentOrientation == ContentOrientation.Vetical)
+        if (Orientation == ContentOrientation.Vetical)
         {
             position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
         }

@@ -98,7 +98,7 @@ The method ```(void) Add(int, IMenuItem)``` takes 2 arguments.
 	MenuItem subMenu = new MenuItem("My SubMenu #1");
 ->> subMenu.Children.Add(1, new MenuItem("Sub1"));
 ->> subMenu.Children.Add(2, new MenuItem("Sub2"));
-	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 
 	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
 ->> subMenu2.Children.Add(1, new MenuItem("Sub1"));
@@ -109,7 +109,7 @@ The method ```(void) Add(int, IMenuItem)``` takes 2 arguments.
 ->> menu.Children.Add(1, subMenu);
 ->> menu.Children.Add(2, subMenu2);
 ->> menu.Children.Add(3, new MenuItem("Menu 3"));
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 ```
 
@@ -135,7 +135,7 @@ The method ```Remove(IMenuItem)``` takes one (1) argument, ```IMenuItem```.
 	menu.Children.Add(2, new MenuItem("Menu 2"));
 	menu.Children.Add(3, new MenuItem("Menu 3"));
 ->> menu.Children.Remove(menuItem);
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 ```
 
@@ -154,14 +154,14 @@ As default the children to a menuItem have a vertical orientation. To print in a
 	menu.Children.Add(1, new MenuItem("Menu 1"));
 	menu.Children.Add(2, new MenuItem("Menu 2"));
 	menu.Children.Add(3, new MenuItem("Menu 3"));
-->>	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+->>	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 ```
 
-The options for ContentOrientation are ```Vertical``` (default) and ```Horizontal```
+The options for Orientation are ```Vertical``` (default) and ```Horizontal```
 ```csharp
-menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Vetical;
-menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+menu.Children.Orientation = Library.Managers.ContentOrientation.Vetical;
+menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 ```
 
 **Output - Vertical**
@@ -189,7 +189,7 @@ Offsets the first child and the rest follows. If set to Vector2(0,0), the first 
 	menu.Children.Add(1, new MenuItem("Menu 1"));
 	menu.Children.Add(2, new MenuItem("Menu 2"));
 	menu.Children.Add(3, new MenuItem("Menu 3"));
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 ->> menu.Children.PositionOffsetOfFirstChild = new Vector2(10, 0);
 	menu.Render();
 ```
@@ -210,7 +210,7 @@ Simple menu]
 ->> menuItem1.SetRenderer<MyOwnCheckboxContentRender>();
 	IMenuItem menuItem2 = new MenuItem("Menu 2");
 ->> menuItem2.SetRenderer<MyOwnCheckboxContentRender>();
-	menuItem2.ContentRenderer.IsMarked = true;
+	menuItem2.Content.IsMarked = true;
 	IMenuItem menuItem3 = new MenuItem("Menu 3");
 ->> menuItem3.SetRenderer<MyOwnCheckboxContentRender>();
 
@@ -219,7 +219,7 @@ Simple menu]
 	menu.Children.Add(1, menuItem1);
 	menu.Children.Add(2, menuItem2);
 	menu.Children.Add(3, menuItem3);
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 ```
 To have your own renderer of MenuItem. Create a class that implements ```IContentRenderer```. 
@@ -254,7 +254,7 @@ public class MyOwnCheckboxContentRender : IContentRenderer
 	MenuItem menu = new MenuItem("Simple menu");
 	menu.Position = new Vector2(0, 1);
 	menu.Children.Add(1, new MenuItem("Menu 1"));
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Render();
 	
 ->> menu.Content.Render();
@@ -274,7 +274,7 @@ The first rendered selection is not automatic, but is instead rendered first tim
 	MenuItem subMenu = new MenuItem("My SubMenu #1");
 	subMenu.Children.Add(1, new MenuItem("Sub1"));
 	subMenu.Children.Add(2, new MenuItem("Sub2"));
-	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 
 	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
 	subMenu2.Children.Add(1, new MenuItem("Sub1"));
@@ -285,7 +285,7 @@ The first rendered selection is not automatic, but is instead rendered first tim
 	menu.Children.Add(1, subMenu);
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, new MenuItem("Menu 3"));
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 ->> menu.Content.IsSelected = true;
 	menu.Render();
 		
@@ -301,6 +301,11 @@ The first rendered selection is not automatic, but is instead rendered first tim
 ```void IMenuItem.SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action);```
 
 If another key is pressed than the arrow-keys the custom action is invoked (if set). 
+
+**Attributes**
+- **IMenuItem**: The menuItem with the set custom action
+- **ConsoleKeyInfo**: The keycombination pressed by the user
+- **bool**: Returns a boolean indicating if the keypress have been handled. If ```true```, the parents custom action is not invoked.
 
 Here are some example actions
 
@@ -319,7 +324,7 @@ Here are some example actions
 	});
 	subMenu.Children.Add(1, subsubMenu1);
 	subMenu.Children.Add(2, new MenuItem("Sub2"));
-	subMenu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 ->> subMenu.SetAction(SetItemMarkOnParent);
 
 	IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
@@ -335,7 +340,7 @@ Here are some example actions
 	menu.Children.Add(1, subMenu);
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, subMenu3);
-	menu.Children.ContentOrientation = Library.Managers.ContentOrientation.Horizontal;
+	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Content.IsSelected = true;
 	menu.Render();
 
@@ -390,7 +395,7 @@ Here are some example actions
         {
             foreach (var child in item.Children.GetChildren())
             {
-                child.Item.ContentRenderer.IsMarked = !child.Item.ContentRenderer.IsMarked;
+                child.Item.Content.IsMarked = !child.Item.ContentRenderer.IsMarked;
             }
             item.Render();
         }
