@@ -4,7 +4,7 @@ using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
 
 namespace ConsoleMenu.Library.Menu;
-public interface IMenuItem : IRenderContent
+public interface IMenuItem : IRenderContent, IVisibility
 {
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }

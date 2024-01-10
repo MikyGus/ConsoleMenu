@@ -12,11 +12,13 @@ public class MenuItem : IMenuItem
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
+    public bool IsVisible { get; set; }
 
     public MenuItem(string title)
     {
         Position = Vector2.ZERO;
         Parent = null;
+        IsVisible = true;
         Content = new Content() { Owner = this, Title = title };
         _childrenManager = new ChildrenManager(this);
     }
@@ -36,6 +38,7 @@ public class MenuItem : IMenuItem
 
     public void Render(bool hideChildren = false)
     {
+        hideChildren = hideChildren || IsVisible == false;
         Content.Render(hideChildren);
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
