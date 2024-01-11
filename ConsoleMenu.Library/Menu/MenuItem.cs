@@ -53,7 +53,7 @@ public class MenuItem : IMenuItem
     {
         if (Children.HaveChildren())
         {
-            if (Children.GetSelectedChild().Item.KeyPressed(key))
+            if (Children.Selection.GetSelectedChild().Item.KeyPressed(key))
             {
                 return true;
             }

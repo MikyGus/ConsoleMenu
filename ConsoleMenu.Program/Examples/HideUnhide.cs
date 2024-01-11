@@ -21,7 +21,6 @@ internal class HideUnhide
         subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
         subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-        subMenu.IsVisible = false;
         subMenu.SetAction(SetItemMarkOnParent);
 
         IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
@@ -48,6 +47,7 @@ internal class HideUnhide
         subMenu3.SetAction(SetItemMark);
 
         IMenuItem menu1 = new MenuItem("Settings");
+        menu1.Children.Add(1, new MenuItem("First"));
         menu1.Children.Add(1, subMenu);
         menu1.Children.Add(2, subMenu2);
         menu1.Children.Add(3, subMenu3);
@@ -58,9 +58,11 @@ internal class HideUnhide
             Position = new Vector2(0, 1)
         };
         menu.Children.Add(1, menu1);
-        menu.Children.Add(2, new MenuItem("Below Settings"));
+        menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
         menu.Content.IsSelected = true;
-        menu.IsVisible = true;
+
+        subMenu2.Children.IsVisible = false;
+
         menu.Render();
 
 

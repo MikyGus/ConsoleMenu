@@ -14,9 +14,11 @@ public class ChildrenManager : IChildrenManager
     public int PositionOffsetToNextChild { get; set; } = 1;
     public ContentOrientation Orientation { get; set; } = ContentOrientation.Vetical;
     public bool IsVisible { get; set; } = true;
+    public ISelectionManager Selection { get; init; }
 
     public ChildrenManager(IMenuItem owner)
     {
+        Selection = new SelectionManager(this);
         Owner = owner;
     }
 
@@ -33,47 +35,14 @@ public class ChildrenManager : IChildrenManager
         _children.Remove(findItemToRemove);
     }
     public IEnumerable<IChildItem> GetChildren() => _children;
-    public IChildItem GetSelectedChild()
-        => HaveChildren() == false ? throw new InvalidOperationException() : _children[CurrentSelection];
+    public IChildItem GetChild(int index)
+        => index < 0 || index >= _children.Count
+            ? throw new ArgumentOutOfRangeException(nameof(index))
+            : _children[index];
 
     public bool HaveChildren() => _children.Any();
 
-    public int CurrentSelection { get; private set; } = 0;
 
-    public bool DecrementSelection()
-    {
-        if (IsVisible && CurrentSelection > 0)
-        {
-            RenderSelection(_children[CurrentSelection]?.Item, false);
-            CurrentSelection--;
-            RenderSelection(_children[CurrentSelection]?.Item, true);
-            return true;
-        }
-        return false;
-    }
-
-    public bool IncrementSelection()
-    {
-        if (IsVisible && CurrentSelection < _children.Count - 1)
-        {
-            RenderSelection(_children[CurrentSelection]?.Item, false);
-            CurrentSelection++;
-            RenderSelection(_children[CurrentSelection]?.Item, true);
-            return true;
-        }
-        return false;
-    }
-
-    private void RenderSelection(IMenuItem menuItem, bool isSelected)
-    {
-        if (menuItem is null)
-        {
-            throw new ArgumentNullException(nameof(menuItem), $"{nameof(menuItem)} may not be null!");
-        }
-
-        menuItem.Content.IsSelected = isSelected;
-        menuItem.Render();
-    }
     private Vector2 OffsetToNextChild()
         => Orientation == ContentOrientation.Vetical
         ? new(0, PositionOffsetToNextChild)
@@ -115,16 +84,14 @@ public class ChildrenManager : IChildrenManager
         foreach (IMenuItem menuItem in GetChildren().Select(m => m.Item))
         {
             menuItem.Content.IsSelected = Owner is null
-                ? CurrentSelection == index
-                : CurrentSelection == index && Owner.Content.IsSelected;
+                ? Selection.CurrentIndex == index
+                : Selection.CurrentIndex == index && Owner.Content.IsSelected;
             menuItem.Position = position.Duplicate();
             menuItem.Render(hideChildren);
             position = NextChildPosition(position, menuItem.AreaNeeded());
             index++;
         }
     }
-
-
 
     private Vector2 NextChildPosition(Vector2 position, Vector2 areaNeeded)
     {
