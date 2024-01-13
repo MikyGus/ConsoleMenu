@@ -9,22 +9,29 @@ public class MenuItem : IMenuItem
 {
     private readonly ChildrenManager _childrenManager;
     private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
+    private bool _isCurrentlyVisible;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
     public bool IsVisible { get; set; }
+    public bool MayCollapse { get; set; }
 
     public MenuItem(string title)
     {
+        _childrenManager = new ChildrenManager(this);
+        _isCurrentlyVisible = true;
         Position = Vector2.ZERO;
         Parent = null;
         IsVisible = true;
         Content = new Content() { Owner = this, Title = title };
-        _childrenManager = new ChildrenManager(this);
     }
 
     public Vector2 AreaNeeded()
     {
+        if (_isCurrentlyVisible == false && MayCollapse)
+        {
+            return Vector2.ZERO;
+        }
         Vector2 contentArea = Content.AreaNeeded();
         Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
@@ -36,13 +43,44 @@ public class MenuItem : IMenuItem
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
     }
 
-    public void Render(bool hideChildren = false)
+    public void Render(bool showThisNodeAndChildren = true)
     {
-        hideChildren = hideChildren || IsVisible == false;
-        Content.Render(hideChildren);
+        (showThisNodeAndChildren, bool returnWithoutRenderNode) = NodeHelpers.NodeVisibility(showThisNodeAndChildren, _isCurrentlyVisible, IsVisible);
+        if (returnWithoutRenderNode)
+        {
+            return;
+        }
+        _isCurrentlyVisible = showThisNodeAndChildren;
+
+        Content.Render(showThisNodeAndChildren);
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
-        _childrenManager.Render(hideChildren);
+        _childrenManager.Render(showThisNodeAndChildren);
+    }
+
+    internal MenuItem GetRoot(MenuItem menuItem)
+    {
+        if (menuItem.Parent is null)
+        {
+            return this;
+        }
+        else if (menuItem.Parent is MenuItem parent)
+        {
+            return menuItem.GetRoot(parent);
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
+    }
+
+    public void ReRender()
+    {
+        IMenuItem root = GetRoot(this);
+        root.IsVisible = false;
+        root.Render();
+        root.IsVisible = true;
+        root.Render();
     }
 
     public IContent Content { get; private set; }

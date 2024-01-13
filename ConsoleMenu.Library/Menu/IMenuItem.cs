@@ -31,6 +31,10 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// <typeparam name="T">ContentRenderer</typeparam>
     void SetRenderer<T>() where T : IContentRenderer, new();
 
+    /// <summary>
+    /// Removes ALL nodes, starting at the root, and renders them again.
+    /// </summary>
+    void ReRender();
     IContent Content { get; }
     IChildrenManager Children { get; }
 }

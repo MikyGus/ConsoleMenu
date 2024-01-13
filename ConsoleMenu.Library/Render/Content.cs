@@ -6,6 +6,7 @@ internal class Content : IContent
 {
     private Action<IMenuItem> _action;
     private Func<IMenuItem, Vector2> _areaNeeded;
+    private bool _haveBeenRendered;
 
     public bool IsSelected { get; set; }
     public bool IsMarked { get; set; }
@@ -16,6 +17,7 @@ internal class Content : IContent
     {
         IContentRenderer contentRenderer = new DefaultContentRender();
         SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+        _haveBeenRendered = false;
     }
 
     public void SetRenderer(Action<IMenuItem> action, Func<IMenuItem, Vector2> areaNeeded)
@@ -25,13 +27,22 @@ internal class Content : IContent
     }
 
     public Vector2 AreaNeeded() => _areaNeeded?.Invoke(Owner);
-    public void Render(bool hideChildren = false)
+    public void Render(bool showContent = true)
     {
-        if (hideChildren)
+        if (showContent)
         {
-            EraseContent(Owner.Position.Duplicate());
+            RenderContent();
+            _haveBeenRendered = true;
             return;
         }
+        if (_haveBeenRendered)
+        {
+            EraseContent(Owner.Position.Duplicate());
+        }
+    }
+
+    private void RenderContent()
+    {
         ConsoleColor tempBgColor = Console.BackgroundColor;
         ConsoleColor tempFgColor = Console.ForegroundColor;
 
