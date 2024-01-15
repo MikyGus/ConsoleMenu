@@ -6,7 +6,10 @@ public interface IRenderContent
     /// <summary>
     /// Render node and children
     /// </summary>
-    /// <param name="showNodes">Specifies if the nodes should be drawn or erased. (true == draw the node)</param>
-    void Render(bool showNodes = true);
+    void Render();
+    /// <summary>
+    /// Erases the content from the screen
+    /// </summary>
+    void EraseContent();
     Vector2 AreaNeeded();
 }

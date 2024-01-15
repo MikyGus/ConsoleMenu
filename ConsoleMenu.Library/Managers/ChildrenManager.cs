@@ -7,7 +7,7 @@ public class ChildrenManager : IChildrenManager
 {
     private List<IChildItem> _children = new();
     private Vector2 _positionOfFirstChild = Vector2.ZERO;
-    private bool _isCurrentlyVisible = true;
+    private bool _isCurrentlyVisible = false;
 
     public IMenuItem Owner { get; init; }
     internal Vector2 PositionOfFirstChild { get => _positionOfFirstChild; set => _positionOfFirstChild = value + PositionOffsetOfFirstChild; }
@@ -52,7 +52,7 @@ public class ChildrenManager : IChildrenManager
 
     public Vector2 AreaNeeded()
     {
-        if (_isCurrentlyVisible == false && MayCollapse)
+        if ((_isCurrentlyVisible == false || IsVisible == false) && MayCollapse)
         {
             return Vector2.ZERO;
         }
@@ -82,14 +82,13 @@ public class ChildrenManager : IChildrenManager
     }
 
 
-    public void Render(bool showChildren = true)
+    public void Render()
     {
-        (showChildren, bool returnWithoutRenderNode) = NodeHelpers.NodeVisibility(showChildren, _isCurrentlyVisible, IsVisible);
-        if (returnWithoutRenderNode)
+        if (IsVisible == false)
         {
             return;
         }
-        _isCurrentlyVisible = showChildren;
+        _isCurrentlyVisible = true;
 
         Vector2 position = PositionOfFirstChild.Duplicate();
         int index = 0;
@@ -99,28 +98,44 @@ public class ChildrenManager : IChildrenManager
             menuItem.Content.IsSelected = Owner is null
                 ? Selection.CurrentIndex == index
                 : Selection.CurrentIndex == index && Owner.Content.IsSelected;
-            if (showChildren)
-            {
-                menuItem.Position = position.Duplicate();
-            }
-            menuItem.Render(showChildren);
+            menuItem.Position = position.Duplicate();
+            menuItem.Render();
             position = NextChildPosition(position, menuItem.AreaNeeded());
             index++;
         }
     }
 
+    public void EraseContent()
+    {
+        if (_isCurrentlyVisible)
+        {
+            IEnumerable<IMenuItem> children = GetChildren().Select(m => m.Item);
+            foreach (IMenuItem menuItem in children)
+            {
+                menuItem.EraseContent();
+                menuItem.Position = null;
+            }
+            _isCurrentlyVisible = false;
+        }
+    }
+
     private Vector2 NextChildPosition(Vector2 position, Vector2 areaNeeded)
     {
+        if (areaNeeded == Vector2.ZERO)
+        {
+            return position;
+        }
         Vector2 offset = OffsetToNextChild();
-        if (Orientation == ContentOrientation.Vetical)
+        switch (Orientation)
         {
-            position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
+            case ContentOrientation.Vetical:
+                position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
+                break;
+            case ContentOrientation.Horizontal:
+                position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
+                break;
         }
-        else
-        {
-            position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
-        }
-
         return position;
     }
+
 }

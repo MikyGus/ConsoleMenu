@@ -19,16 +19,17 @@ public class MenuItem : IMenuItem
     public MenuItem(string title)
     {
         _childrenManager = new ChildrenManager(this);
-        _isCurrentlyVisible = true;
+        _isCurrentlyVisible = false;
         Position = Vector2.ZERO;
         Parent = null;
         IsVisible = true;
+        MayCollapse = true;
         Content = new Content() { Owner = this, Title = title };
     }
 
     public Vector2 AreaNeeded()
     {
-        if (_isCurrentlyVisible == false && MayCollapse)
+        if ((_isCurrentlyVisible == false || IsVisible == false) && MayCollapse)
         {
             return Vector2.ZERO;
         }
@@ -43,26 +44,35 @@ public class MenuItem : IMenuItem
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
     }
 
-    public void Render(bool showThisNodeAndChildren = true)
+    public void Render()
     {
-        (showThisNodeAndChildren, bool returnWithoutRenderNode) = NodeHelpers.NodeVisibility(showThisNodeAndChildren, _isCurrentlyVisible, IsVisible);
-        if (returnWithoutRenderNode)
+        if (IsVisible == false)
         {
             return;
         }
-        _isCurrentlyVisible = showThisNodeAndChildren;
+        _isCurrentlyVisible = true;
 
-        Content.Render(showThisNodeAndChildren);
+        Content.Render();
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
-        _childrenManager.Render(showThisNodeAndChildren);
+        _childrenManager.Render();
+    }
+
+    public void EraseContent()
+    {
+        if (_isCurrentlyVisible)
+        {
+            Content.EraseContent();
+            _childrenManager.EraseContent();
+            _isCurrentlyVisible = false;
+        }
     }
 
     internal MenuItem GetRoot(MenuItem menuItem)
     {
         if (menuItem.Parent is null)
         {
-            return this;
+            return menuItem;
         }
         else if (menuItem.Parent is MenuItem parent)
         {
@@ -77,9 +87,7 @@ public class MenuItem : IMenuItem
     public void ReRender()
     {
         IMenuItem root = GetRoot(this);
-        root.IsVisible = false;
-        root.Render();
-        root.IsVisible = true;
+        root.EraseContent();
         root.Render();
     }
 

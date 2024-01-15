@@ -29,7 +29,8 @@ internal class HideUnhide
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
-                m.Children.Render();
+                //m.Children.Render();
+                m.ReRender();
                 return true;
             }
             return false;
