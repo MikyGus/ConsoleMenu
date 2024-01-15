@@ -49,7 +49,7 @@ public class ChildrenManagerTests
         }
         _sut.PositionOffsetToNextChild = offsetToNextChild;
         _sut.PositionOffsetOfFirstChild = firstChOffset;
-
+        _sut.Render();
         // Act
         Vector2 result = _sut.AreaNeeded();
         // Assert
@@ -89,6 +89,7 @@ public class ChildrenManagerTests
         _sut.PositionOffsetToNextChild = offsetToNextChild;
         _sut.Orientation = ContentOrientation.Horizontal;
         _sut.PositionOffsetOfFirstChild = firstChOffset;
+        _sut.Render();
         // Act
         Vector2 result = _sut.AreaNeeded();
         // Assert
