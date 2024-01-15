@@ -63,14 +63,16 @@ internal class HideUnhide
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
         menu.Content.IsSelected = true;
 
-        subMenu2.IsVisible = false;
+        //subMenu2.IsVisible = false;
 
         menu.Render();
 
 
         _ = Console.ReadKey();
-        subMenu2.IsVisible = true;
-        subMenu2.ReRender();
+        //subMenu2.IsVisible = true;
+        //subMenu2.ReRender();
+
+        subMenu2.EraseContent();
 
         //menu.IsVisible = false;
         //menu.Render();

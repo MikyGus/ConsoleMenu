@@ -6,7 +6,9 @@
 - [Console Menu](#console-menu)
 	- [Create a simple menu](#create-a-simple-menu)
 	- [Vector2](#vector2)
-	- [Position](#position)
+	- [MenuItem](#menuitem)
+		- [Visibility](#visibility)
+		- [Position](#position)
 	- [Children of MenuItem](#children-of-menuitem)
 		- [Add children](#add-children)
 		- [Remove children](#remove-children)
@@ -15,6 +17,8 @@
 	- [Renderers](#renderers)
 		- [SetRenderer](#setrenderer)
 		- [Render](#render)
+		- [ReRender](#rerender)
+		- [EraseContent](#erasecontent)
 	- [Actions](#actions)
 		- [KeyPressed](#keypressed)
 		- [SetAction](#setaction)
@@ -67,8 +71,16 @@ Represents a point in a 2D space or 2D area with integers for X and Y.
 	public static Vector2 RIGHT_UP => new(1, -1);
 	public static Vector2 RIGHT_DOWN => new(1, 1);
 ```
+## MenuItem
+### Visibility
+```csharp
+    bool IsVisible { get; set; } // Default: true
+    bool MayCollapse { get; set; } // Default: true
+```
+```IsVisible``` specifies if ```Render()``` should render this item.
+```MayCollapse``` specifies if other nodes should collapse in on this items area if it becomes hidden. (IsVisible == false)
 
-## Position
+### Position
 ```(Vector2) MenuItem.Position```
 
 The first menuItem is by default placed at the coordinates 0,0. With the ```Vector2``` class. To change position use the ```Position``` property on menuItem. 
@@ -260,6 +272,41 @@ public class MyOwnCheckboxContentRender : IContentRenderer
 ->> menu.Content.Render();
 ->> menu.Children.Render();
 ```
+
+### ReRender
+```void IMenuItem.ReRender()```: Removes ALL nodes, starting at the root, and renders them again. This method may, because of this, be called on any node; it still removes from the root.
+
+```ReRender()``` removes ALL nodes from the root node, and renders them again. The purpose of this method is if any node have been hidden, removed,added or made visible; the position of nodes may have been mooved and therefore need to rerender.
+
+This code will be run if the user with *subMenu2* selected and presses ```Ctrl+H```
+
+```csharp
+	IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
+	subMenu2.SetAction((m, k) =>
+	{
+		if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
+		{
+			m.Children.IsVisible = !m.Children.IsVisible;
+->>			m.ReRender();
+			return true;
+		}
+		return false;
+	});
+```
+
+### EraseContent
+- ```void IMenuItem.EraseContent()```: Erase the contents of menuItem **and** all its children.
+- ```void IMenuItem.Content.EraseContent()```: Erase the contents of menuItem.
+- ```void IMenuItem.Children.EraseContent()```: Erase the contents of menuItems children.
+
+Erases the node and its children from the screen. 
+
+**Note:**
+- This ONLY removes the rendering from the screen
+- It will not automatically ```ReRender``` the tree
+- If ```Render``` is called on the same node, or parent node, the node will reappear.
+- To keep it hidden use ```IMenuItem.IsVisible```
+
 
 ## Actions
 ### KeyPressed
