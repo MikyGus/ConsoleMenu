@@ -137,5 +137,4 @@ public class ChildrenManager : IChildrenManager
         }
         return position;
     }
-
 }
