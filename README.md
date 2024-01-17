@@ -305,7 +305,7 @@ Erases the node and its children from the screen.
 - This ONLY removes the rendering from the screen
 - It will not automatically ```ReRender``` the tree
 - If ```Render``` is called on the same node, or parent node, the node will reappear.
-- To keep it hidden use ```IMenuItem.IsVisible```
+- To keep it hidden use ```IMenuItem.IsVisible = false```
 
 
 ## Actions
