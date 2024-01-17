@@ -5,12 +5,8 @@ using ConsoleMenu.Library.Models;
 namespace ConsoleMenu.Library.Managers;
 
 public enum ContentOrientation { Vetical, Horizontal }
-public interface IChildrenManager : IRenderContent, ISelectionControls
+public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuItem>
 {
-    /// <summary>
-    /// Owner of the nearest childrens.
-    /// </summary>
-    IMenuItem Owner { get; }
     /// <summary>
     /// Position offset for the first child to be rendered. 
     /// Mainly used for indentation below the owner rendation.
@@ -28,7 +24,9 @@ public interface IChildrenManager : IRenderContent, ISelectionControls
     ContentOrientation Orientation { get; set; }
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
-    IEnumerable<IChildItem> GetChildren();
     bool HaveChildren();
-    IChildItem GetSelectedChild();
+    IEnumerable<IChildItem> GetChildren();
+    IChildItem GetChild(int index);
+
+    ISelectionManager Selection { get; init; }
 }

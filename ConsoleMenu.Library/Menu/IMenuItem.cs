@@ -4,7 +4,7 @@ using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
 
 namespace ConsoleMenu.Library.Menu;
-public interface IMenuItem : IRenderContent
+public interface IMenuItem : IRenderContent, IVisibility
 {
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }
@@ -31,6 +31,10 @@ public interface IMenuItem : IRenderContent
     /// <typeparam name="T">ContentRenderer</typeparam>
     void SetRenderer<T>() where T : IContentRenderer, new();
 
+    /// <summary>
+    /// Removes ALL nodes, starting at the root, and renders them again.
+    /// </summary>
+    void ReRender();
     IContent Content { get; }
     IChildrenManager Children { get; }
 }

@@ -9,20 +9,30 @@ public class MenuItem : IMenuItem
 {
     private readonly ChildrenManager _childrenManager;
     private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
+    private bool _isCurrentlyVisible;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
+    public bool IsVisible { get; set; }
+    public bool MayCollapse { get; set; }
 
     public MenuItem(string title)
     {
-        Parent = null;
-        Position = Vector2.ZERO;
-        Content = new Content() { Owner = this, Title = title };
         _childrenManager = new ChildrenManager(this);
+        _isCurrentlyVisible = false;
+        Position = Vector2.ZERO;
+        Parent = null;
+        IsVisible = true;
+        MayCollapse = true;
+        Content = new Content() { Owner = this, Title = title };
     }
 
     public Vector2 AreaNeeded()
     {
+        if ((_isCurrentlyVisible == false || IsVisible == false) && MayCollapse)
+        {
+            return Vector2.ZERO;
+        }
         Vector2 contentArea = Content.AreaNeeded();
         Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
@@ -36,10 +46,49 @@ public class MenuItem : IMenuItem
 
     public void Render()
     {
+        if (IsVisible == false)
+        {
+            return;
+        }
+        _isCurrentlyVisible = true;
+
         Content.Render();
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
+    }
+
+    public void EraseContent()
+    {
+        if (_isCurrentlyVisible)
+        {
+            Content.EraseContent();
+            _childrenManager.EraseContent();
+            _isCurrentlyVisible = false;
+        }
+    }
+
+    internal MenuItem GetRoot(MenuItem menuItem)
+    {
+        if (menuItem.Parent is null)
+        {
+            return menuItem;
+        }
+        else if (menuItem.Parent is MenuItem parent)
+        {
+            return menuItem.GetRoot(parent);
+        }
+        else
+        {
+            throw new ArgumentException();
+        }
+    }
+
+    public void ReRender()
+    {
+        IMenuItem root = GetRoot(this);
+        root.EraseContent();
+        root.Render();
     }
 
     public IContent Content { get; private set; }
@@ -50,7 +99,7 @@ public class MenuItem : IMenuItem
     {
         if (Children.HaveChildren())
         {
-            if (Children.GetSelectedChild().Item.KeyPressed(key))
+            if (Children.Selection.GetSelectedChild().Item.KeyPressed(key))
             {
                 return true;
             }

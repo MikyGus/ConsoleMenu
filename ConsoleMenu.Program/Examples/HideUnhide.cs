@@ -2,7 +2,7 @@
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Program.Examples;
-internal class SetAction
+internal class HideUnhide
 {
     public static void Run()
     {
@@ -29,7 +29,8 @@ internal class SetAction
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
-                m.Children.Render();
+                //m.Children.Render();
+                m.ReRender();
                 return true;
             }
             return false;
@@ -46,20 +47,38 @@ internal class SetAction
         IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
         subMenu3.SetAction(SetItemMark);
 
+        IMenuItem menu1 = new MenuItem("Settings");
+        menu1.Children.Add(1, new MenuItem("First"));
+        menu1.Children.Add(1, subMenu);
+        menu1.Children.Add(2, subMenu2);
+        menu1.Children.Add(3, subMenu3);
+        menu1.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+
         IMenuItem menu = new MenuItem("Simple menu")
         {
             Position = new Vector2(0, 1)
         };
-        menu.Children.Add(1, subMenu);
-        menu.Children.Add(2, subMenu2);
-        menu.Children.Add(3, subMenu3);
-        menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+        menu.Children.Add(1, menu1);
+        menu.Children.Add(2, new MenuItem("Hello, World"));
+        //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
         menu.Content.IsSelected = true;
+
+        //subMenu2.IsVisible = false;
+
         menu.Render();
 
+
         _ = Console.ReadKey();
-        subMenu2.Children.IsVisible = false;
-        subMenu2.Render();
+        //subMenu2.IsVisible = true;
+        //subMenu2.ReRender();
+
+        subMenu2.EraseContent();
+
+        //menu.IsVisible = false;
+        //menu.Render();
+        //menu.IsVisible = true;
+        //menu.Render();
+
 
         // Render() use these to render
         //menu.ContentRenderer.Render(menu.Position);
