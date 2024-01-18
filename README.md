@@ -1,6 +1,8 @@
 # Console Menu
 **Display a menu in your Console-app.**
 
+![Image of a Console-Menu example](./Documentation/Images/consolemenu.png "Console-Menu")
+
 [![Code Tests](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml)
 
 - [Console Menu](#console-menu)
