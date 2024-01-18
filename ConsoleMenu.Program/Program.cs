@@ -1,9 +1,9 @@
-﻿using ConsoleMenu.Program.Examples;
+﻿using ConsoleMenu.Program.Playground;
 
 Console.WriteLine("******** Console Menu ***********");
 Console.WriteLine("\n\n\n");
 
-//All.Run();
+All.Run();
 //SimpleMenu.Render_SimpleMenu_Horizontal();
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
@@ -14,7 +14,7 @@ Console.WriteLine("\n\n\n");
 //SetRenderer.Run();
 
 //SetAction.Run();
-HideUnhide.Run();
+//HideUnhide.Run();
 
 
 Console.WriteLine("\n\n\n\n\n\n\n\n");

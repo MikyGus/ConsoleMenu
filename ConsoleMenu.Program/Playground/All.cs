@@ -79,6 +79,10 @@ internal class All
         //menu.Content.IsMarked = false;
         menu.Render();
 
+        Console.ReadKey(true);
+        subsubsubMenu.SetRenderer<CheckboxContentRender>();
+
+
         ConsoleKeyInfo keyInput;
         do
         {

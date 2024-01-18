@@ -41,7 +41,9 @@ public class MenuItem : IMenuItem
     public void SetRenderer<T>() where T : IContentRenderer, new()
     {
         IContentRenderer contentRenderer = new T();
+        Content.EraseContent();
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+        Content.Render();
     }
 
     public void Render()
