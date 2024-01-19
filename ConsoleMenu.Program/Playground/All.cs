@@ -2,7 +2,6 @@
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
-using ConsoleMenu.Program.Examples.Renderer;
 
 namespace ConsoleMenu.Program.Playground;
 internal class All
@@ -41,16 +40,16 @@ internal class All
         subsubMenu4.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
         subsubMenu4.Children.Orientation = ContentOrientation.Horizontal;
-        subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
+        //subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
         subsubMenu4.SetAction((m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Content.IsMarked = !m.Content.IsMarked;
                 m.Content.Render();
-                return true;
+                //return true;
             }
-            return false;
+            //return false;
         });
 
         var subsubsubMenu = new MenuItem("My SubSubMenu");
@@ -74,13 +73,13 @@ internal class All
         menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
         menu.Children.Orientation = ContentOrientation.Vetical;
         menu.Children.PositionOffsetToNextChild = 1;
-        menu.SetRenderer<DefaultContentRender>();
+        //menu.SetRenderer<DefaultContentRender>();
         menu.Content.IsSelected = true;
         //menu.Content.IsMarked = false;
         menu.Render();
 
-        Console.ReadKey(true);
-        subsubsubMenu.SetRenderer<CheckboxContentRender>();
+        //Console.ReadKey(true);
+        //subsubsubMenu.SetRenderer<CheckboxContentRender>();
 
 
         ConsoleKeyInfo keyInput;
@@ -95,11 +94,11 @@ internal class All
         Console.ReadKey();
     }
 
-    static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         //if (item.Parent is not null)
@@ -120,6 +119,6 @@ internal class All
         //item.SetRenderer<DefaultContentRender>();
 
         //item.ContentRenderer.Render(item.Position);
-        return false;
+        //return false;
     }
 }

@@ -14,9 +14,9 @@ internal class SetAction
             {
                 m.Content.IsMarked = !m.Content.IsMarked;
                 m.Content.Render();
-                return true;
+                //return true;
             }
-            return false;
+            //return false;
         });
         subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
@@ -30,9 +30,9 @@ internal class SetAction
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
                 m.Children.Render();
-                return true;
+                //return true;
             }
-            return false;
+            //return false;
         });
         IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
         IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
@@ -73,23 +73,23 @@ internal class SetAction
         } while (keyInput.Key != ConsoleKey.Escape);
     }
 
-    static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         item.Content.IsMarked = !item.Content.IsMarked;
         item.Content.Render();
-        return false;
+        //return false;
     }
 
-    static bool SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         if (item.Parent is not null)
@@ -98,14 +98,14 @@ internal class SetAction
             item.Parent.Content.Render();
         }
         item.Content.Render();
-        return false;
+        //return false;
     }
 
-    static bool SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         if (item.Children.HaveChildren())
@@ -116,6 +116,6 @@ internal class SetAction
             }
             item.Render();
         }
-        return false;
+        //return false;
     }
 }

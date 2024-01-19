@@ -8,7 +8,7 @@ namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
     private readonly ChildrenManager _childrenManager;
-    private Func<IMenuItem, ConsoleKeyInfo, bool> _onAction;
+    private Action<IMenuItem, ConsoleKeyInfo> _onAction;
     private bool _isCurrentlyVisible;
 
     public Vector2 Position { get; set; }
@@ -41,9 +41,15 @@ public class MenuItem : IMenuItem
     public void SetRenderer<T>() where T : IContentRenderer, new()
     {
         IContentRenderer contentRenderer = new T();
-        Content.EraseContent();
+        if (((Content)Content).IsCurrentlyVisible)
+        {
+            Content.EraseContent();
+            Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+            Content.Render();
+            return;
+        }
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-        Content.Render();
+
     }
 
     public void Render()
@@ -109,6 +115,7 @@ public class MenuItem : IMenuItem
         return ActionToPerform.MoveSelection(key, this);
     }
 
-    public bool PerformAction(ConsoleKeyInfo key) => _onAction?.Invoke(this, key) ?? false;
-    public void SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action) => _onAction = action;
+    public void PerformAction(ConsoleKeyInfo key) => _onAction?.Invoke(this, key);
+
+    public void SetAction(Action<IMenuItem, ConsoleKeyInfo> action) => _onAction = action;
 }

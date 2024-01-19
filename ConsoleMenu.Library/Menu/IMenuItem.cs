@@ -18,12 +18,12 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// <summary>
     /// Perform acton specified in OnAction
     /// </summary>
-    bool PerformAction(ConsoleKeyInfo key);
+    void PerformAction(ConsoleKeyInfo key);
 
     /// <summary>
     /// Specify what to happen when user presses any key with this MenuItem selected.
     /// </summary>
-    void SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action);
+    void SetAction(Action<IMenuItem, ConsoleKeyInfo> action);
 
     /// <summary>
     /// Sets the renderer of the content of the item. 
