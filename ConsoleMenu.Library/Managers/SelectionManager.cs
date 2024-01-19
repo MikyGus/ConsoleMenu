@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Menu;
+﻿using ConsoleMenu.Library.Events;
+using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
@@ -13,13 +14,21 @@ public class SelectionManager : ISelectionManager
         CurrentIndex = 0;
         Owner = owner;
     }
+
+    public event Action<SelectionChangedEvent> OnSelectionChanged;
+
     public bool Decrement()
     {
         if (MayDecrement(out int newIndex))
         {
+            SelectionChangedEvent selectionChangedInfo = new() { PreviousItem = GetSelectedChild(), Sender = this };
+
             RenderSelection(false);
             CurrentIndex = newIndex;
             RenderSelection(true);
+
+            selectionChangedInfo.NewItem = GetSelectedChild();
+            OnSelectionChanged?.Invoke(selectionChangedInfo);
             return true;
         }
         return false;
@@ -29,9 +38,14 @@ public class SelectionManager : ISelectionManager
     {
         if (MayIncrement(out int newIndex))
         {
+            SelectionChangedEvent selectionChangedInfo = new() { PreviousItem = GetSelectedChild(), Sender = this };
+
             RenderSelection(false);
             CurrentIndex = newIndex;
             RenderSelection(true);
+
+            selectionChangedInfo.NewItem = GetSelectedChild();
+            OnSelectionChanged?.Invoke(selectionChangedInfo);
             return true;
         }
         return false;

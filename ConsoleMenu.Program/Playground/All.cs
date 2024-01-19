@@ -63,6 +63,12 @@ internal class All
         subMenu2.SetRenderer<CheckboxContentRender>();
         subMenu2.OnKeyPressed += SetItemMark;
         subMenu2.Content.IsMarked = true;
+        subMenu2.Children.Selection.OnSelectionChanged += x =>
+        {
+            x.PreviousItem.Item.Children.IsVisible = false;
+            x.NewItem.Item.Children.IsVisible = true;
+            x.NewItem.Item.ReRender();
+        };
 
         menu.Children.Add(1, subMenu);
         menu.Children.Add(1, subMenu2);
