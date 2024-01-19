@@ -8,32 +8,28 @@ internal class SetAction
     {
         IMenuItem subMenu = new MenuItem("My SubMenu #1");
         IMenuItem subsubMenu1 = new MenuItem("Sub1");
-        subsubMenu1.SetAction((m, k) =>
+        subsubMenu1.OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Content.IsMarked = !m.Content.IsMarked;
                 m.Content.Render();
-                return true;
             }
-            return false;
-        });
+        };
         subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
         subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-        subMenu.SetAction(SetItemMarkOnParent);
+        subMenu.OnKeyPressed += SetItemMarkOnParent;
 
         IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
-        subMenu2.SetAction((m, k) =>
+        subMenu2.OnKeyPressed += (m, k) =>
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
                 m.Children.Render();
-                return true;
             }
-            return false;
-        });
+        };
         IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
         IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
         IMenuItem subMenu2111 = new MenuItem("My SubMenu #2111");
@@ -41,10 +37,9 @@ internal class SetAction
         subMenu21.Children.Add(1, subMenu211);
         subMenu211.Children.Add(1, subMenu2111);
         subMenu2.Children.Add(2, new MenuItem("Sub2"));
-        //subMenu2.SetAction(SetItemMarkChildren);
 
         IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
-        subMenu3.SetAction(SetItemMark);
+        subMenu3.OnKeyPressed += SetItemMark;
 
         IMenuItem menu = new MenuItem("Simple menu")
         {
@@ -73,23 +68,22 @@ internal class SetAction
         } while (keyInput.Key != ConsoleKey.Escape);
     }
 
-    static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMark(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         item.Content.IsMarked = !item.Content.IsMarked;
         item.Content.Render();
-        return false;
     }
 
-    static bool SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         if (item.Parent is not null)
@@ -98,14 +92,13 @@ internal class SetAction
             item.Parent.Content.Render();
         }
         item.Content.Render();
-        return false;
     }
 
-    static bool SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
+    static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
     {
         if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
         {
-            return false;
+            return;
         }
 
         if (item.Children.HaveChildren())
@@ -116,6 +109,5 @@ internal class SetAction
             }
             item.Render();
         }
-        return false;
     }
 }

@@ -6,18 +6,19 @@ internal class Content : IContent
 {
     private Action<IMenuItem> _action;
     private Func<IMenuItem, Vector2> _areaNeeded;
-    private bool _isCurrentlyVisible;
 
     public bool IsSelected { get; set; }
     public bool IsMarked { get; set; }
     public required string Title { get; set; }
     public required IMenuItem Owner { get; set; }
+    internal bool IsCurrentlyVisible { get; private set; }
+
 
     public Content()
     {
         IContentRenderer contentRenderer = new DefaultContentRender();
         SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-        _isCurrentlyVisible = false;
+        IsCurrentlyVisible = false;
     }
 
     public void SetRenderer(Action<IMenuItem> action, Func<IMenuItem, Vector2> areaNeeded)
@@ -30,16 +31,16 @@ internal class Content : IContent
     public void Render()
     {
         RenderContent();
-        _isCurrentlyVisible = true;
+        IsCurrentlyVisible = true;
     }
 
     public void EraseContent()
     {
-        if (_isCurrentlyVisible)
+        if (IsCurrentlyVisible)
         {
             EraseContent(Owner.Position.Duplicate());
         }
-        _isCurrentlyVisible = false;
+        IsCurrentlyVisible = false;
     }
 
     private void RenderContent()

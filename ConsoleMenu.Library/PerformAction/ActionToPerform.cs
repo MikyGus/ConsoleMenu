@@ -12,13 +12,18 @@ public class ActionToPerform
     /// <returns>Returns a bool stating if the key were used for an action or not (true=used). Tried to move selection, but failed returns false.</returns>
     public static bool MoveSelection(ConsoleKeyInfo key, IMenuItem menuItem)
     {
-        return (key.Key, menuItem.Children.Orientation) switch
+        switch (key.Key, menuItem.Children.Orientation)
         {
-            (ConsoleKey.UpArrow, ContentOrientation.Vetical) => menuItem.Children.Selection.Decrement(),
-            (ConsoleKey.DownArrow, ContentOrientation.Vetical) => menuItem.Children.Selection.Increment(),
-            (ConsoleKey.RightArrow, ContentOrientation.Horizontal) => menuItem.Children.Selection.Increment(),
-            (ConsoleKey.LeftArrow, ContentOrientation.Horizontal) => menuItem.Children.Selection.Decrement(),
-            _ => menuItem.PerformAction(key),
-        };
+            case (ConsoleKey.UpArrow, ContentOrientation.Vetical):
+                return menuItem.Children.Selection.Decrement();
+            case (ConsoleKey.DownArrow, ContentOrientation.Vetical):
+                return menuItem.Children.Selection.Increment();
+            case (ConsoleKey.RightArrow, ContentOrientation.Horizontal):
+                return menuItem.Children.Selection.Increment();
+            case (ConsoleKey.LeftArrow, ContentOrientation.Horizontal):
+                return menuItem.Children.Selection.Decrement();
+        }
+        menuItem.PerformAction(key);
+        return false;
     }
 }
