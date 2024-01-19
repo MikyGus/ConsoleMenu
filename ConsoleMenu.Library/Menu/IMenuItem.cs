@@ -23,7 +23,7 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// <summary>
     /// Specify what to happen when user presses any key with this MenuItem selected.
     /// </summary>
-    void SetAction(Action<IMenuItem, ConsoleKeyInfo> action);
+    event Action<IMenuItem, ConsoleKeyInfo> OnKeyPressed;
 
     /// <summary>
     /// Sets the renderer of the content of the item. 

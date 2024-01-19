@@ -26,7 +26,7 @@ internal class All
         subsubMenu2.Children.Orientation = ContentOrientation.Horizontal;
 
         var myActionPackedMenuItem = new MenuItem("ActionMenu");
-        myActionPackedMenuItem.SetAction(SetItemMark);
+        myActionPackedMenuItem.OnKeyPressed += SetItemMark;
 
         var subsubMenu3 = new MenuItem("My SubSubMenu2");
         subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
@@ -41,16 +41,14 @@ internal class All
         subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
         subsubMenu4.Children.Orientation = ContentOrientation.Horizontal;
         //subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
-        subsubMenu4.SetAction((m, k) =>
+        subsubMenu4.OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Content.IsMarked = !m.Content.IsMarked;
                 m.Content.Render();
-                //return true;
             }
-            //return false;
-        });
+        };
 
         var subsubsubMenu = new MenuItem("My SubSubMenu");
         subsubsubMenu.Children.Add(6, subsubMenu2);
@@ -63,14 +61,17 @@ internal class All
         subMenu2.Children.Add(4, new MenuItem("Sub2"));
         subMenu2.Children.Add(1, new MenuItem("Sub3"));
         subMenu2.SetRenderer<CheckboxContentRender>();
-        subMenu2.SetAction(SetItemMark);
+        subMenu2.OnKeyPressed += SetItemMark;
         subMenu2.Content.IsMarked = true;
 
         menu.Children.Add(1, subMenu);
         menu.Children.Add(1, subMenu2);
         menu.Children.Add(1, new MenuItem("Players"));
         menu.Children.Add(1, new MenuItem("Pl"));
-        menu.Children.Add(1, new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl"));
+        var CrazyNameMenu = new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl");
+        CrazyNameMenu.OnKeyPressed += SetItemMark;
+        CrazyNameMenu.OnKeyPressed += SetItemMarkOnParent;
+        menu.Children.Add(1, CrazyNameMenu);
         menu.Children.Orientation = ContentOrientation.Vetical;
         menu.Children.PositionOffsetToNextChild = 1;
         //menu.SetRenderer<DefaultContentRender>();
@@ -106,19 +107,34 @@ internal class All
         //    item.Parent.ContentRenderer.IsMarked = !item.Parent.ContentRenderer.IsMarked;
         //    item.Parent.ContentRenderer.Render(item.Parent.Position);
         //}
-        if (item.Children.HaveChildren())
-        {
-            foreach (IChildItem child in item.Children.GetChildren())
-            {
-                child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
-            }
-            item.Render();
-        }
+        //if (item.Children.HaveChildren())
+        //{
+        //    foreach (IChildItem child in item.Children.GetChildren())
+        //    {
+        //        child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
+        //    }
+        //    item.Render();
+        //}
 
-        //item.ContentRenderer.IsMarked = !item.ContentRenderer.IsMarked;
+        item.Content.IsMarked = !item.Content.IsMarked;
+        item.Content.Render();
         //item.SetRenderer<DefaultContentRender>();
 
         //item.ContentRenderer.Render(item.Position);
-        //return false;
+    }
+
+    static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return;
+        }
+
+        if (item.Parent is not null)
+        {
+            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
+            item.Parent.Content.Render();
+        }
+        item.Content.Render();
     }
 }

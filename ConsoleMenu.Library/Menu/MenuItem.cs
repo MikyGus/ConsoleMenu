@@ -8,13 +8,13 @@ namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
 {
     private readonly ChildrenManager _childrenManager;
-    private Action<IMenuItem, ConsoleKeyInfo> _onAction;
     private bool _isCurrentlyVisible;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
     public bool IsVisible { get; set; }
     public bool MayCollapse { get; set; }
+    public event Action<IMenuItem, ConsoleKeyInfo> OnKeyPressed;
 
     public MenuItem(string title)
     {
@@ -115,7 +115,5 @@ public class MenuItem : IMenuItem
         return ActionToPerform.MoveSelection(key, this);
     }
 
-    public void PerformAction(ConsoleKeyInfo key) => _onAction?.Invoke(this, key);
-
-    public void SetAction(Action<IMenuItem, ConsoleKeyInfo> action) => _onAction = action;
+    public void PerformAction(ConsoleKeyInfo key) => OnKeyPressed?.Invoke(this, key);
 }

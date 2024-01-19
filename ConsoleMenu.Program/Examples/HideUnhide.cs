@@ -8,32 +8,27 @@ internal class HideUnhide
     {
         IMenuItem subMenu = new MenuItem("My SubMenu #1");
         IMenuItem subsubMenu1 = new MenuItem("Sub1");
-        subsubMenu1.SetAction((m, k) =>
+        subsubMenu1.OnKeyPressed += ((m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Content.IsMarked = !m.Content.IsMarked;
                 m.Content.Render();
-                //return true;
             }
-            //return false;
         });
         subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
         subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-        subMenu.SetAction(SetItemMarkOnParent);
+        subMenu.OnKeyPressed += SetItemMarkOnParent;
 
         IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
-        subMenu2.SetAction((m, k) =>
+        subMenu2.OnKeyPressed += ((m, k) =>
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
-                //m.Children.Render();
                 m.ReRender();
-                //return true;
             }
-            //return false;
         });
         IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
         IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
@@ -42,10 +37,9 @@ internal class HideUnhide
         subMenu21.Children.Add(1, subMenu211);
         subMenu211.Children.Add(1, subMenu2111);
         subMenu2.Children.Add(2, new MenuItem("Sub2"));
-        //subMenu2.SetAction(SetItemMarkChildren);
 
         IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
-        subMenu3.SetAction(SetItemMark);
+        subMenu3.OnKeyPressed += SetItemMark;
 
         IMenuItem menu1 = new MenuItem("Settings");
         menu1.Children.Add(1, new MenuItem("First"));
@@ -63,7 +57,6 @@ internal class HideUnhide
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
         menu.Content.IsSelected = true;
 
-        //subMenu2.IsVisible = false;
 
         menu.Render();
 
@@ -101,7 +94,6 @@ internal class HideUnhide
 
         item.Content.IsMarked = !item.Content.IsMarked;
         item.Content.Render();
-        //return false;
     }
 
     static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
@@ -117,7 +109,6 @@ internal class HideUnhide
             item.Parent.Content.Render();
         }
         item.Content.Render();
-        //return false;
     }
 
     static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
@@ -135,6 +126,5 @@ internal class HideUnhide
             }
             item.Render();
         }
-        //return false;
     }
 }
