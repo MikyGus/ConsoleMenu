@@ -1,4 +1,4 @@
-﻿using ConsoleMenu.Library.Menu;
+﻿using ConsoleMenu.Library.Events;
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
@@ -13,13 +13,22 @@ public class SelectionManager : ISelectionManager
         CurrentIndex = 0;
         Owner = owner;
     }
+
+    public event Action<SelectionChangedEvent> OnSelectionChanged;
+    public event Action<SelectionRenderedEvent> OnSelectionRendered;
+
     public bool Decrement()
     {
         if (MayDecrement(out int newIndex))
         {
+            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this };
+
             RenderSelection(false);
             CurrentIndex = newIndex;
             RenderSelection(true);
+
+            selectionChangedInfo.NewItem = GetSelectedChild();
+            OnSelectionChanged?.Invoke(selectionChangedInfo);
             return true;
         }
         return false;
@@ -29,9 +38,14 @@ public class SelectionManager : ISelectionManager
     {
         if (MayIncrement(out int newIndex))
         {
+            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this };
+
             RenderSelection(false);
             CurrentIndex = newIndex;
             RenderSelection(true);
+
+            selectionChangedInfo.NewItem = GetSelectedChild();
+            OnSelectionChanged?.Invoke(selectionChangedInfo);
             return true;
         }
         return false;
@@ -45,9 +59,12 @@ public class SelectionManager : ISelectionManager
         {
             throw new ArgumentNullException("No children present!");
         }
-        IMenuItem menuItem = GetSelectedChild().Item;
-        menuItem.Content.IsSelected = isSelected;
-        menuItem.Render();
+        IChildItem childItem = GetSelectedChild();
+        childItem.Item.Content.IsSelected = isSelected;
+        childItem.Item.Render();
+
+        SelectionRenderedEvent selectionRendered = new() { Sender = this, Item = childItem, IsSelected = isSelected };
+        OnSelectionRendered?.Invoke(selectionRendered);
     }
 
     private bool MayDecrement(out int newIndex)

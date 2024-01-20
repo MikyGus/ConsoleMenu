@@ -21,9 +21,11 @@
 		- [Render](#render)
 		- [ReRender](#rerender)
 		- [EraseContent](#erasecontent)
-	- [Actions](#actions)
+	- [Events](#events)
 		- [KeyPressed](#keypressed)
 		- [SetAction](#setaction)
+		- [Events](#events-1)
+			- [Example use of events](#example-use-of-events)
 
 
 
@@ -310,7 +312,7 @@ Erases the node and its children from the screen.
 - To keep it hidden use ```IMenuItem.IsVisible = false```
 
 
-## Actions
+## Events
 ### KeyPressed
 ```bool IMenuItem.KeyPressed(ConsoleKeyInfo key);```
 Through all the menuItems **selected** children, starting at the leaf item, an action to move selection or perform a custom action is made. Each menuItem decides if the parent menuItem should move selection or perform a custom action.
@@ -450,4 +452,19 @@ Here are some example actions
         }
         return false;
     }
+```
+
+### Events
+- **IMenuItem.Children.Selection**
+  - event Action\<SelectionChangedEvent> OnSelectionChanged
+  - event Action\<SelectionRenderedEvent> OnSelectionRendered
+
+#### Example use of events
+```csharp
+	menuItem.Children.Selection.OnSelectionChanged += x =>
+	{
+		x.OldItem.Item.Children.IsVisible = false;
+		x.NewItem.Item.Children.IsVisible = true;
+		x.NewItem.Item.ReRender();
+	};
 ```
