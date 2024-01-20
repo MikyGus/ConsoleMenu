@@ -65,9 +65,13 @@ internal class All
         subMenu2.Content.IsMarked = true;
         subMenu2.Children.Selection.OnSelectionChanged += x =>
         {
-            x.PreviousItem.Item.Children.IsVisible = false;
+            x.OldItem.Item.Children.IsVisible = false;
             x.NewItem.Item.Children.IsVisible = true;
             x.NewItem.Item.ReRender();
+        };
+        subMenu2.Children.Selection.OnSelectionRendered += x =>
+        {
+            x.Item.Item.Children.IsVisible = true;
         };
 
         menu.Children.Add(1, subMenu);

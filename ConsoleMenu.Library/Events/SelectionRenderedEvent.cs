@@ -2,9 +2,9 @@
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Events;
-public class SelectionChangedEvent
+public class SelectionRenderedEvent
 {
     public ISelectionManager Sender { get; set; }
-    public IChildItem OldItem { get; set; }
-    public IChildItem NewItem { get; set; }
+    public IChildItem Item { get; set; }
+    public bool IsSelected { get; set; }
 }

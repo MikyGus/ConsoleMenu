@@ -6,6 +6,7 @@ namespace ConsoleMenu.Library.Managers;
 public interface ISelectionManager : ISelectionControls, IOwner<ChildrenManager>
 {
     event Action<SelectionChangedEvent> OnSelectionChanged;
+    event Action<SelectionRenderedEvent> OnSelectionRendered;
 
     IChildItem GetSelectedChild();
 }
