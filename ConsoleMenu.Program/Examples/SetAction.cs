@@ -27,15 +27,11 @@ internal class SetAction
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
                 m.Children.IsVisible = !m.Children.IsVisible;
-                m.Children.Render();
+                m.ReRender();
             }
         };
-        IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
-        IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
-        IMenuItem subMenu2111 = new MenuItem("My SubMenu #2111");
-        subMenu2.Children.Add(1, subMenu21);
-        subMenu21.Children.Add(1, subMenu211);
-        subMenu211.Children.Add(1, subMenu2111);
+        subMenu2.OnKeyPressed += SetItemMark;
+        subMenu2.Children.Add(1, new MenuItem("Sub1"));
         subMenu2.Children.Add(2, new MenuItem("Sub2"));
 
         IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
@@ -52,19 +48,16 @@ internal class SetAction
         menu.Content.IsSelected = true;
         menu.Render();
 
-        _ = Console.ReadKey();
-        subMenu2.Children.IsVisible = false;
-        subMenu2.Render();
-
         // Render() use these to render
-        //menu.ContentRenderer.Render(menu.Position);
+        //menu.Content.Render();
         //menu.Children.Render();
+        //menu.ReRender();
 
         ConsoleKeyInfo keyInput;
         do
         {
             keyInput = Console.ReadKey(true);
-            menu.KeyPressed(keyInput);
+            _ = menu.KeyPressed(keyInput);
         } while (keyInput.Key != ConsoleKey.Escape);
     }
 

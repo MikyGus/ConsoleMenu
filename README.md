@@ -349,51 +349,64 @@ The first rendered selection is not automatic, but is instead rendered first tim
 ```
 
 ### SetAction
-```void IMenuItem.SetAction(Func<IMenuItem, ConsoleKeyInfo, bool> action);```
+```event Action<IMenuItem, ConsoleKeyInfo> OnKeyPressed;```
 
 If another key is pressed than the arrow-keys the custom action is invoked (if set). 
 
 **Attributes**
 - **IMenuItem**: The menuItem with the set custom action
 - **ConsoleKeyInfo**: The keycombination pressed by the user
-- **bool**: Returns a boolean indicating if the keypress have been handled. If ```true```, the parents custom action is not invoked.
 
 Here are some example actions
 
 ```csharp
 	IMenuItem subMenu = new MenuItem("My SubMenu #1");
 	IMenuItem subsubMenu1 = new MenuItem("Sub1");
-	subsubMenu1.SetAction((m, k) =>
+->>	subsubMenu1.OnKeyPressed += (m, k) =>
 	{
 		if (k.Key == ConsoleKey.Enter)
 		{
 			m.Content.IsMarked = !m.Content.IsMarked;
 			m.Content.Render();
-			return true;
-		}
-		return false;
-	});
+		} 
+	};
 	subMenu.Children.Add(1, subsubMenu1);
 	subMenu.Children.Add(2, new MenuItem("Sub2"));
 	subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-->> subMenu.SetAction(SetItemMarkOnParent);
+->>	subMenu.OnKeyPressed += SetItemMarkOnParent;
 
 	IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
+	// subMenu2 here have two actions acting independent of each other.
+->>	subMenu2.OnKeyPressed += (m, k) =>
+	{
+		if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
+		{
+			m.Children.IsVisible = !m.Children.IsVisible;
+			m.ReRender();
+		}
+	};
+->>	subMenu2.OnKeyPressed += SetItemMark;
 	subMenu2.Children.Add(1, new MenuItem("Sub1"));
 	subMenu2.Children.Add(2, new MenuItem("Sub2"));
-->> subMenu2.SetAction(SetItemMarkChildren);
 
 	IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
-->> subMenu3.SetAction(SetItemMark);
+->>	subMenu3.OnKeyPressed += SetItemMark;
 
-	IMenuItem menu = new MenuItem("Simple menu");
-	menu.Position = new Vector2(0, 1);
+	IMenuItem menu = new MenuItem("Simple menu")
+	{
+		Position = new Vector2(0, 1)
+	};
 	menu.Children.Add(1, subMenu);
 	menu.Children.Add(2, subMenu2);
 	menu.Children.Add(3, subMenu3);
 	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
 	menu.Content.IsSelected = true;
 	menu.Render();
+
+	// Render() use these to render
+	//menu.Content.Render();
+	//menu.Children.Render();
+	//menu.ReRender();
 
 	ConsoleKeyInfo keyInput;
 	do
@@ -404,17 +417,16 @@ Here are some example actions
 ```
 
 ```csharp
-	static bool SetItemMark(IMenuItem item, ConsoleKeyInfo key)
-	{
-		if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
-		{
-			return false;
-		}
+    static void SetItemMark(IMenuItem item, ConsoleKeyInfo key)
+    {
+        if (key.Key is not ConsoleKey.Enter and not ConsoleKey.E)
+        {
+            return;
+        }
 
-		item.Content.IsMarked = !item.Content.IsMarked;
-		item.Content.Render();
-		return false;
-	}
+        item.Content.IsMarked = !item.Content.IsMarked;
+        item.Content.Render();
+    }
 ```
 
 ```csharp
