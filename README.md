@@ -49,7 +49,7 @@ Below is an example of a simple menu. This will print a simple menu with three i
 ```
 
 ## Vector2
-```class Vector2 : IEquatable<Vector2>```
+```record struct Vector2(int X, int Y)```
 
 Represents a point in a 2D space or 2D area with integers for X and Y.
 
@@ -59,9 +59,6 @@ Represents a point in a 2D space or 2D area with integers for X and Y.
     public int Y { get; set; }
 ```
 
-**Methods**
-```csharp
-	Vector2 Duplicate();
 ```
 **Static**
 ```csharp
@@ -212,8 +209,8 @@ Offsets the first child and the rest follows. If set to Vector2(0,0), the first 
 
 **Output**
 ```bash
-Simple menu]
-          [Menu 1][Menu 2][Menu 3]
+[Simple menu]
+          [Menu 1] Menu 2  Menu 3
 ```
 
 ## Renderers

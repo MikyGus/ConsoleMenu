@@ -90,7 +90,7 @@ public class ChildrenManager : IChildrenManager
         }
         _isCurrentlyVisible = true;
 
-        Vector2 position = PositionOfFirstChild.Duplicate();
+        Vector2 position = PositionOfFirstChild;
         int index = 0;
         IEnumerable<IMenuItem> children = GetChildren().Select(m => m.Item);
         foreach (IMenuItem menuItem in children)
@@ -98,7 +98,7 @@ public class ChildrenManager : IChildrenManager
             menuItem.Content.IsSelected = Owner is null
                 ? Selection.CurrentIndex == index
                 : Selection.CurrentIndex == index && Owner.Content.IsSelected;
-            menuItem.Position = position.Duplicate();
+            menuItem.Position = position;
             menuItem.Render();
             position = NextChildPosition(position, menuItem.AreaNeeded());
             index++;
@@ -113,7 +113,6 @@ public class ChildrenManager : IChildrenManager
             foreach (IMenuItem menuItem in children)
             {
                 menuItem.EraseContent();
-                menuItem.Position = null;
             }
             _isCurrentlyVisible = false;
         }

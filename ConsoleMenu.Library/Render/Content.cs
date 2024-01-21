@@ -23,11 +23,11 @@ internal class Content : IContent
 
     public void SetRenderer(Action<IMenuItem> action, Func<IMenuItem, Vector2> areaNeeded)
     {
-        _action = action;
-        _areaNeeded = areaNeeded;
+        _action = action ?? throw new ArgumentNullException(nameof(action));
+        _areaNeeded = areaNeeded ?? throw new ArgumentNullException(nameof(areaNeeded));
     }
 
-    public Vector2 AreaNeeded() => _areaNeeded?.Invoke(Owner);
+    public Vector2 AreaNeeded() => _areaNeeded.Invoke(Owner);
     public void Render()
     {
         RenderContent();
@@ -38,7 +38,7 @@ internal class Content : IContent
     {
         if (IsCurrentlyVisible)
         {
-            EraseContent(Owner.Position.Duplicate());
+            EraseContent(Owner.Position);
         }
         IsCurrentlyVisible = false;
     }
