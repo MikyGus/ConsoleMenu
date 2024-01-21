@@ -50,13 +50,13 @@ internal class All
             }
         };
 
-        var subsubsubMenu = new MenuItem("My SubSubMenu");
+        MenuItem subsubsubMenu = new MenuItem("My SubSubMenu");
         subsubsubMenu.Children.Add(6, subsubMenu2);
         subsubsubMenu.Children.Add(4, subsubMenu3);
         subsubsubMenu.Children.Add(1, subsubMenu4);
         subsubsubMenu.Children.Orientation = ContentOrientation.Vetical;
 
-        var subMenu2 = new MenuItem("My SubMenu2");
+        MenuItem subMenu2 = new MenuItem("My SubMenu2");
         subMenu2.Children.Add(6, subsubsubMenu);
         subMenu2.Children.Add(4, new MenuItem("Sub2"));
         subMenu2.Children.Add(1, new MenuItem("Sub3"));
@@ -71,7 +71,8 @@ internal class All
         };
         subMenu2.Children.Selection.OnSelectionRendered += x =>
         {
-            x.Item.Item.Children.IsVisible = true;
+            x.Item.Item.Children.IsVisible = x.IsSelected;
+            x.Item.Item.ReRender();
         };
 
         menu.Children.Add(1, subMenu);

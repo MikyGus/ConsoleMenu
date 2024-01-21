@@ -41,7 +41,7 @@ public class MenuItem : IMenuItem
     public void SetRenderer<T>() where T : IContentRenderer, new()
     {
         IContentRenderer contentRenderer = new T();
-        if (((Content)Content).IsCurrentlyVisible)
+        if (Content is Content c && c.IsCurrentlyVisible)
         {
             Content.EraseContent();
             Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
