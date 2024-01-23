@@ -16,5 +16,8 @@ All.Run();
 //SetAction.Run();
 //HideUnhide.Run();
 
+//var textInputted = new TextInput(new Vector2(0, 4), 10);
+//Console.SetCursorPosition(0, 10);
+//Console.WriteLine(textInputted.Text);
 
 Console.WriteLine("\n\n\n\n\n\n\n\n");
