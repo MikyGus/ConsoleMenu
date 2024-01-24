@@ -1,4 +1,5 @@
 ﻿using ConsoleMenu.Library.Models;
+using System.Text.RegularExpressions;
 
 namespace ConsoleMenu.Library.FormInput;
 public class TextInput : IFormInput
@@ -14,13 +15,14 @@ public class TextInput : IFormInput
         _maxLengthOfText = maxLengthOfText;
     }
 
-    public string GetUserInput()
+    public bool GetUserInput(out string text)
     {
         Render();
         Console.SetCursorPosition(_position.X + 1, _position.Y + 1);
-        ReadInput();
+        ConsoleKeyInfo exitKey = ReadInput();
         EraseContent();
-        return Text ?? throw new ArgumentNullException();
+        text = Text ?? string.Empty;
+        return exitKey.Key == ConsoleKey.Enter;
     }
 
     public void Render() => RenderBorder();
@@ -37,14 +39,18 @@ public class TextInput : IFormInput
 
     public Vector2 AreaNeeded() => new(_maxLengthOfText + 2, 3);
 
-    private void ReadInput()
+    private ConsoleKeyInfo ReadInput()
     {
-        char[] chars = new char[_maxLengthOfText];
+        const string pattern = @"[\w \.\-_!""#%&/()=\?\+\\]";
+        char[] chars = new string(' ', _maxLengthOfText).ToCharArray();
+
         int charIndex = 0;
         ConsoleKeyInfo key;
         do
         {
             key = Console.ReadKey(true);
+            bool isKeyCharValid = Regex.IsMatch(key.KeyChar.ToString(), pattern);
+
             if (key.Key == ConsoleKey.Backspace)
             {
                 int positionX = _position.X + charIndex < _position.X + 1 ? _position.X + 1 : _position.X + charIndex;
@@ -57,15 +63,15 @@ public class TextInput : IFormInput
                     charIndex--;
                 }
             }
-            else if (charIndex < _maxLengthOfText)
+            else if (charIndex < _maxLengthOfText && isKeyCharValid)
             {
                 Console.Write(key.KeyChar);
                 chars[charIndex] = key.KeyChar;
                 charIndex++;
             }
         } while (key.Key is not ConsoleKey.Enter and not ConsoleKey.Escape);
-        Text = new string(chars).Trim('\0', ' ', '\r');
-
+        Text = key.Key == ConsoleKey.Enter ? new string(chars).Trim() : Text;
+        return key;
     }
 
     private void RenderBorder()

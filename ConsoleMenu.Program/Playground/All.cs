@@ -23,7 +23,7 @@ internal class All
             if (k.Key == ConsoleKey.Enter)
             {
                 var value = new TextInput(m.Position, 20);
-                m.Content.Title = value.GetUserInput();
+                m.Content.Title = value.GetUserInput(out string _text) ? _text : m.Content.Title;
                 //value.Render();
                 //value.EraseContent();
                 //m.Content.Title = value.Text;
