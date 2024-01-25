@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Managers;
+﻿using ConsoleMenu.Library.FormInput;
+using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
@@ -16,7 +17,20 @@ internal class All
         var subMenu = new MenuItem("My SubMenu");
         subMenu.Children.Add(1, new MenuItem("Sub1"));
         subMenu.Children.Add(4, new MenuItem("Sub2"));
-        subMenu.Children.Add(1, new MenuItem("Sub3"));
+        var enterValueMenuItem = new MenuItem("Please enter value");
+        enterValueMenuItem.OnKeyPressed += (m, k) =>
+        {
+            if (k.Key == ConsoleKey.Enter)
+            {
+                var value = new TextInput(m.Position, 20);
+                m.Content.Title = value.GetUserInput(out string _text) ? _text : m.Content.Title;
+                //value.Render();
+                //value.EraseContent();
+                //m.Content.Title = value.Text;
+                m.ReRender();
+            }
+        };
+        subMenu.Children.Add(1, enterValueMenuItem);
         subMenu.Children.Orientation = ContentOrientation.Horizontal;
 
         var subsubMenu2 = new MenuItem("My SubSubMenu2");
