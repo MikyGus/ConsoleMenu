@@ -12,6 +12,7 @@
 		- [Visibility](#visibility)
 		- [Position](#position)
 	- [Children of MenuItem](#children-of-menuitem)
+		- [Access child node of MenuItem](#access-child-node-of-menuitem)
 		- [Add children](#add-children)
 		- [Remove children](#remove-children)
 		- [Content orientation](#content-orientation)
@@ -99,6 +100,20 @@ The first menuItem is by default placed at the coordinates 0,0. With the ```Vect
 	menu.Render();
 ```
 ## Children of MenuItem
+### Access child node of MenuItem
+After we have added a child-node to our MenuItem we can access it with a index.
+
+```MenuItem[int index]``` returns a ```IMenuItem``` at index counting from the top 
+```MenuItem[string title]``` returns a ```IMenuItem```, the first (if more than one) with the title equal to 'title'
+
+```csharp
+	IMenuItem menuSettings = new MenuItem("Settings");
+	menuSettings.Children.Add(1, new MenuItem("Sub 1"));
+	menuSettings["Sub 1"].Content.Title = "New Sub 1";
+	menuSettings["New Sub 1"].Children.Add(1, new MenuItem("Sub Sub 1"));
+	menuSettings[0][0].Content.Title = "New Sub Sub 1";
+```
+
 ### Add children
 To add children to a menuItem we use the method ```Add()```.
 
