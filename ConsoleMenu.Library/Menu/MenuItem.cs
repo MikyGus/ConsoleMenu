@@ -103,6 +103,9 @@ public class MenuItem : IMenuItem
 
     public IChildrenManager Children => _childrenManager;
 
+    public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
+    public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
+
     public bool KeyPressed(ConsoleKeyInfo key)
     {
         if (Children.HaveChildren())

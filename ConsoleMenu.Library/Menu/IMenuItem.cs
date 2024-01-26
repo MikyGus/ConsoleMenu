@@ -6,6 +6,8 @@ using ConsoleMenu.Library.Render;
 namespace ConsoleMenu.Library.Menu;
 public interface IMenuItem : IRenderContent, IVisibility
 {
+    IMenuItem this[int i] { get; }
+    IMenuItem this[string s] { get; }
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }
     /// <summary>
