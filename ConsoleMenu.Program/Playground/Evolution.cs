@@ -12,6 +12,8 @@ internal class Evolution
         menuSettings["New Sub 1"].Children.Add(1, new MenuItem("Sub Sub 1"));
         menuSettings[0][0].Content.Title = "New Sub Sub 1";
 
+        menuSettings.AddChild("Sub 2");
+
         menuSettings.Render();
 
 

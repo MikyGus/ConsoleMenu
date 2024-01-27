@@ -10,6 +10,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     IMenuItem this[string s] { get; }
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }
+
+
     /// <summary>
     /// Pushes the pressed key down all selected children.
     /// </summary>
@@ -37,6 +39,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// Removes ALL nodes, starting at the root, and renders them again.
     /// </summary>
     void ReRender();
+    void AddChild(string title);
+
     IContent Content { get; }
     IChildrenManager Children { get; }
 }
