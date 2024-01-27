@@ -36,6 +36,8 @@ public class ChildrenManager : IChildrenManager
         IChildItem findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
         _children.Remove(findItemToRemove);
     }
+    public void Remove(int itemIndex) => _children.RemoveAt(itemIndex);
+
     public IEnumerable<IChildItem> GetChildren() => _children;
     public IChildItem GetChild(int index)
         => index < 0 || index >= _children.Count

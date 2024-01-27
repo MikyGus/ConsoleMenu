@@ -3,6 +3,7 @@ using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.PerformAction;
 using ConsoleMenu.Library.Render;
+using System.Diagnostics;
 
 namespace ConsoleMenu.Library.Menu;
 public class MenuItem : IMenuItem
@@ -25,6 +26,7 @@ public class MenuItem : IMenuItem
         IsVisible = true;
         MayCollapse = true;
         Content = new Content() { Owner = this, Title = title };
+        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been created.", "Ctor");
     }
 
     public Vector2 AreaNeeded()
@@ -49,7 +51,7 @@ public class MenuItem : IMenuItem
             return;
         }
         Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-
+        Debug.WriteLine($"MenuItem: '{Content.Title}' have now changed renderer.", "SetRenderer");
     }
 
     public void Render()
@@ -64,6 +66,7 @@ public class MenuItem : IMenuItem
         Vector2 areaNeeded = Content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
+        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been Rendered", "Render");
     }
 
     public void EraseContent()
@@ -74,6 +77,7 @@ public class MenuItem : IMenuItem
             _childrenManager.EraseContent();
             _isCurrentlyVisible = false;
         }
+        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been erased.", "EraseContent");
     }
 
     internal MenuItem GetRoot(MenuItem menuItem)
@@ -106,9 +110,12 @@ public class MenuItem : IMenuItem
     public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
     public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
+    public void RemoveChild(int i) => _childrenManager.Remove(i);
+    public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
 
     public bool KeyPressed(ConsoleKeyInfo key)
     {
+        Debug.WriteLine($"MenuItem: '{Content.Title}' is about to process pressed keys", "KeyPressed");
         if (Children.HaveChildren())
         {
             if (Children.Selection.GetSelectedChild().Item.KeyPressed(key))

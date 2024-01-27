@@ -1,7 +1,16 @@
 ﻿using ConsoleMenu.Program.Playground;
+using System.Diagnostics;
+
+//Trace.Listeners.Add(new TextWriterTraceListener(
+//    File.CreateText(Path.Combine(Environment.GetFolderPath(
+//        Environment.SpecialFolder.DesktopDirectory), "log.txt"))));
+Trace.Listeners.Add(new TextWriterTraceListener(
+    File.CreateText(Path.Combine(Directory.GetCurrentDirectory(), "log.txt"))));
+Trace.AutoFlush = true;
 
 Console.WriteLine("******** Console Menu ***********");
 Console.WriteLine("\n\n\n");
+Debug.WriteLine("Application started");
 
 //All.Run();
 //SimpleMenu.Render_SimpleMenu_Horizontal();
@@ -21,4 +30,5 @@ Console.WriteLine("\n\n\n");
 //Console.WriteLine(textInputted.Text);
 
 Evolution.Run();
+Debug.WriteLine("Application ended");
 Console.WriteLine("\n\n\n\n\n\n\n\n");

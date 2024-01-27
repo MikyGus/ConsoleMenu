@@ -40,6 +40,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// </summary>
     void ReRender();
     void AddChild(string title);
+    void RemoveChild(int i);
+    void RemoveChild(IMenuItem menuItem);
 
     IContent Content { get; }
     IChildrenManager Children { get; }

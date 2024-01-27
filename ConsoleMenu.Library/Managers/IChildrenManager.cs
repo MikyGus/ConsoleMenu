@@ -24,6 +24,7 @@ public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuIte
     ContentOrientation Orientation { get; set; }
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
+    void Remove(int itemIndex);
     bool HaveChildren();
     IEnumerable<IChildItem> GetChildren();
     IChildItem GetChild(int index);
