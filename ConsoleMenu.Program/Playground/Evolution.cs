@@ -13,8 +13,8 @@ internal class Evolution
         //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
 
-        //menuSettings.RemoveChild(1); // with index
-        //menuSettings.RemoveChild(menuSettings[0]); // by reference
+        menuSettings.RemoveChild(1); // with index
+        menuSettings.RemoveChild(menuSettings[0]); // by reference
 
         //Console.WriteLine(menuSettings[0].Content.Title);
 

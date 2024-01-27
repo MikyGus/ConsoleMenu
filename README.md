@@ -138,27 +138,25 @@ The method takes one (1) string argument, used as the title of the menuItem.
 ```
 
 ### Remove children
-If you need to remove child from a menuItems children you use the ```Remove()``` method.
+If you need to remove child from a menuItems children you use the ```MenuItem.RemoveChild()``` method.
 
-The method ```Remove(IMenuItem)``` takes one (1) argument, ```IMenuItem```.
+- ```(void) MenuItem.Remove(IMenuItem)``` 
+  Takes one (1) argument, ```IMenuItem```. It removes the first item that matches provided argument. 
+  If item is not found an ```ArgumentException``` is thrown.
+- ```(void) MenuItem.Remove(int)```
+  Takes one (1) argument, ```int```. Removes menuItem at provided index.
+  If item is not found an ```ArgumentOutOfRangeException``` is thrown.
+  
 
 ```csharp
-	IMenuItem menuItem = new MenuItem("Menu 1");
+	IMenuItem menuSettings = new MenuItem("Settings");
+	menuSettings.AddChild("Sub 1");
+	menuSettings["Sub 1"].AddChild("Sub Sub 1");
+	menuSettings[0].AddChild("Sub Sub 2");
+	menuSettings.AddChild("Sub 2");
 
-	MenuItem menu = new MenuItem("Simple menu");
-	menu.Position = new Vector2(0, 1);
-	menu.Children.Add(1, menuItem);
-	menu.Children.Add(2, new MenuItem("Menu 2"));
-	menu.Children.Add(3, new MenuItem("Menu 3"));
-->> menu.Children.Remove(menuItem);
-	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-	menu.Render();
-```
-
-**Output**
-```bash
- Simple menu 
-  Menu 2  Menu 3 
+->>	menuSettings.RemoveChild(1); // with index
+->>	menuSettings.RemoveChild(menuSettings[0]); // by reference
 ```
 
 ### Content orientation
