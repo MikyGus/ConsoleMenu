@@ -6,14 +6,15 @@ internal class Evolution
     public static void Run()
     {
         IMenuItem menuSettings = new MenuItem("Settings");
-        menuSettings.Children.Add(1, new MenuItem("Sub 1"));
-        menuSettings["Sub 1"].Content.Title = "New Sub 1";
-        menuSettings["New Sub 1"].Children.Add(1, new MenuItem("Sub Sub 1"));
-        menuSettings[0][0].Content.Title = "New Sub Sub 1";
+        menuSettings.AddChild("Sub 1");
+        //menuSettings["Sub 1"].Content.Title = "New Sub 1";
+        menuSettings["Sub 1"].AddChild("Sub Sub 1");
+        menuSettings[0].AddChild("Sub Sub 2");
+        //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
 
         //menuSettings.RemoveChild(1); // with index
-        menuSettings.RemoveChild(menuSettings[0]); // by reference
+        //menuSettings.RemoveChild(menuSettings[0]); // by reference
 
         //Console.WriteLine(menuSettings[0].Content.Title);
 
