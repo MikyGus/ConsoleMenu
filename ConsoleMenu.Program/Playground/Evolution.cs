@@ -1,4 +1,5 @@
 ﻿using ConsoleMenu.Library.Menu;
+using static ConsoleMenu.Library.Menu.MenuItem;
 
 namespace ConsoleMenu.Program.Playground;
 internal class Evolution
@@ -12,7 +13,7 @@ internal class Evolution
         menuSettings[0].AddChild("Sub Sub 2");
         //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
-
+        menuSettings.OrientationOfChildren = Orientation.Horizontal;
         //menuSettings.RemoveChild(1); // with index
         //menuSettings.RemoveChild(menuSettings[0]); // by reference
 

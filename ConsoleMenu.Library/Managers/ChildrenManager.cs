@@ -13,7 +13,6 @@ public class ChildrenManager : IChildrenManager
     internal Vector2 PositionOfFirstChild { get => _positionOfFirstChild; set => _positionOfFirstChild = value + PositionOffsetOfFirstChild; }
     public Vector2 PositionOffsetOfFirstChild { get; set; } = Vector2.RIGHT;
     public int PositionOffsetToNextChild { get; set; } = 1;
-    public ContentOrientation Orientation { get; set; } = ContentOrientation.Vetical;
     public bool IsVisible { get; set; } = true;
     public bool MayCollapse { get; set; } = true;
     public ISelectionManager Selection { get; init; }
@@ -46,7 +45,7 @@ public class ChildrenManager : IChildrenManager
 
 
     private Vector2 OffsetToNextChild()
-        => Orientation == ContentOrientation.Vetical
+        => Owner.OrientationOfChildren == Orientation.Vertical
         ? new(0, PositionOffsetToNextChild)
         : new(PositionOffsetToNextChild, 0);
 
@@ -57,9 +56,9 @@ public class ChildrenManager : IChildrenManager
             return Vector2.ZERO;
         }
 
-        switch (Orientation)
+        switch (Owner.OrientationOfChildren)
         {
-            case ContentOrientation.Vetical:
+            case Orientation.Vertical:
                 if (_children.Any())
                 {
                     return _children
@@ -68,7 +67,7 @@ public class ChildrenManager : IChildrenManager
                 }
 
                 break;
-            case ContentOrientation.Horizontal:
+            case Orientation.Horizontal:
                 if (_children.Any())
                 {
                     return _children
@@ -125,12 +124,12 @@ public class ChildrenManager : IChildrenManager
             return position;
         }
         Vector2 offset = OffsetToNextChild();
-        switch (Orientation)
+        switch (Owner.OrientationOfChildren)
         {
-            case ContentOrientation.Vetical:
+            case Orientation.Vertical:
                 position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
                 break;
-            case ContentOrientation.Horizontal:
+            case Orientation.Horizontal:
                 position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
                 break;
         }

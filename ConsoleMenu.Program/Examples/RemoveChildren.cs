@@ -16,7 +16,7 @@ internal class RemoveChildren
         menu.Children.Add(2, new MenuItem("Menu 2"));
         menu.Children.Add(3, new MenuItem("Menu 3"));
         menu.Children.Remove(menuItem);
-        menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+        menu.OrientationOfChildren = Orientation.Horizontal;
         menu.Render();
     }
 }

@@ -1,5 +1,4 @@
-﻿using ConsoleMenu.Library.Managers;
-using ConsoleMenu.Library.Menu;
+﻿using ConsoleMenu.Library.Menu;
 
 namespace ConsoleMenu.Library.PerformAction;
 public class ActionToPerform
@@ -12,15 +11,15 @@ public class ActionToPerform
     /// <returns>Returns a bool stating if the key were used for an action or not (true=used). Tried to move selection, but failed returns false.</returns>
     public static bool MoveSelection(ConsoleKeyInfo key, IMenuItem menuItem)
     {
-        switch (key.Key, menuItem.Children.Orientation)
+        switch (key.Key, menuItem.OrientationOfChildren)
         {
-            case (ConsoleKey.UpArrow, ContentOrientation.Vetical):
+            case (ConsoleKey.UpArrow, Orientation.Vertical):
                 return menuItem.Children.Selection.Decrement();
-            case (ConsoleKey.DownArrow, ContentOrientation.Vetical):
+            case (ConsoleKey.DownArrow, Orientation.Vertical):
                 return menuItem.Children.Selection.Increment();
-            case (ConsoleKey.RightArrow, ContentOrientation.Horizontal):
+            case (ConsoleKey.RightArrow, Orientation.Horizontal):
                 return menuItem.Children.Selection.Increment();
-            case (ConsoleKey.LeftArrow, ContentOrientation.Horizontal):
+            case (ConsoleKey.LeftArrow, Orientation.Horizontal):
                 return menuItem.Children.Selection.Decrement();
         }
         menuItem.PerformAction(key);

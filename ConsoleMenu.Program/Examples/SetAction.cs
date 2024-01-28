@@ -18,7 +18,7 @@ internal class SetAction
         };
         subMenu.Children.Add(1, subsubMenu1);
         subMenu.Children.Add(2, new MenuItem("Sub2"));
-        subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+        subMenu.OrientationOfChildren = Orientation.Horizontal;
         subMenu.OnKeyPressed += SetItemMarkOnParent;
 
         IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
@@ -44,7 +44,7 @@ internal class SetAction
         menu.Children.Add(1, subMenu);
         menu.Children.Add(2, subMenu2);
         menu.Children.Add(3, subMenu3);
-        menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+        menu.OrientationOfChildren = Orientation.Horizontal;
         menu.Content.IsSelected = true;
         menu.Render();
 

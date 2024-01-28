@@ -105,8 +105,10 @@ public class MenuItem : IMenuItem
 
     public IContent Content { get; private set; }
 
+    #region Children
     public IChildrenManager Children => _childrenManager;
 
+    public Orientation OrientationOfChildren { get; set; }
     public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
     public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
@@ -114,7 +116,7 @@ public class MenuItem : IMenuItem
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
     public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);
     public bool HaveChildren() => _childrenManager.GetChildren().Any();
-
+    #endregion
     public bool KeyPressed(ConsoleKeyInfo key)
     {
         Debug.WriteLine($"MenuItem: '{Content.Title}' is about to process pressed keys", "KeyPressed");

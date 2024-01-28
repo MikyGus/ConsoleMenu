@@ -44,6 +44,10 @@ public interface IMenuItem : IRenderContent, IVisibility
     void RemoveChild(IMenuItem menuItem);
     IEnumerable<IMenuItem> GetChildren();
     bool HaveChildren();
+    ///// <summary>
+    ///// Set if the children should be rendered in a horizontal or vertical orientation.
+    ///// </summary>
+    Orientation OrientationOfChildren { get; set; }
 
     IContent Content { get; }
     IChildrenManager Children { get; }

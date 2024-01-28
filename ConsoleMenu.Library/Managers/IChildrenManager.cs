@@ -4,7 +4,6 @@ using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
 
-public enum ContentOrientation { Vetical, Horizontal }
 public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuItem>
 {
     /// <summary>
@@ -18,10 +17,6 @@ public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuIte
     /// This is the minimum steps. The area taken by the previous child might expand the steps to next child.
     /// </summary>
     int PositionOffsetToNextChild { get; set; }
-    /// <summary>
-    /// Set if the children should be rendered in a horizontal or vertical orientation.
-    /// </summary>
-    ContentOrientation Orientation { get; set; }
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
     void Remove(int itemIndex);
