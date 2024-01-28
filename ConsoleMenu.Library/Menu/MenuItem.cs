@@ -112,11 +112,13 @@ public class MenuItem : IMenuItem
     public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
     public void RemoveChild(int i) => _childrenManager.Remove(i);
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
+    public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);
+    public bool HaveChildren() => _childrenManager.GetChildren().Any();
 
     public bool KeyPressed(ConsoleKeyInfo key)
     {
         Debug.WriteLine($"MenuItem: '{Content.Title}' is about to process pressed keys", "KeyPressed");
-        if (Children.HaveChildren())
+        if (HaveChildren())
         {
             if (Children.Selection.GetSelectedChild().Item.KeyPressed(key))
             {

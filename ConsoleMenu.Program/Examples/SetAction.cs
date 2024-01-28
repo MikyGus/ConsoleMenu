@@ -94,7 +94,7 @@ internal class SetAction
             return;
         }
 
-        if (item.Children.HaveChildren())
+        if (item.HaveChildren())
         {
             foreach (IChildItem child in item.Children.GetChildren())
             {

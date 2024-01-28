@@ -44,8 +44,6 @@ public class ChildrenManager : IChildrenManager
             ? throw new ArgumentOutOfRangeException(nameof(index))
             : _children[index];
 
-    public bool HaveChildren() => _children.Any();
-
 
     private Vector2 OffsetToNextChild()
         => Orientation == ContentOrientation.Vetical

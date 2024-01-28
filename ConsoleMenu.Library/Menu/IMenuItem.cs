@@ -42,6 +42,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     void AddChild(string title);
     void RemoveChild(int i);
     void RemoveChild(IMenuItem menuItem);
+    IEnumerable<IMenuItem> GetChildren();
+    bool HaveChildren();
 
     IContent Content { get; }
     IChildrenManager Children { get; }

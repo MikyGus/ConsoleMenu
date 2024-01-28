@@ -51,11 +51,13 @@ public class SelectionManager : ISelectionManager
         return false;
     }
     public IChildItem GetSelectedChild()
-        => Owner.HaveChildren() == false ? throw new InvalidOperationException() : Owner.GetChild(CurrentIndex);
+        => Owner.GetChildren().Any() == false
+        ? throw new InvalidOperationException()
+        : Owner.GetChild(CurrentIndex);
 
     private void RenderSelection(bool isSelected)
     {
-        if (Owner.HaveChildren() == false)
+        if (Owner.GetChildren().Any() == false)
         {
             throw new ArgumentNullException("No children present!");
         }
