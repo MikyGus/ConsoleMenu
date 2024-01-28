@@ -24,4 +24,5 @@ public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuIte
     IChildItem GetChild(int index);
 
     ISelectionManager Selection { get; init; }
+    Orientation OrientationOfChildren { get; set; }
 }

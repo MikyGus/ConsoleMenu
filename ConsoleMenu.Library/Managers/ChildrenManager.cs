@@ -15,6 +15,7 @@ public class ChildrenManager : IChildrenManager
     public int PositionOffsetToNextChild { get; set; } = 1;
     public bool IsVisible { get; set; } = true;
     public bool MayCollapse { get; set; } = true;
+    public Orientation OrientationOfChildren { get; set; }
     public ISelectionManager Selection { get; init; }
 
     public ChildrenManager(IMenuItem owner)
@@ -45,7 +46,7 @@ public class ChildrenManager : IChildrenManager
 
 
     private Vector2 OffsetToNextChild()
-        => Owner.OrientationOfChildren == Orientation.Vertical
+        => OrientationOfChildren == Orientation.Vertical
         ? new(0, PositionOffsetToNextChild)
         : new(PositionOffsetToNextChild, 0);
 
@@ -56,7 +57,7 @@ public class ChildrenManager : IChildrenManager
             return Vector2.ZERO;
         }
 
-        switch (Owner.OrientationOfChildren)
+        switch (OrientationOfChildren)
         {
             case Orientation.Vertical:
                 if (_children.Any())
@@ -124,7 +125,7 @@ public class ChildrenManager : IChildrenManager
             return position;
         }
         Vector2 offset = OffsetToNextChild();
-        switch (Owner.OrientationOfChildren)
+        switch (OrientationOfChildren)
         {
             case Orientation.Vertical:
                 position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;

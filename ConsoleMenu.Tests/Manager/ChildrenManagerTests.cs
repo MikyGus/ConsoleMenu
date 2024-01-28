@@ -87,7 +87,7 @@ public class ChildrenManagerTests
             _sut.Add(1, child);
         }
         _sut.PositionOffsetToNextChild = offsetToNextChild;
-        _sut.Orientation = ContentOrientation.Horizontal;
+        ((ChildrenManager)_sut).OrientationOfChildren = Orientation.Horizontal;
         _sut.PositionOffsetOfFirstChild = firstChOffset;
         _sut.Render();
         // Act
