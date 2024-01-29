@@ -108,102 +108,99 @@ After we have added a child-node to our MenuItem we can access it with a index.
 
 ```csharp
 	IMenuItem menuSettings = new MenuItem("Settings");
-	menuSettings.Children.Add(1, new MenuItem("Sub 1"));
+	menuSettings.AddChild("Sub 1");
 	menuSettings["Sub 1"].Content.Title = "New Sub 1";
-	menuSettings["New Sub 1"].Children.Add(1, new MenuItem("Sub Sub 1"));
+	menuSettings["New Sub 1"].AddChild("Sub Sub 1");
 	menuSettings[0][0].Content.Title = "New Sub Sub 1";
 ```
 
 ### Add children
-To add children to a menuItem we use the method ```Add()```.
+To add children to a menuItem we use the ```MenuItem.AddChild()``` method
 
-The method ```(void) Add(int, IMenuItem)``` takes 2 arguments. 
-1. **Position in list**: An integer value stating the order to display the children. Lowest number is displayed first. Children may have the same position-number.
-2. **MenuItem**: \<IMenuItem> The menuItem to add as a child. 
-
+```(void) MenuItem.AddChild(string MenuItemTitle) ```
+The method takes one (1) string argument, used as the title of the menuItem.
 
 ```csharp
-	MenuItem subMenu = new MenuItem("My SubMenu #1");
-->> subMenu.Children.Add(1, new MenuItem("Sub1"));
-->> subMenu.Children.Add(2, new MenuItem("Sub2"));
-	subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-
-	MenuItem subMenu2 = new MenuItem("My SubMenu #2");
-->> subMenu2.Children.Add(1, new MenuItem("Sub1"));
-->> subMenu2.Children.Add(2, new MenuItem("Sub2"));
-
-	MenuItem menu = new MenuItem("Simple menu");
-	menu.Position = new Vector2(0, 1);
-->> menu.Children.Add(1, subMenu);
-->> menu.Children.Add(2, subMenu2);
-->> menu.Children.Add(3, new MenuItem("Menu 3"));
-	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-	menu.Render();
+	IMenuItem menuSettings = new MenuItem("Settings");
+	menuSettings.AddChild("Sub 1");
+	menuSettings["Sub 1"].AddChild("Sub Sub 1");
+	menuSettings[0].AddChild("Sub Sub 2");
+	menuSettings.AddChild("Sub 2");
 ```
 
 **Output**
 ```bash
-Simple menu
-  My SubMenu #1  My SubMenu #2  Menu 3
-   Sub1  Sub2     Sub1
-                  Sub2
+ Settings
+  Sub 1
+   Sub Sub 1
+   Sub Sub 2
+  Sub 2
 ```
 
 ### Remove children
-If you need to remove child from a menuItems children you use the ```Remove()``` method.
+If you need to remove child from a menuItems children you use the ```MenuItem.RemoveChild()``` method.
 
-The method ```Remove(IMenuItem)``` takes one (1) argument, ```IMenuItem```.
+- ```(void) MenuItem.Remove(IMenuItem)``` 
+  Takes one (1) argument, ```IMenuItem```. It removes the first item that matches provided argument. 
+  If item is not found an ```ArgumentException``` is thrown.
+- ```(void) MenuItem.Remove(int)```
+  Takes one (1) argument, ```int```. Removes menuItem at provided index.
+  If item is not found an ```ArgumentOutOfRangeException``` is thrown.
+  
 
 ```csharp
-	IMenuItem menuItem = new MenuItem("Menu 1");
+	IMenuItem menuSettings = new MenuItem("Settings");
+	menuSettings.AddChild("Sub 1");
+	menuSettings["Sub 1"].AddChild("Sub Sub 1");
+	menuSettings[0].AddChild("Sub Sub 2");
+	menuSettings.AddChild("Sub 2");
 
-	MenuItem menu = new MenuItem("Simple menu");
-	menu.Position = new Vector2(0, 1);
-	menu.Children.Add(1, menuItem);
-	menu.Children.Add(2, new MenuItem("Menu 2"));
-	menu.Children.Add(3, new MenuItem("Menu 3"));
-->> menu.Children.Remove(menuItem);
-	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-	menu.Render();
-```
-
-**Output**
-```bash
- Simple menu 
-  Menu 2  Menu 3 
+->>	menuSettings.RemoveChild(1); // with index
+->>	menuSettings.RemoveChild(menuSettings[0]); // by reference
 ```
 
 ### Content orientation
 As default the children to a menuItem have a vertical orientation. To print in a horizontal orientation we add a ContentOrientation.
 
 ```csharp
-	MenuItem menu = new MenuItem("Simple menu");
-	menu.Position = new Vector2(0,1); 
-	menu.Children.Add(1, new MenuItem("Menu 1"));
-	menu.Children.Add(2, new MenuItem("Menu 2"));
-	menu.Children.Add(3, new MenuItem("Menu 3"));
-->>	menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+	IMenuItem menu = new MenuItem("Simple menu");
+	menu.AddChild("My SubMenu #1");
+	menu[0].AddChild("Sub1");
+	menu[0].AddChild("Sub2");
+	string subMenu2Title = "My SubMenu #2";
+	menu.AddChild(subMenu2Title);
+	menu[subMenu2Title].AddChild("Sub1");
+	menu[subMenu2Title].AddChild("Sub2");
+	menu.AddChild("My SubMenu #3");
+	// This will only orient the children of 'menu', not their children.
+->>	menu.OrientationOfChildren = Orientation.Horizontal;
 	menu.Render();
 ```
 
 The options for Orientation are ```Vertical``` (default) and ```Horizontal```
 ```csharp
-menu.Children.Orientation = Library.Managers.ContentOrientation.Vetical;
-menu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
+menu.OrientationOfChildren = Orientation.Horizontal;
+menu.OrientationOfChildren = Orientation.Vertical;
 ```
 
 **Output - Vertical**
 ```bash
  Simple menu 
-  Menu 1
-  Menu 2
-  Menu 3
+  My SubMenu #1
+   Sub1
+   Sub2
+  My SubMenu #2
+   Sub1
+   Sub2
+  My SubMenu #3
 ```
 
 **Output - Horizontal**
 ```bash
  Simple menu 
-  Menu 1  Menu 2  Menu 3 
+  My SubMenu #1  My SubMenu #2  My SubMenu #3
+   Sub1           Sub1
+   Sub2           Sub2
 ```
 
 

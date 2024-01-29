@@ -2,7 +2,7 @@
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
-public class SelectionManager : ISelectionManager
+internal class SelectionManager : ISelectionManager
 {
     public int CurrentIndex { get; private set; }
 
@@ -21,7 +21,7 @@ public class SelectionManager : ISelectionManager
     {
         if (MayDecrement(out int newIndex))
         {
-            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this };
+            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this.Owner.Owner };
 
             RenderSelection(false);
             CurrentIndex = newIndex;
@@ -38,7 +38,7 @@ public class SelectionManager : ISelectionManager
     {
         if (MayIncrement(out int newIndex))
         {
-            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this };
+            SelectionChangedEvent selectionChangedInfo = new() { OldItem = GetSelectedChild(), Sender = this.Owner.Owner };
 
             RenderSelection(false);
             CurrentIndex = newIndex;
@@ -51,11 +51,13 @@ public class SelectionManager : ISelectionManager
         return false;
     }
     public IChildItem GetSelectedChild()
-        => Owner.HaveChildren() == false ? throw new InvalidOperationException() : Owner.GetChild(CurrentIndex);
+        => Owner.GetChildren().Any() == false
+        ? throw new InvalidOperationException()
+        : Owner.GetChild(CurrentIndex);
 
     private void RenderSelection(bool isSelected)
     {
-        if (Owner.HaveChildren() == false)
+        if (Owner.GetChildren().Any() == false)
         {
             throw new ArgumentNullException("No children present!");
         }
@@ -63,7 +65,7 @@ public class SelectionManager : ISelectionManager
         childItem.Item.Content.IsSelected = isSelected;
         childItem.Item.Render();
 
-        SelectionRenderedEvent selectionRendered = new() { Sender = this, Item = childItem, IsSelected = isSelected };
+        SelectionRenderedEvent selectionRendered = new() { Sender = this.Owner.Owner, Item = childItem, IsSelected = isSelected };
         OnSelectionRendered?.Invoke(selectionRendered);
     }
 

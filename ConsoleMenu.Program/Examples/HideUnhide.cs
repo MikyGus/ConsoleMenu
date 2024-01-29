@@ -6,9 +6,15 @@ internal class HideUnhide
 {
     public static void Run()
     {
-        IMenuItem subMenu = new MenuItem("My SubMenu #1");
-        IMenuItem subsubMenu1 = new MenuItem("Sub1");
-        subsubMenu1.OnKeyPressed += ((m, k) =>
+        IMenuItem menu = new MenuItem("Simple menu")
+        {
+            Position = new Vector2(0, 1)
+        };
+        menu.AddChild("Settings");
+        menu["Settings"].AddChild("First");
+        menu["Settings"].AddChild("My SubMenu #1");
+        menu["Settings"][0].AddChild("Sub1");
+        menu["Settings"][0][0].OnKeyPressed += ((m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
@@ -16,47 +22,32 @@ internal class HideUnhide
                 m.Content.Render();
             }
         });
-        subMenu.Children.Add(1, subsubMenu1);
-        subMenu.Children.Add(2, new MenuItem("Sub2"));
-        subMenu.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-        subMenu.OnKeyPressed += SetItemMarkOnParent;
+        menu["Settings"][0].AddChild("Sub2");
+        menu["Settings"][0].OrientationOfChildren = Orientation.Horizontal;
+        menu["Settings"][0].OnKeyPressed += SetItemMarkOnParent;
 
-        IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
-        subMenu2.OnKeyPressed += ((m, k) =>
+
+        menu["Settings"].AddChild("My SubMenu #2");
+        menu["Settings"]["My SubMenu #2"].OnKeyPressed += ((m, k) =>
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.Children.IsVisible = !m.Children.IsVisible;
+                m.IsChildrenVisible = !m.IsChildrenVisible;
                 m.ReRender();
             }
         });
-        IMenuItem subMenu21 = new MenuItem("My SubMenu #21");
-        IMenuItem subMenu211 = new MenuItem("My SubMenu #211");
-        IMenuItem subMenu2111 = new MenuItem("My SubMenu #2111");
-        subMenu2.Children.Add(1, subMenu21);
-        subMenu21.Children.Add(1, subMenu211);
-        subMenu211.Children.Add(1, subMenu2111);
-        subMenu2.Children.Add(2, new MenuItem("Sub2"));
 
-        IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
-        subMenu3.OnKeyPressed += SetItemMark;
+        menu["Settings"]["My SubMenu #2"].AddChild("My SubMenu #2a");
+        menu["Settings"]["My SubMenu #2"][0].AddChild("My SubMenu #2aa");
+        menu["Settings"]["My SubMenu #2"][0][0].AddChild("My SubMenu #2aaa");
+        menu["Settings"]["My SubMenu #2"].AddChild("Sub2");
+        menu["Settings"].AddChild("My SubMenu #3");
+        menu["Settings"]["My SubMenu #3"].OnKeyPressed += SetItemMark;
+        menu["Settings"].OrientationOfChildren = Orientation.Horizontal;
 
-        IMenuItem menu1 = new MenuItem("Settings");
-        menu1.Children.Add(1, new MenuItem("First"));
-        menu1.Children.Add(1, subMenu);
-        menu1.Children.Add(2, subMenu2);
-        menu1.Children.Add(3, subMenu3);
-        menu1.Children.Orientation = Library.Managers.ContentOrientation.Horizontal;
-
-        IMenuItem menu = new MenuItem("Simple menu")
-        {
-            Position = new Vector2(0, 1)
-        };
-        menu.Children.Add(1, menu1);
-        menu.Children.Add(2, new MenuItem("Hello, World"));
+        menu.AddChild("Hello, World");
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
         menu.Content.IsSelected = true;
-
 
         menu.Render();
 
@@ -65,7 +56,7 @@ internal class HideUnhide
         //subMenu2.IsVisible = true;
         //subMenu2.ReRender();
 
-        subMenu2.EraseContent();
+        //subMenu2.EraseContent();
 
         //menu.IsVisible = false;
         //menu.Render();
@@ -81,7 +72,7 @@ internal class HideUnhide
         do
         {
             keyInput = Console.ReadKey(true);
-            menu.KeyPressed(keyInput);
+            _ = menu.KeyPressed(keyInput);
         } while (keyInput.Key != ConsoleKey.Escape);
     }
 
@@ -118,9 +109,9 @@ internal class HideUnhide
             return;
         }
 
-        if (item.Children.HaveChildren())
+        if (item.HaveChildren())
         {
-            foreach (IChildItem child in item.Children.GetChildren())
+            foreach (IChildItem child in item.GetChildren())
             {
                 child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
             }

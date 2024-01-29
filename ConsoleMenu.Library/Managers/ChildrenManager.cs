@@ -3,7 +3,7 @@ using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
-public class ChildrenManager : IChildrenManager
+internal class ChildrenManager : IChildrenManager
 {
     private List<IChildItem> _children = new();
     private Vector2 _positionOfFirstChild = Vector2.ZERO;
@@ -13,9 +13,9 @@ public class ChildrenManager : IChildrenManager
     internal Vector2 PositionOfFirstChild { get => _positionOfFirstChild; set => _positionOfFirstChild = value + PositionOffsetOfFirstChild; }
     public Vector2 PositionOffsetOfFirstChild { get; set; } = Vector2.RIGHT;
     public int PositionOffsetToNextChild { get; set; } = 1;
-    public ContentOrientation Orientation { get; set; } = ContentOrientation.Vetical;
     public bool IsVisible { get; set; } = true;
     public bool MayCollapse { get; set; } = true;
+    public Orientation OrientationOfChildren { get; set; }
     public ISelectionManager Selection { get; init; }
 
     public ChildrenManager(IMenuItem owner)
@@ -36,17 +36,17 @@ public class ChildrenManager : IChildrenManager
         IChildItem findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
         _children.Remove(findItemToRemove);
     }
+    public void Remove(int itemIndex) => _children.RemoveAt(itemIndex);
+
     public IEnumerable<IChildItem> GetChildren() => _children;
     public IChildItem GetChild(int index)
         => index < 0 || index >= _children.Count
             ? throw new ArgumentOutOfRangeException(nameof(index))
             : _children[index];
 
-    public bool HaveChildren() => _children.Any();
-
 
     private Vector2 OffsetToNextChild()
-        => Orientation == ContentOrientation.Vetical
+        => OrientationOfChildren == Orientation.Vertical
         ? new(0, PositionOffsetToNextChild)
         : new(PositionOffsetToNextChild, 0);
 
@@ -57,9 +57,9 @@ public class ChildrenManager : IChildrenManager
             return Vector2.ZERO;
         }
 
-        switch (Orientation)
+        switch (OrientationOfChildren)
         {
-            case ContentOrientation.Vetical:
+            case Orientation.Vertical:
                 if (_children.Any())
                 {
                     return _children
@@ -68,7 +68,7 @@ public class ChildrenManager : IChildrenManager
                 }
 
                 break;
-            case ContentOrientation.Horizontal:
+            case Orientation.Horizontal:
                 if (_children.Any())
                 {
                     return _children
@@ -125,12 +125,12 @@ public class ChildrenManager : IChildrenManager
             return position;
         }
         Vector2 offset = OffsetToNextChild();
-        switch (Orientation)
+        switch (OrientationOfChildren)
         {
-            case ContentOrientation.Vetical:
+            case Orientation.Vertical:
                 position.Y += areaNeeded.Y > offset.Y ? areaNeeded.Y : offset.Y;
                 break;
-            case ContentOrientation.Horizontal:
+            case Orientation.Horizontal:
                 position.X += areaNeeded.X > offset.X ? areaNeeded.X : offset.X;
                 break;
         }

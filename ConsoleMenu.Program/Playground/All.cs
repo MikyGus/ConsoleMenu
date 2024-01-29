@@ -1,5 +1,4 @@
 ﻿using ConsoleMenu.Library.FormInput;
-using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
@@ -13,49 +12,42 @@ internal class All
         {
             Position = new Vector2(1, 1)
         };
-
-        var subMenu = new MenuItem("My SubMenu");
-        subMenu.Children.Add(1, new MenuItem("Sub1"));
-        subMenu.Children.Add(4, new MenuItem("Sub2"));
-        var enterValueMenuItem = new MenuItem("Please enter value");
-        enterValueMenuItem.OnKeyPressed += (m, k) =>
+        menu.AddChild("My SubMenu");
+        menu[0].AddChild("Sub1");
+        menu[0].AddChild("Sub2");
+        menu[0].AddChild("Please enter value");
+        menu[0][2].OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
                 var value = new TextInput(m.Position, 20);
                 m.Content.Title = value.GetUserInput(out string _text) ? _text : m.Content.Title;
-                //value.Render();
-                //value.EraseContent();
-                //m.Content.Title = value.Text;
                 m.ReRender();
             }
         };
-        subMenu.Children.Add(1, enterValueMenuItem);
-        subMenu.Children.Orientation = ContentOrientation.Horizontal;
+        menu[0].OrientationOfChildren = Orientation.Horizontal;
 
-        var subsubMenu2 = new MenuItem("My SubSubMenu2");
-        subsubMenu2.Children.Add(6, new MenuItem("Sub1"));
-        subsubMenu2.Children.Add(4, new MenuItem("Sub2"));
-        subsubMenu2.Children.Add(1, new MenuItem("Sub3"));
-        subsubMenu2.Children.Orientation = ContentOrientation.Horizontal;
-
-        var myActionPackedMenuItem = new MenuItem("ActionMenu");
-        myActionPackedMenuItem.OnKeyPressed += SetItemMark;
-
-        var subsubMenu3 = new MenuItem("My SubSubMenu2");
-        subsubMenu3.Children.Add(6, new MenuItem("Sub1"));
-        subsubMenu3.Children.Add(4, new MenuItem("Sub2"));
-        subsubMenu3.Children.Add(1, myActionPackedMenuItem);
-        subsubMenu3.Children.Orientation = ContentOrientation.Horizontal;
-        subsubMenu3.Children.PositionOffsetOfFirstChild = new Vector2(5, 0);
-
-        var subsubMenu4 = new MenuItem("My SubSubMenu2");
-        subsubMenu4.Children.Add(6, new MenuItem("Sub1"));
-        subsubMenu4.Children.Add(4, new MenuItem("Sub2"));
-        subsubMenu4.Children.Add(1, new MenuItem("Sub3"));
-        subsubMenu4.Children.Orientation = ContentOrientation.Horizontal;
-        //subsubMenu4.SetRenderer<RadioButtonContentRenderer>();
-        subsubMenu4.OnKeyPressed += (m, k) =>
+        menu.AddChild("My SubMenu2");
+        menu["My SubMenu2"].AddChild("My SubSubMenu");
+        menu["My SubMenu2"][0].AddChild("My SubSubMenu2");
+        menu["My SubMenu2"][0][0].AddChild("Sub1");
+        menu["My SubMenu2"][0][0].AddChild("Sub2");
+        menu["My SubMenu2"][0][0].AddChild("Sub3");
+        menu["My SubMenu2"][0][0].OrientationOfChildren = Orientation.Horizontal;
+        menu["My SubMenu2"][0].AddChild("My SubSubMenu2");
+        menu["My SubMenu2"][0][1].AddChild("Sub1");
+        menu["My SubMenu2"][0][1].AddChild("Sub2");
+        menu["My SubMenu2"][0][1].AddChild("ActionMenu");
+        menu["My SubMenu2"][0][1]["ActionMenu"].OnKeyPressed += SetItemMark;
+        menu["My SubMenu2"][0][1].OrientationOfChildren = Orientation.Horizontal;
+        menu["My SubMenu2"][0][1].PositionOffsetOfFirstChild = new Vector2(5, 0);
+        menu["My SubMenu2"][0].AddChild("My SubSubMenu2");
+        menu["My SubMenu2"][0][2].AddChild("Sub1");
+        menu["My SubMenu2"][0][2].AddChild("Sub2");
+        menu["My SubMenu2"][0][2].AddChild("Sub3");
+        menu["My SubMenu2"][0][2].OrientationOfChildren = Orientation.Horizontal;
+        //menu["My SubMenu2"][0][2].SetRenderer<RadioButtonContentRenderer>();
+        menu["My SubMenu2"][0][2].OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
@@ -63,42 +55,31 @@ internal class All
                 m.Content.Render();
             }
         };
-
-        MenuItem subsubsubMenu = new MenuItem("My SubSubMenu");
-        subsubsubMenu.Children.Add(6, subsubMenu2);
-        subsubsubMenu.Children.Add(4, subsubMenu3);
-        subsubsubMenu.Children.Add(1, subsubMenu4);
-        subsubsubMenu.Children.Orientation = ContentOrientation.Vetical;
-
-        MenuItem subMenu2 = new MenuItem("My SubMenu2");
-        subMenu2.Children.Add(6, subsubsubMenu);
-        subMenu2.Children.Add(4, new MenuItem("Sub2"));
-        subMenu2.Children.Add(1, new MenuItem("Sub3"));
-        subMenu2.SetRenderer<CheckboxContentRender>();
-        subMenu2.OnKeyPressed += SetItemMark;
-        subMenu2.Content.IsMarked = true;
-        subMenu2.Children.Selection.OnSelectionChanged += x =>
+        menu["My SubMenu2"][0].OrientationOfChildren = Orientation.Vertical;
+        menu["My SubMenu2"].AddChild("Sub2");
+        menu["My SubMenu2"].AddChild("Sub3");
+        menu["My SubMenu2"].SetRenderer<CheckboxContentRender>();
+        menu["My SubMenu2"].OnKeyPressed += SetItemMark;
+        menu["My SubMenu2"].Content.IsMarked = true;
+        menu["My SubMenu2"].OnSelectionChanged += x =>
         {
-            x.OldItem.Item.Children.IsVisible = false;
-            x.NewItem.Item.Children.IsVisible = true;
+            x.OldItem.Item.IsChildrenVisible = false;
+            x.NewItem.Item.IsChildrenVisible = true;
             x.NewItem.Item.ReRender();
         };
-        subMenu2.Children.Selection.OnSelectionRendered += x =>
+        menu["My SubMenu2"].OnSelectionRendered += x =>
         {
-            x.Item.Item.Children.IsVisible = x.IsSelected;
+            x.Item.Item.IsChildrenVisible = x.IsSelected;
             x.Item.Item.ReRender();
         };
 
-        menu.Children.Add(1, subMenu);
-        menu.Children.Add(1, subMenu2);
-        menu.Children.Add(1, new MenuItem("Players"));
-        menu.Children.Add(1, new MenuItem("Pl"));
-        var CrazyNameMenu = new MenuItem("Plsdlfjksldkjfsldjfsldjflsjdfl");
-        CrazyNameMenu.OnKeyPressed += SetItemMark;
-        CrazyNameMenu.OnKeyPressed += SetItemMarkOnParent;
-        menu.Children.Add(1, CrazyNameMenu);
-        menu.Children.Orientation = ContentOrientation.Vetical;
-        menu.Children.PositionOffsetToNextChild = 1;
+        menu.AddChild("Players");
+        menu.AddChild("Pl");
+        menu.AddChild("Plsdlfjksldkjfsldjfsldjflsjdfl");
+        menu["Plsdlfjksldkjfsldjfsldjflsjdfl"].OnKeyPressed += SetItemMark;
+        menu["Plsdlfjksldkjfsldjfsldjflsjdfl"].OnKeyPressed += SetItemMarkOnParent;
+        menu.OrientationOfChildren = Orientation.Vertical;
+        menu.PositionOffsetToNextChild = 1;
         //menu.SetRenderer<DefaultContentRender>();
         menu.Content.IsSelected = true;
         //menu.Content.IsMarked = false;
@@ -112,7 +93,7 @@ internal class All
         do
         {
             keyInput = Console.ReadKey(true);
-            menu.KeyPressed(keyInput);
+            _ = menu.KeyPressed(keyInput);
         } while (keyInput.Key != ConsoleKey.Escape);
 
 
