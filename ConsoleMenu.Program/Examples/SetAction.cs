@@ -6,9 +6,13 @@ internal class SetAction
 {
     public static void Run()
     {
-        IMenuItem subMenu = new MenuItem("My SubMenu #1");
-        IMenuItem subsubMenu1 = new MenuItem("Sub1");
-        subsubMenu1.OnKeyPressed += (m, k) =>
+        IMenuItem menu = new MenuItem("Simple menu")
+        {
+            Position = new Vector2(0, 1)
+        };
+        menu.AddChild("My SubMenu #1");
+        menu[0].AddChild("Sub 1");
+        menu[0]["Sub 1"].OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
@@ -16,42 +20,29 @@ internal class SetAction
                 m.Content.Render();
             }
         };
-        subMenu.Children.Add(1, subsubMenu1);
-        subMenu.Children.Add(2, new MenuItem("Sub2"));
-        subMenu.OrientationOfChildren = Orientation.Horizontal;
-        subMenu.OnKeyPressed += SetItemMarkOnParent;
+        menu[0].AddChild("Sub 2");
+        menu[0].OrientationOfChildren = Orientation.Horizontal;
+        menu[0].OnKeyPressed += SetItemMarkOnParent;
 
-        IMenuItem subMenu2 = new MenuItem("My SubMenu #2");
-        subMenu2.OnKeyPressed += (m, k) =>
+        menu.AddChild("My SubMenu #2");
+        menu[1].OnKeyPressed += (m, k) =>
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.Children.IsVisible = !m.Children.IsVisible;
+                m.IsChildrenVisible = !m.IsChildrenVisible;
                 m.ReRender();
             }
         };
-        subMenu2.OnKeyPressed += SetItemMark;
-        subMenu2.Children.Add(1, new MenuItem("Sub1"));
-        subMenu2.Children.Add(2, new MenuItem("Sub2"));
+        menu[1].OnKeyPressed += SetItemMark;
+        menu[1].AddChild("Sub1");
+        menu[1].AddChild("Sub2");
 
-        IMenuItem subMenu3 = new MenuItem("My SubMenu #3");
-        subMenu3.OnKeyPressed += SetItemMark;
+        menu.AddChild("My SubMenu #3");
+        menu[2].OnKeyPressed += SetItemMark;
 
-        IMenuItem menu = new MenuItem("Simple menu")
-        {
-            Position = new Vector2(0, 1)
-        };
-        menu.Children.Add(1, subMenu);
-        menu.Children.Add(2, subMenu2);
-        menu.Children.Add(3, subMenu3);
         menu.OrientationOfChildren = Orientation.Horizontal;
         menu.Content.IsSelected = true;
         menu.Render();
-
-        // Render() use these to render
-        //menu.Content.Render();
-        //menu.Children.Render();
-        //menu.ReRender();
 
         ConsoleKeyInfo keyInput;
         do
@@ -96,7 +87,7 @@ internal class SetAction
 
         if (item.HaveChildren())
         {
-            foreach (IChildItem child in item.Children.GetChildren())
+            foreach (IChildItem child in item.GetChildren())
             {
                 child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
             }

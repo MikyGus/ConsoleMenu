@@ -107,13 +107,13 @@ public class MenuItem : IMenuItem
     public IContent Content { get; private set; }
 
     #region Children
-    public IChildrenManager Children => _childrenManager;
 
     public Orientation OrientationOfChildren
     {
         get => _childrenManager.OrientationOfChildren;
         set => _childrenManager.OrientationOfChildren = value;
     }
+    public bool IsChildrenVisible { get => _childrenManager.IsVisible; set => _childrenManager.IsVisible = value; }
     public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
     public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));

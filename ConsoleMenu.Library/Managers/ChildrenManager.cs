@@ -3,7 +3,7 @@ using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
-public class ChildrenManager : IChildrenManager
+internal class ChildrenManager : IChildrenManager
 {
     private List<IChildItem> _children = new();
     private Vector2 _positionOfFirstChild = Vector2.ZERO;

@@ -1,5 +1,5 @@
 ﻿namespace ConsoleMenu.Library.Abstracts;
-public interface IOwner<T>
+internal interface IOwner<T>
 {
     /// <summary>
     /// Reference to the owner

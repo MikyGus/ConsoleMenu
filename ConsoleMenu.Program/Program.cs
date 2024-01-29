@@ -1,4 +1,4 @@
-﻿using ConsoleMenu.Program.Examples;
+﻿using ConsoleMenu.Program.Playground;
 using System.Diagnostics;
 
 //Trace.Listeners.Add(new TextWriterTraceListener(
@@ -12,14 +12,14 @@ Console.WriteLine("******** Console Menu ***********");
 Console.WriteLine("\n\n\n");
 Debug.WriteLine("Application started");
 
-//All.Run();
+All.Run();
 //SimpleMenu.Render_SimpleMenu_Horizontal();
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
 //AddChildren.Run();
 //RemoveChildren.Run();
 
-PositionOffsetOfFirstChild.Run();
+//PositionOffsetOfFirstChild.Run();
 //SetRenderer.Run();
 
 //SetAction.Run();

@@ -1,6 +1,5 @@
 ﻿using ConsoleMenu.Library.Abstracts;
 using ConsoleMenu.Library.Events;
-using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
 
@@ -42,7 +41,6 @@ public interface IMenuItem : IRenderContent, IVisibility
     IContent Content { get; }
 
     #region Children
-    IChildrenManager Children { get; }
 
     IMenuItem this[int i] { get; }
     IMenuItem this[string s] { get; }
@@ -69,6 +67,7 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// This is the minimum steps. The area taken by the previous child might expand the steps to next child.
     /// </summary>
     int PositionOffsetToNextChild { get; set; }
+    bool IsChildrenVisible { get; set; }
 
     #endregion
 

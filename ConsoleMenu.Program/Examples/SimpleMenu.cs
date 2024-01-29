@@ -10,9 +10,9 @@ internal class SimpleMenu
         {
             Position = new Vector2(0, 1)
         };
-        menu.Children.Add(1, new MenuItem("Menu 1"));
-        menu.Children.Add(2, new MenuItem("Menu 2"));
-        menu.Children.Add(3, new MenuItem("Menu 3"));
+        menu.AddChild("Menu 1");
+        menu.AddChild("Menu 2");
+        menu.AddChild("Menu 3");
         menu.OrientationOfChildren = Orientation.Horizontal;
         menu.Render();
 
@@ -20,7 +20,7 @@ internal class SimpleMenu
         do
         {
             keyInput = Console.ReadKey(true);
-            menu.KeyPressed(keyInput);
+            _ = menu.KeyPressed(keyInput);
         } while (keyInput.Key != ConsoleKey.Escape);
     }
 
@@ -30,9 +30,9 @@ internal class SimpleMenu
         {
             Position = new Vector2(0, 1)
         };
-        menu.Children.Add(1, new MenuItem("Menu 1"));
-        menu.Children.Add(2, new MenuItem("Menu 2"));
-        menu.Children.Add(3, new MenuItem("Menu 3"));
+        menu.AddChild("Menu 1");
+        menu.AddChild("Menu 2");
+        menu.AddChild("Menu 3");
         menu.OrientationOfChildren = Orientation.Vertical;
         menu.Render();
 

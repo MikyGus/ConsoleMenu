@@ -4,7 +4,7 @@ using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
 
-public interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuItem>
+internal interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuItem>
 {
     /// <summary>
     /// Position offset for the first child to be rendered. 

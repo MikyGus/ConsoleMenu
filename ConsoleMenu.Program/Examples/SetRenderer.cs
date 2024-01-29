@@ -7,21 +7,17 @@ internal class SetRenderer
 {
     public static void Run()
     {
-        IMenuItem menuItem1 = new MenuItem("Menu 1");
-        menuItem1.SetRenderer<CheckboxContentRender>();
-        IMenuItem menuItem2 = new MenuItem("Menu 2");
-        menuItem2.SetRenderer<CheckboxContentRender>();
-        menuItem2.Content.IsMarked = true;
-        IMenuItem menuItem3 = new MenuItem("Menu 3");
-        menuItem3.SetRenderer<CheckboxContentRender>();
-
         IMenuItem menu = new MenuItem("Simple menu")
         {
             Position = new Vector2(0, 1)
         };
-        menu.Children.Add(1, menuItem1);
-        menu.Children.Add(2, menuItem2);
-        menu.Children.Add(3, menuItem3);
+        menu.AddChild("Menu 1");
+        menu[0].SetRenderer<CheckboxContentRender>();
+        menu.AddChild("Menu 2");
+        menu[1].SetRenderer<CheckboxContentRender>();
+        menu[1].Content.IsMarked = true;
+        menu.AddChild("Menu 3");
+        menu[2].SetRenderer<CheckboxContentRender>();
         menu.OrientationOfChildren = Orientation.Horizontal;
         menu.Render();
 
