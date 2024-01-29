@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Extensions;
+﻿using ConsoleMenu.Library.Events;
+using ConsoleMenu.Library.Extensions;
 using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.PerformAction;
@@ -120,13 +121,41 @@ public class MenuItem : IMenuItem
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
     public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);
     public bool HaveChildren() => _childrenManager.GetChildren().Any();
+    public Vector2 PositionOffsetOfFirstChild
+    {
+        get => _childrenManager.PositionOffsetOfFirstChild;
+        set => _childrenManager.PositionOffsetOfFirstChild = value;
+    }
+    public int PositionOffsetToNextChild
+    {
+        get => _childrenManager.PositionOffsetToNextChild;
+        set => _childrenManager.PositionOffsetToNextChild = value;
+    }
     #endregion
+
+    #region Selection
+    public event Action<SelectionChangedEvent> OnSelectionChanged
+    {
+        add => _childrenManager.Selection.OnSelectionChanged += value;
+        remove => _childrenManager.Selection.OnSelectionChanged -= value;
+    }
+    public event Action<SelectionRenderedEvent> OnSelectionRendered
+    {
+        add => _childrenManager.Selection.OnSelectionRendered += value;
+        remove => _childrenManager.Selection.OnSelectionRendered -= value;
+    }
+    public IMenuItem GetSelectedChild() => _childrenManager.Selection.GetSelectedChild().Item;
+    public bool IncrementSelection() => _childrenManager.Selection.Increment();
+    public bool DecrementSelection() => _childrenManager.Selection.Decrement();
+    #endregion
+
+
     public bool KeyPressed(ConsoleKeyInfo key)
     {
         Debug.WriteLine($"MenuItem: '{Content.Title}' is about to process pressed keys", "KeyPressed");
         if (HaveChildren())
         {
-            if (Children.Selection.GetSelectedChild().Item.KeyPressed(key))
+            if (GetSelectedChild().KeyPressed(key))
             {
                 return true;
             }

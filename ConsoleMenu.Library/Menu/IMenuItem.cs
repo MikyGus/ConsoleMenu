@@ -1,4 +1,5 @@
 ﻿using ConsoleMenu.Library.Abstracts;
+using ConsoleMenu.Library.Events;
 using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
@@ -6,8 +7,6 @@ using ConsoleMenu.Library.Render;
 namespace ConsoleMenu.Library.Menu;
 public interface IMenuItem : IRenderContent, IVisibility
 {
-    IMenuItem this[int i] { get; }
-    IMenuItem this[string s] { get; }
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }
 
@@ -39,16 +38,45 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// Removes ALL nodes, starting at the root, and renders them again.
     /// </summary>
     void ReRender();
+
+    IContent Content { get; }
+
+    #region Children
+    IChildrenManager Children { get; }
+
+    IMenuItem this[int i] { get; }
+    IMenuItem this[string s] { get; }
+
+    ///// <summary>
+    ///// Set if the children should be rendered in a horizontal or vertical orientation.
+    ///// </summary>
+    Orientation OrientationOfChildren { get; set; }
     void AddChild(string title);
     void RemoveChild(int i);
     void RemoveChild(IMenuItem menuItem);
     IEnumerable<IMenuItem> GetChildren();
     bool HaveChildren();
-    ///// <summary>
-    ///// Set if the children should be rendered in a horizontal or vertical orientation.
-    ///// </summary>
-    Orientation OrientationOfChildren { get; set; }
 
-    IContent Content { get; }
-    IChildrenManager Children { get; }
+    /// <summary>
+    /// Position offset for the first child to be rendered. 
+    /// Mainly used for indentation below the owner rendation.
+    /// </summary>
+    Vector2 PositionOffsetOfFirstChild { get; set; }
+
+    /// <summary>
+    /// How many position-steps from current childs upper-left corner
+    /// to next childs upper-left corner. 
+    /// This is the minimum steps. The area taken by the previous child might expand the steps to next child.
+    /// </summary>
+    int PositionOffsetToNextChild { get; set; }
+
+    #endregion
+
+    #region Selection
+    event Action<SelectionChangedEvent> OnSelectionChanged;
+    event Action<SelectionRenderedEvent> OnSelectionRendered;
+    IMenuItem GetSelectedChild();
+    bool IncrementSelection();
+    bool DecrementSelection();
+    #endregion
 }

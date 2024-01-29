@@ -14,13 +14,13 @@ public class ActionToPerform
         switch (key.Key, menuItem.OrientationOfChildren)
         {
             case (ConsoleKey.UpArrow, Orientation.Vertical):
-                return menuItem.Children.Selection.Decrement();
+                return menuItem.DecrementSelection();
             case (ConsoleKey.DownArrow, Orientation.Vertical):
-                return menuItem.Children.Selection.Increment();
+                return menuItem.IncrementSelection();
             case (ConsoleKey.RightArrow, Orientation.Horizontal):
-                return menuItem.Children.Selection.Increment();
+                return menuItem.IncrementSelection();
             case (ConsoleKey.LeftArrow, Orientation.Horizontal):
-                return menuItem.Children.Selection.Decrement();
+                return menuItem.DecrementSelection();
         }
         menuItem.PerformAction(key);
         return false;

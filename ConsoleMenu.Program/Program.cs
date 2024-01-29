@@ -16,10 +16,10 @@ Debug.WriteLine("Application started");
 //SimpleMenu.Render_SimpleMenu_Horizontal();
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
-AddChildren.Run();
+//AddChildren.Run();
 //RemoveChildren.Run();
 
-//PositionOffsetOfFirstChild.Run();
+PositionOffsetOfFirstChild.Run();
 //SetRenderer.Run();
 
 //SetAction.Run();

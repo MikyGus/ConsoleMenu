@@ -46,7 +46,7 @@ internal class All
         subsubMenu3.Children.Add(4, new MenuItem("Sub2"));
         subsubMenu3.Children.Add(1, myActionPackedMenuItem);
         subsubMenu3.OrientationOfChildren = Orientation.Horizontal;
-        subsubMenu3.Children.PositionOffsetOfFirstChild = new Vector2(5, 0);
+        subsubMenu3.PositionOffsetOfFirstChild = new Vector2(5, 0);
 
         var subsubMenu4 = new MenuItem("My SubSubMenu2");
         subsubMenu4.Children.Add(6, new MenuItem("Sub1"));
@@ -76,13 +76,13 @@ internal class All
         subMenu2.SetRenderer<CheckboxContentRender>();
         subMenu2.OnKeyPressed += SetItemMark;
         subMenu2.Content.IsMarked = true;
-        subMenu2.Children.Selection.OnSelectionChanged += x =>
+        subMenu2.OnSelectionChanged += x =>
         {
             x.OldItem.Item.Children.IsVisible = false;
             x.NewItem.Item.Children.IsVisible = true;
             x.NewItem.Item.ReRender();
         };
-        subMenu2.Children.Selection.OnSelectionRendered += x =>
+        subMenu2.OnSelectionRendered += x =>
         {
             x.Item.Item.Children.IsVisible = x.IsSelected;
             x.Item.Item.ReRender();
@@ -97,7 +97,7 @@ internal class All
         CrazyNameMenu.OnKeyPressed += SetItemMarkOnParent;
         menu.Children.Add(1, CrazyNameMenu);
         menu.OrientationOfChildren = Orientation.Vertical;
-        menu.Children.PositionOffsetToNextChild = 1;
+        menu.PositionOffsetToNextChild = 1;
         //menu.SetRenderer<DefaultContentRender>();
         menu.Content.IsSelected = true;
         //menu.Content.IsMarked = false;
