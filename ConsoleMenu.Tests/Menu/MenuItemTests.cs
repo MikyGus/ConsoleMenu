@@ -1,5 +1,4 @@
 ﻿using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Models;
 using FluentAssertions;
 
 namespace ConsoleMenu.Tests.Menu;
@@ -17,24 +16,37 @@ public class MenuItemTests
         // Arrange
 
         // Act
-        _sut.Children.Add(1, new MenuItem("TEST2"));
+        _sut.AddChild("TEST2");
         // Assert
-        IEnumerable<IChildItem> result = _sut.Children.GetChildren();
+        IEnumerable<IMenuItem> result = _sut.GetChildren();
         result.Should().HaveCount(1);
-        result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
+        result.Should().BeAssignableTo<IEnumerable<IMenuItem>>();
     }
 
     [Fact]
-    public void MenuItem_RemoveChild_ChildShouldBeRemoved()
+    public void MenuItem_RemoveChildWithIndex_ChildShouldBeRemoved()
     {
         // Arrange
-        var menuItem = new MenuItem("TEST2");
-        _sut.Children.Add(1, menuItem);
+        _sut.AddChild("TEST2");
         // Act
-        _sut.Children.Remove(menuItem);
+        _sut.RemoveChild(0);
         // Assert
-        IEnumerable<IChildItem> result = _sut.Children.GetChildren();
+        IEnumerable<IMenuItem> result = _sut.GetChildren();
         result.Should().BeEmpty();
-        result.Should().BeAssignableTo<IEnumerable<IChildItem>>();
+        result.Should().BeAssignableTo<IEnumerable<IMenuItem>>();
+    }
+
+    [Fact]
+    public void MenuItem_RemoveChildWithReferenceToObject_ChildShouldBeRemoved()
+    {
+        // Arrange
+        _sut.AddChild("TEST2");
+        var itemToRemove = _sut[0];
+        // Act
+        _sut.RemoveChild(itemToRemove);
+        // Assert
+        IEnumerable<IMenuItem> result = _sut.GetChildren();
+        result.Should().BeEmpty();
+        result.Should().BeAssignableTo<IEnumerable<IMenuItem>>();
     }
 }
