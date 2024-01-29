@@ -41,7 +41,7 @@ public class MenuItemTests
     {
         // Arrange
         _sut.AddChild("TEST2");
-        var itemToRemove = _sut[0];
+        IMenuItem itemToRemove = _sut[0];
         // Act
         _sut.RemoveChild(itemToRemove);
         // Assert
