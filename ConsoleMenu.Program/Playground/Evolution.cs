@@ -1,5 +1,5 @@
-﻿using ConsoleMenu.Library.Menu;
-using static ConsoleMenu.Library.Menu.MenuItem;
+﻿using ConsoleMenu.Library.Components;
+using ConsoleMenu.Library.Menu;
 
 namespace ConsoleMenu.Program.Playground;
 internal class Evolution
@@ -14,6 +14,33 @@ internal class Evolution
         //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
         menuSettings.OrientationOfChildren = Orientation.Horizontal;
+
+        menuSettings.AddChild("Count");
+
+        menuSettings["Count"].AddComponent(new ValueComponent<int>(7));
+        menuSettings["Count"].AddComponent(new ValueComponent<int>(70));
+        menuSettings["Count"].AddComponent(new ValueComponent<string>("Hello"));
+        IEnumerable<IValueComponent<int>> components = menuSettings["Count"].GetComponents<IValueComponent<int>>();
+        IEnumerable<ValueComponent<int>> components2 = menuSettings["Count"].GetComponents<ValueComponent<int>>();
+        IEnumerable<ValueComponent<string>> components3 = menuSettings["Count"].GetComponents<ValueComponent<string>>();
+
+        //Console.WriteLine("Start");
+        //foreach (IValueComponent<int> component in components)
+        //{
+        //    Console.WriteLine(component.Value);
+        //}
+        //Console.WriteLine("Stop");
+
+        //menuSettings["Count"].AddComponent<ValueComponent<int>, string>("Hello");
+        //menuSettings["Count"].AddComponent<ValueComponent<int>, int>(5);
+
+        //menuSettings.AddChild<int>("Player Count");
+        //menuSettings.AddChild<string>("Player Count");
+        //int number = menuSettings["Player Count"].Value<int>;
+        //menuSettings["Player Count"].Value<int> = 4;
+        //menuSettings["Player Count"].AddComponent<int>(4);
+        //menuSettings["Player Count"].RemoveComponent<int>(4);
+
         //menuSettings.RemoveChild(1); // with index
         //menuSettings.RemoveChild(menuSettings[0]); // by reference
 

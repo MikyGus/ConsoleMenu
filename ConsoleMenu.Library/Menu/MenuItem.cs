@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Events;
+﻿using ConsoleMenu.Library.Components;
+using ConsoleMenu.Library.Events;
 using ConsoleMenu.Library.Extensions;
 using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Models;
@@ -11,6 +12,7 @@ public class MenuItem : IMenuItem
 {
     private readonly ChildrenManager _childrenManager;
     private bool _isCurrentlyVisible;
+    private List<IComponent> _components;
 
     public Vector2 Position { get; set; }
     public IMenuItem Parent { get; set; }
@@ -27,6 +29,7 @@ public class MenuItem : IMenuItem
         IsVisible = true;
         MayCollapse = true;
         Content = new Content() { Owner = this, Title = title };
+        _components = new List<IComponent>();
         Debug.WriteLine($"MenuItem: '{Content.Title}' have now been created.", "Ctor");
     }
 
@@ -105,6 +108,39 @@ public class MenuItem : IMenuItem
     }
 
     public IContent Content { get; private set; }
+
+    #region Components
+    public void AddComponent(IComponent component)
+    {
+        component.Parent = this;
+        _components.Add(component);
+    }
+    public IEnumerable<TComponent> GetComponents<TComponent>() where TComponent : IComponent
+    {
+        foreach (TComponent component in _components.OfType<TComponent>())
+        {
+            yield return component;
+        }
+    }
+
+    //public void AddComponent<TComponent, TValue>(TValue value) where TComponent : IValueComponent<TValue>, new()
+    //{
+    //    TComponent component = new TComponent() { Parent = this, Value = value };
+    //    _components.Add(component);
+    //}
+    //public IValueComponent<TValue> GetComponent<TComponent, TValue>() where TComponent : class, IValueComponent<TValue>
+    //    => _components.OfType<TComponent>().FirstOrDefault();
+
+    //public IEnumerable<TComponent> GetComponents<TComponent, TValue>() where TComponent : class, IValueComponent<TValue>
+    //{
+    //    foreach (TComponent component in _components.OfType<TComponent>())
+    //    {
+    //        yield return component;
+    //    }
+    //}
+
+
+    #endregion
 
     #region Children
 

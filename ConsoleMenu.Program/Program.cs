@@ -12,7 +12,7 @@ Console.WriteLine("******** Console Menu ***********");
 Console.WriteLine("\n\n\n");
 Debug.WriteLine("Application started");
 
-All.Run();
+//All.Run();
 //SimpleMenu.Render_SimpleMenu_Horizontal();
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
@@ -29,6 +29,6 @@ All.Run();
 //Console.SetCursorPosition(0, 10);
 //Console.WriteLine(textInputted.Text);
 
-//Evolution.Run();
+Evolution.Run();
 Debug.WriteLine("Application ended");
 Console.WriteLine("\n\n\n\n\n\n\n\n");

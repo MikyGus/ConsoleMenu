@@ -1,4 +1,5 @@
 ﻿using ConsoleMenu.Library.Abstracts;
+using ConsoleMenu.Library.Components;
 using ConsoleMenu.Library.Events;
 using ConsoleMenu.Library.Models;
 using ConsoleMenu.Library.Render;
@@ -77,5 +78,10 @@ public interface IMenuItem : IRenderContent, IVisibility
     IMenuItem GetSelectedChild();
     bool IncrementSelection();
     bool DecrementSelection();
+    #endregion
+
+    #region Components
+    void AddComponent(IComponent component);
+    IEnumerable<TComponent> GetComponents<TComponent>() where TComponent : IComponent;
     #endregion
 }
