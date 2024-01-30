@@ -122,24 +122,10 @@ public class MenuItem : IMenuItem
             yield return component;
         }
     }
-
-    //public void AddComponent<TComponent, TValue>(TValue value) where TComponent : IValueComponent<TValue>, new()
-    //{
-    //    TComponent component = new TComponent() { Parent = this, Value = value };
-    //    _components.Add(component);
-    //}
-    //public IValueComponent<TValue> GetComponent<TComponent, TValue>() where TComponent : class, IValueComponent<TValue>
-    //    => _components.OfType<TComponent>().FirstOrDefault();
-
-    //public IEnumerable<TComponent> GetComponents<TComponent, TValue>() where TComponent : class, IValueComponent<TValue>
-    //{
-    //    foreach (TComponent component in _components.OfType<TComponent>())
-    //    {
-    //        yield return component;
-    //    }
-    //}
-
-
+    public void RemoveComponent(IComponent component)
+    {
+        _components.Remove(component);
+    }
     #endregion
 
     #region Children
