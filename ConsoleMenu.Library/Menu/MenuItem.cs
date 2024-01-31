@@ -122,6 +122,16 @@ public class MenuItem : IMenuItem
             yield return component;
         }
     }
+    public T Value<T>() => GetComponents<ValueComponent<T>>().FirstOrDefault().Value;
+    public IEnumerable<T> Values<T>()
+    {
+        IEnumerable<T> values = GetComponents<ValueComponent<T>>().Select(x => x.Value);
+        foreach (T component in values)
+        {
+            yield return component;
+        }
+    }
+
     public void RemoveComponent(IComponent component)
     {
         _components.Remove(component);
@@ -139,6 +149,13 @@ public class MenuItem : IMenuItem
     public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
     public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
+    public void AddChild<T>(string title, T value)
+    {
+        IMenuItem menuItem = new MenuItem(title);
+        menuItem.AddComponent(new ValueComponent<T>(value));
+        _childrenManager.Add(9999, menuItem);
+    }
+
     public void RemoveChild(int i) => _childrenManager.Remove(i);
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
     public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);

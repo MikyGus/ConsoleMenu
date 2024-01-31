@@ -24,6 +24,9 @@ internal class Evolution
         IEnumerable<ValueComponent<int>> components2 = menuSettings["Count"].GetComponents<ValueComponent<int>>();
         IEnumerable<ValueComponent<string>> components3 = menuSettings["Count"].GetComponents<ValueComponent<string>>();
 
+        menuSettings.AddChild<int>("Hello", 33);
+        //string helloValue_ = menuSettings["Hello"].Value<string>(); //System.NullReferenceException
+        IEnumerable<string> values = menuSettings["Hello"].Values<string>().ToList();
         //Console.WriteLine("Start");
         //foreach (IValueComponent<int> component in components)
         //{

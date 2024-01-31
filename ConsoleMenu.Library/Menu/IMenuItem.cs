@@ -50,7 +50,19 @@ public interface IMenuItem : IRenderContent, IVisibility
     ///// Set if the children should be rendered in a horizontal or vertical orientation.
     ///// </summary>
     Orientation OrientationOfChildren { get; set; }
+    /// <summary>
+    /// Add a new MenuItem as a child.
+    /// </summary>
+    /// <param name="title">Title of the new MenuItem</param>
     void AddChild(string title);
+    /// <summary>
+    /// Add a new MenuItem as a child.
+    /// Also adds a ValueComponent to this new child. 
+    /// </summary>
+    /// <typeparam name="T">Valuetype to add</typeparam>
+    /// <param name="title">Title of the new MenuItem</param>
+    /// <param name="value">Value to add to ValueComponent</param>
+    void AddChild<T>(string title, T value);
     void RemoveChild(int i);
     void RemoveChild(IMenuItem menuItem);
     IEnumerable<IMenuItem> GetChildren();
@@ -84,5 +96,7 @@ public interface IMenuItem : IRenderContent, IVisibility
     void AddComponent(IComponent component);
     IEnumerable<TComponent> GetComponents<TComponent>() where TComponent : IComponent;
     void RemoveComponent(IComponent component);
+    U Value<U>();
+    IEnumerable<T> Values<T>();
     #endregion
 }
