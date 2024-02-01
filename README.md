@@ -22,6 +22,10 @@
 		- [Render](#render)
 		- [ReRender](#rerender)
 		- [EraseContent](#erasecontent)
+	- [Components](#components)
+		- [Add Components](#add-components)
+		- [Remove Components](#remove-components)
+		- [Get value from components](#get-value-from-components)
 	- [Events](#events)
 		- [KeyPressed](#keypressed)
 		- [SetAction](#setaction)
@@ -119,6 +123,9 @@ To add children to a menuItem we use the ```MenuItem.AddChild()``` method
 
 ```(void) MenuItem.AddChild(string MenuItemTitle) ```
 The method takes one (1) string argument, used as the title of the menuItem.
+```(void) MenuItem.AddChild<T>(string MenuItemTitle, T value)```
+The method takes two (2) arguments. The first is the title of the menuITem. The second 
+is the value to be added to this menu. The value is added as a ```ValueComponent```, se components.
 
 ```csharp
 	IMenuItem menuSettings = new MenuItem("Settings");
@@ -126,15 +133,19 @@ The method takes one (1) string argument, used as the title of the menuItem.
 	menuSettings["Sub 1"].AddChild("Sub Sub 1");
 	menuSettings[0].AddChild("Sub Sub 2");
 	menuSettings.AddChild("Sub 2");
+	menuSettings.AddChild<int>(title: "My SubMenu with a value", value: 42);
+	menuSettings.AddChild("Another subMenu with a value", 33);
 ```
 
 **Output**
 ```bash
- Settings
+ Settings 
   Sub 1
    Sub Sub 1
    Sub Sub 2
   Sub 2
+  My SubMenu with a value
+  Another subMenu with a value
 ```
 
 ### Remove children
@@ -320,6 +331,43 @@ Erases the node and its children from the screen.
 - If ```Render``` is called on the same node, or parent node, the node will reappear.
 - To keep it hidden use ```IMenuItem.IsVisible = false```
 
+## Components
+Components are extra values and functionality that can be added to the menuItem.
+### Add Components
+```(void) MenuItem.AddComponent(IComponent component)```
+Takes a component as an argument implementing ```IComponent```, like ```ValueComponent```.
+
+- You may add any component that implements ```IComponent```
+- To add a component containing a value, add a ```ValueComponent```.
+- You may add more than one component with the same datatype, if you have the need.
+- You may also add different datatypes.
+```csharp
+	menuSettings.AddChild("Count");
+
+	menuSettings["Count"].AddComponent(new ValueComponent<int>(7));
+	menuSettings["Count"].AddComponent(new ValueComponent<int>(70));
+	menuSettings["Count"].AddComponent(new ValueComponent<string>("Hello"));
+```
+### Remove Components
+```(void) MenuItem.RemoveComponent(IComponent componentToRemove)```
+Takes a component as an argument implementing ```IComponent```, like ```ValueComponent```.
+
+``` csharp
+	IComponent component = new ValueComponent<string>("Hello");
+	menuSettings["Count"].AddComponent(component);
+	menuSettings["Count"].RemoveComponent(component);
+```
+### Get value from components
+```IEnumerable<IComponent> MenuItem.GetComponents<IComponent>()```
+Takes a datatype as a generic and returns all matches as an IEnumerable. 
+```IEnumerable<T> MenuItems.Values<T>()```
+Takes a datatype as a generic and returns all matches of ValueComponent<T> as an IEnumerable<T>.
+
+```csharp
+	IEnumerable<IValueComponent<int>> components = menuSettings["Count"].GetComponents<IValueComponent<int>>();
+	IEnumerable<ValueComponent<int>> components2 = menuSettings["Count"].GetComponents<ValueComponent<int>>();
+	IEnumerable<ValueComponent<string>> components3 = menuSettings["Count"].GetComponents<ValueComponent<string>>();
+```
 
 ## Events
 ### KeyPressed
