@@ -122,7 +122,6 @@ public class MenuItem : IMenuItem
             yield return component;
         }
     }
-    public T Value<T>() => GetComponents<ValueComponent<T>>().FirstOrDefault().Value;
     public IEnumerable<T> Values<T>()
     {
         IEnumerable<T> values = GetComponents<ValueComponent<T>>().Select(x => x.Value);
