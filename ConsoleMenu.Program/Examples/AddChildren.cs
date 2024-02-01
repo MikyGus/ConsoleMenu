@@ -14,6 +14,7 @@ internal class AddChildren
         menu[subMenu2Title].AddChild("Sub1");
         menu[subMenu2Title].AddChild("Sub2");
         menu.AddChild("My SubMenu #3");
+        menu.AddChild<int>(title: "My SubMenu with a value", value: 42);
         menu.OrientationOfChildren = Orientation.Vertical;
         menu.Render();
     }
