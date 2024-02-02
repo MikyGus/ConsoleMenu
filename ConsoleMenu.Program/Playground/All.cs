@@ -63,14 +63,14 @@ internal class All
         menu["My SubMenu2"].Content.IsMarked = true;
         menu["My SubMenu2"].OnSelectionChanged += x =>
         {
-            x.OldItem.Item.IsChildrenVisible = false;
-            x.NewItem.Item.IsChildrenVisible = true;
-            x.NewItem.Item.ReRender();
+            x.OldItem.IsChildrenVisible = false;
+            x.NewItem.IsChildrenVisible = true;
+            x.NewItem.ReRender();
         };
         menu["My SubMenu2"].OnSelectionRendered += x =>
         {
-            x.Item.Item.IsChildrenVisible = x.IsSelected;
-            x.Item.Item.ReRender();
+            x.Item.IsChildrenVisible = x.IsSelected;
+            x.Item.ReRender();
         };
 
         menu.AddChild("Players");

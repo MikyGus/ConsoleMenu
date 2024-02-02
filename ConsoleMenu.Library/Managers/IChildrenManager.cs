@@ -20,8 +20,8 @@ internal interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuI
     void Add(int positionInList, IMenuItem item);
     void Remove(IMenuItem item);
     void Remove(int itemIndex);
-    IEnumerable<IChildItem> GetChildren();
-    IChildItem GetChild(int index);
+    IEnumerable<IMenuItem> GetChildren();
+    IMenuItem GetChild(int index);
 
     ISelectionManager Selection { get; init; }
     Orientation OrientationOfChildren { get; set; }
