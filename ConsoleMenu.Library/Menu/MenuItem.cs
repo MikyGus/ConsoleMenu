@@ -112,7 +112,7 @@ public class MenuItem : IMenuItem
     #region Components
     public void AddComponent(IComponent component)
     {
-        component.Parent = this;
+        component.Owner = this;
         _components.Add(component);
     }
     public IEnumerable<TComponent> GetComponents<TComponent>() where TComponent : IComponent
@@ -154,7 +154,6 @@ public class MenuItem : IMenuItem
         menuItem.AddComponent(new ValueComponent<T>(value));
         _childrenManager.Add(9999, menuItem);
     }
-
     public void RemoveChild(int i) => _childrenManager.Remove(i);
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
     public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);

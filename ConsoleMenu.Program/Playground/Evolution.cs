@@ -13,6 +13,7 @@ internal class Evolution
         menuSettings[0].AddChild("Sub Sub 2");
         //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
+        menuSettings["Sub 2"].AddComponent(new ListPriorityComponent(2000));
         menuSettings.AddChild<int>(title: "My SubMenu with a value", value: 42);
         //menuSettings.OrientationOfChildren = Orientation.Horizontal;
 

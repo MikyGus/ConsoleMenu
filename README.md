@@ -24,6 +24,8 @@
 		- [EraseContent](#erasecontent)
 	- [Components](#components)
 		- [Add Components](#add-components)
+			- [ValueComponent](#valuecomponent)
+			- [ListPriorityComponent](#listprioritycomponent)
 		- [Remove Components](#remove-components)
 		- [Get value from components](#get-value-from-components)
 	- [Events](#events)
@@ -348,6 +350,27 @@ Takes a component as an argument implementing ```IComponent```, like ```ValueCom
 	menuSettings["Count"].AddComponent(new ValueComponent<int>(70));
 	menuSettings["Count"].AddComponent(new ValueComponent<string>("Hello"));
 ```
+#### ValueComponent
+```public class ValueComponent<T> : IValueComponent<T>```
+Is a component designed to hold a single value. 
+**Properties**
+```csharp
+    public IMenuItem Owner { get; set; } // Refers to the owner of this component
+    public T Value { get; set; } // The actual value this compoent is holding
+```
+
+#### ListPriorityComponent
+```public class ListPriorityComponent : ValueComponent<int>```
+Set the order of the menuItems in the list. A low value gets rendered first and a high value gets rendered last.
+**Properties**
+Same as ```ValueComponent```
+
+**Example**
+```csharp
+int listPriority = 10;
+menuItem.AddComponent(new ListPriorityComponent(listPriority));
+```
+
 ### Remove Components
 ```(void) MenuItem.RemoveComponent(IComponent componentToRemove)```
 Takes a component as an argument implementing ```IComponent```, like ```ValueComponent```.

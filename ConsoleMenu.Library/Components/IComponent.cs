@@ -4,5 +4,5 @@ namespace ConsoleMenu.Library.Components;
 
 public interface IComponent
 {
-    IMenuItem Parent { get; set; }
+    IMenuItem Owner { get; set; }
 }

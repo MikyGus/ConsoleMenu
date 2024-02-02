@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Extensions;
+﻿using ConsoleMenu.Library.Components;
+using ConsoleMenu.Library.Extensions;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 
@@ -26,9 +27,17 @@ internal class ChildrenManager : IChildrenManager
 
     public void Add(int positionInList, IMenuItem item)
     {
+        int defaultPositionInList = int.MaxValue;
         item.Parent = Owner;
-        _children.Add(new ChildItem(item, positionInList));
-        _children = _children.OrderBy(c => c.Priority).ToList();
+        IChildItem menuItem = new ChildItem(item, positionInList);
+        _children.Add(menuItem);
+        if (defaultPositionInList != int.MaxValue)
+        {
+            menuItem.Item.AddComponent(new ListPriorityComponent(defaultPositionInList));
+        }
+        _children = _children
+            .OrderBy(x => x.Item.GetComponents<ListPriorityComponent>().FirstOrDefault()?.Value ?? defaultPositionInList)
+            .ToList();
     }
 
     public void Remove(IMenuItem item)
