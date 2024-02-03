@@ -23,6 +23,8 @@ public class MenuItem : IMenuItem
     public MenuItem(string title)
     {
         _childrenManager = new ChildrenManager(this);
+        ISelectionManager selection = new SelectionManager(_childrenManager);
+        _childrenManager.Selection = selection;
         _isCurrentlyVisible = false;
         Position = Vector2.ZERO;
         Parent = null;

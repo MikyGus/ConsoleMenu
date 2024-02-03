@@ -23,6 +23,6 @@ internal interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuI
     IEnumerable<IMenuItem> GetChildren();
     IMenuItem GetChild(int index);
 
-    ISelectionManager Selection { get; init; }
+    ISelectionManager Selection { get; set; }
     Orientation OrientationOfChildren { get; set; }
 }

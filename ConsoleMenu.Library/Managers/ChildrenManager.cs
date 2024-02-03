@@ -17,11 +17,10 @@ internal class ChildrenManager : IChildrenManager
     public bool IsVisible { get; set; } = true;
     public bool MayCollapse { get; set; } = true;
     public Orientation OrientationOfChildren { get; set; }
-    public ISelectionManager Selection { get; init; }
+    public ISelectionManager Selection { get; set; }
 
     public ChildrenManager(IMenuItem owner)
     {
-        Selection = new SelectionManager(this);
         Owner = owner;
     }
 
