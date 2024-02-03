@@ -13,7 +13,8 @@ internal class Evolution
         menuSettings[0].AddChild("Sub Sub 2");
         //menuSettings[0][0].Content.Title = "New Sub Sub 1";
         menuSettings.AddChild("Sub 2");
-        menuSettings.AddChild<int>(title: "My SubMenu with a value", value: 42);
+        menuSettings["Sub 2"].AddComponent(new ListPriorityComponent(2000));
+        menuSettings.AddChild<int>(42, "My SubMenu with a value", 1);
         //menuSettings.OrientationOfChildren = Orientation.Horizontal;
 
         menuSettings.AddChild("Count");
@@ -27,7 +28,7 @@ internal class Evolution
         IEnumerable<ValueComponent<int>> components2 = menuSettings["Count"].GetComponents<ValueComponent<int>>();
         IEnumerable<ValueComponent<string>> components3 = menuSettings["Count"].GetComponents<ValueComponent<string>>();
 
-        menuSettings.AddChild<int>("Hello", 33);
+        menuSettings.AddChild<int>(33, "Hello");
         IEnumerable<string> values = menuSettings["Hello"].Values<string>().ToList();
         //Console.WriteLine("Start");
         //foreach (IValueComponent<int> component in components)

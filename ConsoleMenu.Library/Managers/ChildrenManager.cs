@@ -1,11 +1,12 @@
-﻿using ConsoleMenu.Library.Extensions;
+﻿using ConsoleMenu.Library.Components;
+using ConsoleMenu.Library.Extensions;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 
 namespace ConsoleMenu.Library.Managers;
 internal class ChildrenManager : IChildrenManager
 {
-    private List<IChildItem> _children = new();
+    private List<IMenuItem> _children = new();
     private Vector2 _positionOfFirstChild = Vector2.ZERO;
     private bool _isCurrentlyVisible = false;
 
@@ -24,22 +25,30 @@ internal class ChildrenManager : IChildrenManager
         Owner = owner;
     }
 
-    public void Add(int positionInList, IMenuItem item)
+    public void Add(IMenuItem item)
     {
         item.Parent = Owner;
-        _children.Add(new ChildItem(item, positionInList));
-        _children = _children.OrderBy(c => c.Priority).ToList();
+        _children.Add(item);
+        SortListOfChildren();
+    }
+
+    private void SortListOfChildren()
+    {
+        const int defaultPositionInList = int.MaxValue;
+        _children = _children
+                .OrderBy(x => x.GetComponents<ListPriorityComponent>().FirstOrDefault()?.Value ?? defaultPositionInList)
+                .ToList();
     }
 
     public void Remove(IMenuItem item)
     {
-        IChildItem findItemToRemove = _children.Where(x => x.Item == item).FirstOrDefault() ?? throw new ArgumentException();
+        IMenuItem findItemToRemove = _children.Where(x => x == item).FirstOrDefault() ?? throw new ArgumentException();
         _children.Remove(findItemToRemove);
     }
     public void Remove(int itemIndex) => _children.RemoveAt(itemIndex);
 
-    public IEnumerable<IChildItem> GetChildren() => _children;
-    public IChildItem GetChild(int index)
+    public IEnumerable<IMenuItem> GetChildren() => _children;
+    public IMenuItem GetChild(int index)
         => index < 0 || index >= _children.Count
             ? throw new ArgumentOutOfRangeException(nameof(index))
             : _children[index];
@@ -63,7 +72,7 @@ internal class ChildrenManager : IChildrenManager
                 if (_children.Any())
                 {
                     return _children
-                        .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
+                        .Select(c => c.AreaNeeded().Largest(OffsetToNextChild()))
                         .Aggregate((a1, a2) => a1.MaxAdd_Vertical(a2)) + PositionOffsetOfFirstChild;
                 }
 
@@ -72,7 +81,7 @@ internal class ChildrenManager : IChildrenManager
                 if (_children.Any())
                 {
                     return _children
-                        .Select(c => c.Item.AreaNeeded().Largest(OffsetToNextChild()))
+                        .Select(c => c.AreaNeeded().Largest(OffsetToNextChild()))
                         .Aggregate((a1, a2) => a1.AddMax_Horizontal(a2)) + PositionOffsetOfFirstChild;
                 }
 
@@ -92,8 +101,7 @@ internal class ChildrenManager : IChildrenManager
 
         Vector2 position = PositionOfFirstChild;
         int index = 0;
-        IEnumerable<IMenuItem> children = GetChildren().Select(m => m.Item);
-        foreach (IMenuItem menuItem in children)
+        foreach (IMenuItem menuItem in _children)
         {
             menuItem.Content.IsSelected = Owner is null
                 ? Selection.CurrentIndex == index
@@ -109,8 +117,7 @@ internal class ChildrenManager : IChildrenManager
     {
         if (_isCurrentlyVisible)
         {
-            IEnumerable<IMenuItem> children = GetChildren().Select(m => m.Item);
-            foreach (IMenuItem menuItem in children)
+            foreach (IMenuItem menuItem in _children)
             {
                 menuItem.EraseContent();
             }

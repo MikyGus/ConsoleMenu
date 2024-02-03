@@ -112,7 +112,7 @@ public class MenuItem : IMenuItem
     #region Components
     public void AddComponent(IComponent component)
     {
-        component.Parent = this;
+        component.Owner = this;
         _components.Add(component);
     }
     public IEnumerable<TComponent> GetComponents<TComponent>() where TComponent : IComponent
@@ -145,19 +145,32 @@ public class MenuItem : IMenuItem
         set => _childrenManager.OrientationOfChildren = value;
     }
     public bool IsChildrenVisible { get => _childrenManager.IsVisible; set => _childrenManager.IsVisible = value; }
-    public IMenuItem this[int i] => _childrenManager.GetChild(i).Item;
-    public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Item.Content.Title == s).Item;
-    public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
-    public void AddChild<T>(string title, T value)
+    public IMenuItem this[int i] => _childrenManager.GetChild(i);
+    public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Content.Title == s);
+    public void AddChild(string title, int positionInList = int.MaxValue)
+    {
+        IMenuItem menuItem = new MenuItem(title);
+        AddChild(menuItem, positionInList);
+    }
+
+    public void AddChild<T>(T value, string title, int positionInList = int.MaxValue)
     {
         IMenuItem menuItem = new MenuItem(title);
         menuItem.AddComponent(new ValueComponent<T>(value));
-        _childrenManager.Add(9999, menuItem);
+        AddChild(menuItem, positionInList);
+    }
+    private void AddChild(IMenuItem menuItem, int positionInList)
+    {
+        if (positionInList != int.MaxValue)
+        {
+            menuItem.AddComponent(new ListPriorityComponent(positionInList));
+        }
+        _childrenManager.Add(menuItem);
     }
 
     public void RemoveChild(int i) => _childrenManager.Remove(i);
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
-    public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren().Select(m => m.Item);
+    public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren();
     public bool HaveChildren() => _childrenManager.GetChildren().Any();
     public Vector2 PositionOffsetOfFirstChild
     {
@@ -182,7 +195,7 @@ public class MenuItem : IMenuItem
         add => _childrenManager.Selection.OnSelectionRendered += value;
         remove => _childrenManager.Selection.OnSelectionRendered -= value;
     }
-    public IMenuItem GetSelectedChild() => _childrenManager.Selection.GetSelectedChild().Item;
+    public IMenuItem GetSelectedChild() => _childrenManager.Selection.GetSelectedChild();
     public bool IncrementSelection() => _childrenManager.Selection.Increment();
     public bool DecrementSelection() => _childrenManager.Selection.Decrement();
     #endregion

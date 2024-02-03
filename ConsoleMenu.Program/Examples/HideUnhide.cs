@@ -111,9 +111,9 @@ internal class HideUnhide
 
         if (item.HaveChildren())
         {
-            foreach (IChildItem child in item.GetChildren())
+            foreach (IMenuItem child in item.GetChildren())
             {
-                child.Item.Content.IsMarked = !child.Item.Content.IsMarked;
+                child.Content.IsMarked = !child.Content.IsMarked;
             }
             item.Render();
         }

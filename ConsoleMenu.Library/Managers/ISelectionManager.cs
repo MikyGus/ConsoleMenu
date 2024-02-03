@@ -1,6 +1,6 @@
 ﻿using ConsoleMenu.Library.Abstracts;
 using ConsoleMenu.Library.Events;
-using ConsoleMenu.Library.Models;
+using ConsoleMenu.Library.Menu;
 
 namespace ConsoleMenu.Library.Managers;
 internal interface ISelectionManager : ISelectionControls, IOwner<ChildrenManager>
@@ -8,5 +8,5 @@ internal interface ISelectionManager : ISelectionControls, IOwner<ChildrenManage
     event Action<SelectionChangedEvent> OnSelectionChanged;
     event Action<SelectionRenderedEvent> OnSelectionRendered;
 
-    IChildItem GetSelectedChild();
+    IMenuItem GetSelectedChild();
 }

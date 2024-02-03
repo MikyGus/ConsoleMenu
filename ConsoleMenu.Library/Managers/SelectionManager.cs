@@ -1,5 +1,5 @@
 ﻿using ConsoleMenu.Library.Events;
-using ConsoleMenu.Library.Models;
+using ConsoleMenu.Library.Menu;
 
 namespace ConsoleMenu.Library.Managers;
 internal class SelectionManager : ISelectionManager
@@ -50,7 +50,7 @@ internal class SelectionManager : ISelectionManager
         }
         return false;
     }
-    public IChildItem GetSelectedChild()
+    public IMenuItem GetSelectedChild()
         => Owner.GetChildren().Any() == false
         ? throw new InvalidOperationException()
         : Owner.GetChild(CurrentIndex);
@@ -61,9 +61,9 @@ internal class SelectionManager : ISelectionManager
         {
             throw new ArgumentNullException("No children present!");
         }
-        IChildItem childItem = GetSelectedChild();
-        childItem.Item.Content.IsSelected = isSelected;
-        childItem.Item.Render();
+        IMenuItem childItem = GetSelectedChild();
+        childItem.Content.IsSelected = isSelected;
+        childItem.Render();
 
         SelectionRenderedEvent selectionRendered = new() { Sender = this.Owner.Owner, Item = childItem, IsSelected = isSelected };
         OnSelectionRendered?.Invoke(selectionRendered);
@@ -81,7 +81,7 @@ internal class SelectionManager : ISelectionManager
         while (i > 0)
         {
             i--;
-            if (Owner.GetChild(i).Item.IsVisible)
+            if (Owner.GetChild(i).IsVisible)
             {
                 newIndex = i;
                 return true;
@@ -102,7 +102,7 @@ internal class SelectionManager : ISelectionManager
         while (i < childrenCount - 1)
         {
             i++;
-            if (Owner.GetChild(i).Item.IsVisible)
+            if (Owner.GetChild(i).IsVisible)
             {
                 newIndex = i;
                 return true;
