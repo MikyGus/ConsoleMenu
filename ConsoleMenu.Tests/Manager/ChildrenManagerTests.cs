@@ -1,4 +1,5 @@
-﻿using ConsoleMenu.Library.Managers;
+﻿using ConsoleMenu.Library.Components;
+using ConsoleMenu.Library.Managers;
 using ConsoleMenu.Library.Menu;
 using ConsoleMenu.Library.Models;
 using FakeItEasy;
@@ -45,7 +46,7 @@ public class ChildrenManagerTests
         foreach (IMenuItem child in menuItems)
         {
             A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8, 1));
-            _sut.Add(1, child);
+            _sut.Add(child);
         }
         _sut.PositionOffsetToNextChild = offsetToNextChild;
         _sut.PositionOffsetOfFirstChild = firstChOffset;
@@ -84,7 +85,7 @@ public class ChildrenManagerTests
         foreach (IMenuItem child in menuItems)
         {
             A.CallTo(() => child.AreaNeeded()).Returns(new Vector2(8, 1));
-            _sut.Add(1, child);
+            _sut.Add(child);
         }
         _sut.PositionOffsetToNextChild = offsetToNextChild;
         ((ChildrenManager)_sut).OrientationOfChildren = Orientation.Horizontal;
@@ -105,15 +106,24 @@ public class ChildrenManagerTests
         int[] expectedOrderOfChildren)
     {
         // Arrange
-        IList<IMenuItem> menuItems = A.CollectionOfFake<IMenuItem>(positionInListInput.Length);
+        IList<IMenuItem> menuItems = GenerateMenuItems().Take(positionInListInput.Length).ToList();
         for (int i = 0; i < menuItems.Count; i++)
         {
-            A.CallTo(() => menuItems[i].AreaNeeded()).Returns(new Vector2(8, 1));
-            _sut.Add(positionInListInput[i], menuItems[i]);
+            menuItems[i].AddComponent(new ListPriorityComponent(positionInListInput[i]));
+            _sut.Add(menuItems[i]);
         }
         // Act
-        IEnumerable<IChildItem> result = _sut.GetChildren();
+        IEnumerable<IMenuItem> result = _sut.GetChildren();
         // Assert
-        result.Select(x => x.Priority).Should().BeEquivalentTo(expectedOrderOfChildren);
+        result.Select(x => x.GetComponents<ListPriorityComponent>().Select(x => x.Value).FirstOrDefault())
+            .Should().BeEquivalentTo(expectedOrderOfChildren);
+    }
+
+    private IEnumerable<IMenuItem> GenerateMenuItems()
+    {
+        for (int i = 0; ; i++)
+        {
+            yield return new MenuItem($"Menu {i}");
+        }
     }
 }
