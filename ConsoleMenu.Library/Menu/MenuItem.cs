@@ -147,13 +147,27 @@ public class MenuItem : IMenuItem
     public bool IsChildrenVisible { get => _childrenManager.IsVisible; set => _childrenManager.IsVisible = value; }
     public IMenuItem this[int i] => _childrenManager.GetChild(i);
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Content.Title == s);
-    public void AddChild(string title) => _childrenManager.Add(9999, new MenuItem(title));
-    public void AddChild<T>(string title, T value)
+    public void AddChild(string title, int positionInList = int.MaxValue)
+    {
+        IMenuItem menuItem = new MenuItem(title);
+        AddChild(menuItem, positionInList);
+    }
+
+    public void AddChild<T>(T value, string title, int positionInList = int.MaxValue)
     {
         IMenuItem menuItem = new MenuItem(title);
         menuItem.AddComponent(new ValueComponent<T>(value));
-        _childrenManager.Add(9999, menuItem);
+        AddChild(menuItem, positionInList);
     }
+    private void AddChild(IMenuItem menuItem, int positionInList)
+    {
+        if (positionInList != int.MaxValue)
+        {
+            menuItem.AddComponent(new ListPriorityComponent(positionInList));
+        }
+        _childrenManager.Add(menuItem);
+    }
+
     public void RemoveChild(int i) => _childrenManager.Remove(i);
     public void RemoveChild(IMenuItem menuItem) => _childrenManager.Remove(menuItem);
     public IEnumerable<IMenuItem> GetChildren() => _childrenManager.GetChildren();

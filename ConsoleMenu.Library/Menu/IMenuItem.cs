@@ -54,7 +54,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// Add a new MenuItem as a child.
     /// </summary>
     /// <param name="title">Title of the new MenuItem</param>
-    void AddChild(string title);
+    /// <param name="positionInList">Position of the menuItem in the list</param>
+    void AddChild(string title, int positionInList = int.MaxValue);
     /// <summary>
     /// Add a new MenuItem as a child.
     /// Also adds a ValueComponent to this new child. 
@@ -62,7 +63,8 @@ public interface IMenuItem : IRenderContent, IVisibility
     /// <typeparam name="T">Valuetype to add</typeparam>
     /// <param name="title">Title of the new MenuItem</param>
     /// <param name="value">Value to add to ValueComponent</param>
-    void AddChild<T>(string title, T value);
+    /// <param name="positionInList">Position of the menuItem in the list</param>
+    void AddChild<T>(T value, string title, int positionInList = int.MaxValue);
     void RemoveChild(int i);
     void RemoveChild(IMenuItem menuItem);
     IEnumerable<IMenuItem> GetChildren();

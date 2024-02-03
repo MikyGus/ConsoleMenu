@@ -123,31 +123,48 @@ After we have added a child-node to our MenuItem we can access it with a index.
 ### Add children
 To add children to a menuItem we use the ```MenuItem.AddChild()``` method
 
-```(void) MenuItem.AddChild(string MenuItemTitle) ```
-The method takes one (1) string argument, used as the title of the menuItem.
-```(void) MenuItem.AddChild<T>(string MenuItemTitle, T value)```
-The method takes two (2) arguments. The first is the title of the menuITem. The second 
-is the value to be added to this menu. The value is added as a ```ValueComponent```, se components.
+```(void) MenuItem.AddChild(string MenuItemTitle, int positionInList = int.MaxValue) ```
+- The method takes one (1) string argument, used as the title of the menuItem.
+- As a second argument it takes a ```positionInList```. 
+
+```(void) MenuItem.AddChild<T>(T value, string title, int positionInList = int.MaxValue);```
+The method takes two (2) arguments. The first is the value to be added to this menu. The value is added as a ```ValueComponent```, se components. The second is the title (string) of the menuITem.
 
 ```csharp
-	IMenuItem menuSettings = new MenuItem("Settings");
-	menuSettings.AddChild("Sub 1");
-	menuSettings["Sub 1"].AddChild("Sub Sub 1");
-	menuSettings[0].AddChild("Sub Sub 2");
-	menuSettings.AddChild("Sub 2");
-	menuSettings.AddChild<int>(title: "My SubMenu with a value", value: 42);
-	menuSettings.AddChild("Another subMenu with a value", 33);
+        IMenuItem menuSettings = new MenuItem("Settings");
+        // Add a normal menu
+        menuSettings.AddChild("Sub 1");
+
+        // Add a submenu to "Sub 1"
+        menuSettings["Sub 1"].AddChild("Sub Sub 1");
+
+        // Same as above, but using index
+        menuSettings[0].AddChild("Sub Sub 2");
+
+        // Add a normal menu at position 1. Will be ordered by lowest 'positionInList'-value first among its siblings.
+        // No 'positionInList' set is valuated as int.MaxValue
+        menuSettings.AddChild("Sub 2", 1);
+
+        // Add a normal menu with a value associated with it
+        menuSettings.AddChild<int>(42, "My SubMenu with a value");
+        menuSettings.AddChild<string>("42", "My SubMenu with a value");
+
+        // Supplying both value, title and positionInList.
+        menuSettings.AddChild(42, "Menu with value at a specified position", 2);
+        menuSettings.AddChild("42", "Menu with value at a specified position", 2);
 ```
 
 **Output**
 ```bash
- Settings 
+ Settings
+  Sub 2
+  Menu with value at a specified position
+  Menu with value at a specified position
   Sub 1
    Sub Sub 1
    Sub Sub 2
-  Sub 2
   My SubMenu with a value
-  Another subMenu with a value
+  My SubMenu with a value
 ```
 
 ### Remove children

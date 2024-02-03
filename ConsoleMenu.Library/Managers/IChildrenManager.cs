@@ -17,7 +17,7 @@ internal interface IChildrenManager : IRenderContent, IVisibility, IOwner<IMenuI
     /// This is the minimum steps. The area taken by the previous child might expand the steps to next child.
     /// </summary>
     int PositionOffsetToNextChild { get; set; }
-    void Add(int positionInList, IMenuItem item);
+    void Add(IMenuItem item);
     void Remove(IMenuItem item);
     void Remove(int itemIndex);
     IEnumerable<IMenuItem> GetChildren();

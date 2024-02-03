@@ -25,22 +25,21 @@ internal class ChildrenManager : IChildrenManager
         Owner = owner;
     }
 
-    public void Add(int positionInList, IMenuItem item)
+    public void Add(IMenuItem item)
     {
-        int defaultPositionInList = int.MaxValue;
         item.Parent = Owner;
-        //IChildItem menuItem = new ChildItem(item, positionInList);
         _children.Add(item);
-        if (defaultPositionInList != int.MaxValue)
-        {
-            item.AddComponent(new ListPriorityComponent(defaultPositionInList));
-        }
-        SortListOftChildren(defaultPositionInList);
+        SortListOfChildren();
     }
 
-    private void SortListOftChildren(int defaultPositionInList) => _children = _children
+    private void SortListOfChildren()
+    {
+        const int defaultPositionInList = int.MaxValue;
+        _children = _children
                 .OrderBy(x => x.GetComponents<ListPriorityComponent>().FirstOrDefault()?.Value ?? defaultPositionInList)
                 .ToList();
+    }
+
     public void Remove(IMenuItem item)
     {
         IMenuItem findItemToRemove = _children.Where(x => x == item).FirstOrDefault() ?? throw new ArgumentException();
