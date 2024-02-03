@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConsoleMenu.Library\ConsoleMenu.Library.csproj" />
+    <ProjectReference Include="..\ConsoleMenu\ConsoleMenu.csproj" />
   </ItemGroup>
 
 </Project>

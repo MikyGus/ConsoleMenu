@@ -1,6 +1,4 @@
-﻿using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Models;
-using ConsoleMenu.Library.Render;
+﻿using ConsoleMenu.Render;
 
 namespace ConsoleMenu.Program.Examples;
 internal class SetRenderer

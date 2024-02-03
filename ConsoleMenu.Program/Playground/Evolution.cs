@@ -1,5 +1,4 @@
-﻿using ConsoleMenu.Library.Components;
-using ConsoleMenu.Library.Menu;
+﻿using ConsoleMenu.Components;
 
 namespace ConsoleMenu.Program.Playground;
 internal class Evolution

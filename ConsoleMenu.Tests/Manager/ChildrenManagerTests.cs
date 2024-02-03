@@ -1,7 +1,5 @@
-﻿using ConsoleMenu.Library.Components;
-using ConsoleMenu.Library.Managers;
-using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Models;
+﻿using ConsoleMenu.Components;
+using ConsoleMenu.Managers;
 using FakeItEasy;
 using FluentAssertions;
 

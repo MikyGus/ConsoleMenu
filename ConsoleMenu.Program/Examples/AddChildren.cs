@@ -1,6 +1,4 @@
-﻿using ConsoleMenu.Library.Menu;
-
-namespace ConsoleMenu.Program.Examples;
+﻿namespace ConsoleMenu.Program.Examples;
 internal class AddChildren
 {
     public static void Run()

@@ -1,7 +1,4 @@
-﻿using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Models;
-
-namespace ConsoleMenu.Program.Examples;
+﻿namespace ConsoleMenu.Program.Examples;
 internal class SimpleMenu
 {
     public static void Render_SimpleMenu_Horizontal()
