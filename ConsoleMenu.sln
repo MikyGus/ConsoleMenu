@@ -4,7 +4,7 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMenu.Program", "ConsoleMenu.Program\ConsoleMenu.Program.csproj", "{86A1B59E-13E5-4CEB-9780-1ABBFFD55BF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMenu.Library", "ConsoleMenu.Library\ConsoleMenu.Library.csproj", "{618188C6-7FAE-427E-9C13-73FD91BA2D54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMenu", "ConsoleMenu\ConsoleMenu.csproj", "{618188C6-7FAE-427E-9C13-73FD91BA2D54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleMenu.Tests", "ConsoleMenu.Tests\ConsoleMenu.Tests.csproj", "{012D6A91-9FFD-42FB-BE67-4D8C01C8D3A1}"
 EndProject

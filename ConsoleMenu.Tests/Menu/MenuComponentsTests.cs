@@ -1,5 +1,4 @@
-﻿using ConsoleMenu.Library.Components;
-using ConsoleMenu.Library.Menu;
+﻿using ConsoleMenu.Components;
 using FluentAssertions;
 
 namespace ConsoleMenu.Tests.Menu;

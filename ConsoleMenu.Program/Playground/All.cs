@@ -1,7 +1,5 @@
-﻿using ConsoleMenu.Library.FormInput;
-using ConsoleMenu.Library.Menu;
-using ConsoleMenu.Library.Models;
-using ConsoleMenu.Library.Render;
+﻿using ConsoleMenu.FormInput;
+using ConsoleMenu.Render;
 
 namespace ConsoleMenu.Program.Playground;
 internal class All
