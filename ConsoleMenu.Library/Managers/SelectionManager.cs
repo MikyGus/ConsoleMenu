@@ -8,10 +8,10 @@ internal class SelectionManager : ISelectionManager
 
     public ChildrenManager Owner { get; init; }
 
-    public SelectionManager(ChildrenManager owner)
+    public SelectionManager(ChildrenManager childrenManager)
     {
+        Owner = childrenManager;
         CurrentIndex = 0;
-        Owner = owner;
     }
 
     public event Action<SelectionChangedEvent> OnSelectionChanged;

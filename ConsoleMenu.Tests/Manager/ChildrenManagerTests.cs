@@ -8,7 +8,7 @@ using FluentAssertions;
 namespace ConsoleMenu.Tests.Manager;
 public class ChildrenManagerTests
 {
-    IChildrenManager _sut;
+    ChildrenManager _sut;
     IMenuItem _menuItem;
     public ChildrenManagerTests()
     {
@@ -18,6 +18,7 @@ public class ChildrenManagerTests
             PositionOfFirstChild = Vector2.ZERO,
             PositionOffsetToNextChild = 1
         };
+        _sut.Selection = new SelectionManager(_sut);
     }
 
     [Theory]
