@@ -145,9 +145,13 @@ internal class All
         if (item.Parent is not null)
         {
             item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            item.Parent.Render(); // Replace me with below
             // TODO: content Render!!
             //            item.Parent.Content.Render();
         }
+
+
+
         // TODO: content Render!!
         //item.Content.Render();
     }

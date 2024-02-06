@@ -74,6 +74,7 @@ internal class SetAction
         if (item.Parent is not null)
         {
             item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            item.Parent.Render(); // Replace me with below
             // TODO: Content render
             //item.Parent.Content.Render();
         }
