@@ -16,4 +16,7 @@ public class MenuItemOption
 
     // Visibility / Renderer
     public IContentRenderer ContentRenderer { get; set; }
+
+    // Content
+    public bool IsMarked { get; set; }
 }

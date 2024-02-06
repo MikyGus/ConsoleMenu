@@ -42,9 +42,12 @@ public partial class MenuItem : IMenuItem
     }
     private MenuItemOption GetCurrentSettings() => new()
     {
-        Title = Content.Title,
         IsVisible = IsVisible,
         MayCollapse = MayCollapse,
+
+        // Content
+        Title = Content.Title,
+        IsMarked = Content.IsMarked,
 
         // ChildrenManager
         PositionInList = GetComponents<ListPriorityComponent>().FirstOrDefault()?.Value ?? int.MaxValue,
@@ -58,9 +61,12 @@ public partial class MenuItem : IMenuItem
     };
     private void SetConfiguredSettings(MenuItemOption menuItemOption)
     {
-        Content.Title = menuItemOption.Title;
         IsVisible = menuItemOption.IsVisible;
         MayCollapse = menuItemOption.MayCollapse;
+
+        // Content
+        Content.Title = menuItemOption.Title;
+        Content.IsMarked = menuItemOption.IsMarked;
 
         // ChildrenManager
         SetPositionInList(menuItemOption.PositionInList);
