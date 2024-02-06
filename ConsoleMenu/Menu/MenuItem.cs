@@ -6,8 +6,8 @@ using System.Diagnostics;
 namespace ConsoleMenu;
 public partial class MenuItem : IMenuItem
 {
-    private MenuItemOption _menuItemSettings = new();
-    private IContent _content;
+    private readonly MenuItemOption _menuItemSettings = new();
+    private readonly IContent _content;
 
     public IMenuItem Parent { get; set; }
     public Vector2 Position { get; set; }

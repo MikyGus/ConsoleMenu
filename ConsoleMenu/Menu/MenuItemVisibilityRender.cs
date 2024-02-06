@@ -19,11 +19,12 @@ public partial class MenuItem : IMenuItemVisibilityRender
     }
     private void SetRenderer(IContentRenderer contentRenderer)
     {
-        if (_content is Content c && c.IsCurrentlyVisible)
+        if (_content.IsCurrentlyVisible)
         {
             _content.EraseContent();
             _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
             _content.Render();
+            Debug.WriteLine($"MenuItem: '{_content.Title}' have now changed renderer.", "SetRenderer");
             return;
         }
         _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);

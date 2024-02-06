@@ -8,7 +8,7 @@ internal class Content : IContent
     public bool IsMarked { get; set; }
     public required string Title { get; set; }
     public required IMenuItem Owner { get; set; }
-    internal bool IsCurrentlyVisible { get; private set; }
+    public bool IsCurrentlyVisible { get; private set; }
 
 
     public Content()
