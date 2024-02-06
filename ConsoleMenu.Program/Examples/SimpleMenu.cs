@@ -10,7 +10,10 @@ internal class SimpleMenu
         menu.AddChild("Menu 1");
         menu.AddChild("Menu 2");
         menu.AddChild("Menu 3");
-        menu.OrientationOfChildren = Orientation.Horizontal;
+        menu.Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+        });
         menu.Render();
 
         ConsoleKeyInfo keyInput;
@@ -30,7 +33,10 @@ internal class SimpleMenu
         menu.AddChild("Menu 1");
         menu.AddChild("Menu 2");
         menu.AddChild("Menu 3");
-        menu.OrientationOfChildren = Orientation.Vertical;
+        menu.Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Vertical;
+        });
         menu.Render();
 
         ConsoleKeyInfo keyInput;

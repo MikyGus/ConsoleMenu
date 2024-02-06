@@ -6,18 +6,29 @@ using System.Diagnostics;
 namespace ConsoleMenu;
 public partial class MenuItem : IMenuItemVisibilityRender
 {
-    public void SetRenderer<T>() where T : IContentRenderer, new()
+    private IContentRenderer _contentRenderer;
+    public IContentRenderer ContentRenderer
     {
-        IContentRenderer contentRenderer = new T();
-        if (Content is Content c && c.IsCurrentlyVisible)
+        get => _contentRenderer;
+        set
         {
-            Content.EraseContent();
-            Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-            Content.Render();
+            ArgumentNullException.ThrowIfNull(value);
+            _contentRenderer = value;
+            SetRenderer(_contentRenderer);
+        }
+    }
+    private void SetRenderer(IContentRenderer contentRenderer)
+    {
+        if (_content.IsCurrentlyVisible)
+        {
+            _content.EraseContent();
+            _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+            _content.Render();
+            Debug.WriteLine($"MenuItem: '{_content.Title}' have now changed renderer.", "SetRenderer");
             return;
         }
-        Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now changed renderer.", "SetRenderer");
+        _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now changed renderer.", "SetRenderer");
     }
     public void ReRender()
     {
@@ -60,21 +71,21 @@ public partial class MenuItem : IMenuItemVisibilityRender
         }
         _isCurrentlyVisible = true;
 
-        Content.Render();
-        Vector2 areaNeeded = Content.AreaNeeded();
+        _content.Render();
+        Vector2 areaNeeded = _content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been Rendered", "Render");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now been Rendered", "Render");
     }
     public void EraseContent()
     {
         if (_isCurrentlyVisible)
         {
-            Content.EraseContent();
+            _content.EraseContent();
             _childrenManager.EraseContent();
             _isCurrentlyVisible = false;
         }
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been erased.", "EraseContent");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now been erased.", "EraseContent");
     }
     public Vector2 AreaNeeded()
     {
@@ -82,7 +93,7 @@ public partial class MenuItem : IMenuItemVisibilityRender
         {
             return Vector2.ZERO;
         }
-        Vector2 contentArea = Content.AreaNeeded();
+        Vector2 contentArea = _content.AreaNeeded();
         Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
     }

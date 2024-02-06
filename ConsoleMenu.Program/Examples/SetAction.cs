@@ -13,12 +13,13 @@ internal class SetAction
         {
             if (k.Key == ConsoleKey.Enter)
             {
-                m.Content.IsMarked = !m.Content.IsMarked;
-                m.Content.Render();
+                m.Configure(x => x.IsMarked = !m.IsMarked);
+                // TODO: content render
+                //m.Content.Render();
             }
         };
         menu[0].AddChild("Sub 2");
-        menu[0].OrientationOfChildren = Orientation.Horizontal;
+        menu[0].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         menu[0].OnKeyPressed += SetItemMarkOnParent;
 
         menu.AddChild("My SubMenu #2");
@@ -26,7 +27,7 @@ internal class SetAction
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.IsChildrenVisible = !m.IsChildrenVisible;
+                m.Configure(o => o.IsChildrenVisible = !m.IsChildrenVisible);
                 m.ReRender();
             }
         };
@@ -37,8 +38,11 @@ internal class SetAction
         menu.AddChild("My SubMenu #3");
         menu[2].OnKeyPressed += SetItemMark;
 
-        menu.OrientationOfChildren = Orientation.Horizontal;
-        menu.Content.IsSelected = true;
+        menu.Configure(x =>
+        {
+            x.OrientationOfChildren = Orientation.Horizontal;
+            x.IsSelected = true;
+        });
         menu.Render();
 
         ConsoleKeyInfo keyInput;
@@ -55,9 +59,9 @@ internal class SetAction
         {
             return;
         }
-
-        item.Content.IsMarked = !item.Content.IsMarked;
-        item.Content.Render();
+        item.Configure(x => x.IsMarked = !item.IsMarked);
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
@@ -69,10 +73,13 @@ internal class SetAction
 
         if (item.Parent is not null)
         {
-            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
-            item.Parent.Content.Render();
+            item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            item.Parent.Render(); // Replace me with below
+            // TODO: Content render
+            //item.Parent.Content.Render();
         }
-        item.Content.Render();
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
@@ -86,7 +93,7 @@ internal class SetAction
         {
             foreach (IMenuItem child in item.GetChildren())
             {
-                child.Content.IsMarked = !child.Content.IsMarked;
+                child.Configure(x => x.IsMarked = !child.IsMarked);
             }
             item.Render();
         }

@@ -15,12 +15,16 @@ internal class HideUnhide
         {
             if (k.Key == ConsoleKey.Enter)
             {
-                m.Content.IsMarked = !m.Content.IsMarked;
-                m.Content.Render();
+                m.Configure(x => x.IsMarked = !m.IsMarked);
+                // TODO: content render!!
+                //                m.Content.Render();
             }
         });
         menu["Settings"][0].AddChild("Sub2");
-        menu["Settings"][0].OrientationOfChildren = Orientation.Horizontal;
+        menu["Settings"][0].Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+        });
         menu["Settings"][0].OnKeyPressed += SetItemMarkOnParent;
 
 
@@ -29,7 +33,7 @@ internal class HideUnhide
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.IsChildrenVisible = !m.IsChildrenVisible;
+                m.Configure(o => o.IsChildrenVisible = !m.IsChildrenVisible);
                 m.ReRender();
             }
         });
@@ -40,11 +44,11 @@ internal class HideUnhide
         menu["Settings"]["My SubMenu #2"].AddChild("Sub2");
         menu["Settings"].AddChild("My SubMenu #3");
         menu["Settings"]["My SubMenu #3"].OnKeyPressed += SetItemMark;
-        menu["Settings"].OrientationOfChildren = Orientation.Horizontal;
+        menu["Settings"].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
 
         menu.AddChild("Hello, World");
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
-        menu.Content.IsSelected = true;
+        menu.Configure(x => x.IsSelected = true);
 
         menu.Render();
 
@@ -80,8 +84,9 @@ internal class HideUnhide
             return;
         }
 
-        item.Content.IsMarked = !item.Content.IsMarked;
-        item.Content.Render();
+        item.Configure(x => x.IsMarked = !item.IsMarked);
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
@@ -93,10 +98,13 @@ internal class HideUnhide
 
         if (item.Parent is not null)
         {
-            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
-            item.Parent.Content.Render();
+            item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            item.Parent.Render(); // Replace me with below
+            // TODO: Content render
+            //item.Parent.Content.Render();
         }
-        item.Content.Render();
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
@@ -110,7 +118,7 @@ internal class HideUnhide
         {
             foreach (IMenuItem child in item.GetChildren())
             {
-                child.Content.IsMarked = !child.Content.IsMarked;
+                child.Configure(x => x.IsMarked = !child.IsMarked);
             }
             item.Render();
         }

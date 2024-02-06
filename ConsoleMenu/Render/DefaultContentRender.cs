@@ -1,7 +1,7 @@
 ﻿namespace ConsoleMenu.Render;
 public class DefaultContentRender : IContentRenderer
 {
-    public Vector2 AreaNeeded(IMenuItem menuItem) => new(menuItem.Content.Title.Length + 2, 1);
+    public Vector2 AreaNeeded(IMenuItem menuItem) => new(menuItem.Title.Length + 2, 1);
 
     public void Render(IMenuItem menuItem)
     {
@@ -9,7 +9,7 @@ public class DefaultContentRender : IContentRenderer
         ConsoleColor selectedColor = ConsoleColor.Blue;
         ConsoleColor bgColor;
         ConsoleColor fgColor;
-        if (menuItem.Content.IsMarked)
+        if (menuItem.IsMarked)
         {
             bgColor = ConsoleColor.Green;
             fgColor = ConsoleColor.Black;
@@ -21,17 +21,17 @@ public class DefaultContentRender : IContentRenderer
         }
         ContentHelpers.WriteAtPosition(
             menuItem.Position,
-            menuItem.Content.IsSelected ? "[" : " ",
+            menuItem.IsSelected ? "[" : " ",
             selectedColor,
             bgColor);
         ContentHelpers.WriteAtPosition(
             new Vector2(menuItem.Position.X + 1, menuItem.Position.Y),
-            menuItem.Content.Title,
+            menuItem.Title,
             fgColor,
             bgColor);
         ContentHelpers.WriteAtPosition(
-            new Vector2(menuItem.Position.X + 1 + menuItem.Content.Title.Length, menuItem.Position.Y),
-            menuItem.Content.IsSelected ? "]" : " ",
+            new Vector2(menuItem.Position.X + 1 + menuItem.Title.Length, menuItem.Position.Y),
+            menuItem.IsSelected ? "]" : " ",
             selectedColor,
             bgColor);
     }

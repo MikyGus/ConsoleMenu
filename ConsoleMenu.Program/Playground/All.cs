@@ -19,11 +19,11 @@ internal class All
             if (k.Key == ConsoleKey.Enter)
             {
                 var value = new TextInput(m.Position, 20);
-                m.Content.Title = value.GetUserInput(out string _text) ? _text : m.Content.Title;
+                m.Configure(x => x.Title = value.GetUserInput(out string _text) ? _text : m.Title);
                 m.ReRender();
             }
         };
-        menu[0].OrientationOfChildren = Orientation.Horizontal;
+        menu[0].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
 
         menu.AddChild("My SubMenu2");
         menu["My SubMenu2"].AddChild("My SubSubMenu");
@@ -31,43 +31,47 @@ internal class All
         menu["My SubMenu2"][0][0].AddChild("Sub1");
         menu["My SubMenu2"][0][0].AddChild("Sub2");
         menu["My SubMenu2"][0][0].AddChild("Sub3");
-        menu["My SubMenu2"][0][0].OrientationOfChildren = Orientation.Horizontal;
+        menu["My SubMenu2"][0][0].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         menu["My SubMenu2"][0].AddChild("My SubSubMenu2");
         menu["My SubMenu2"][0][1].AddChild("Sub1");
         menu["My SubMenu2"][0][1].AddChild("Sub2");
         menu["My SubMenu2"][0][1].AddChild("ActionMenu");
         menu["My SubMenu2"][0][1]["ActionMenu"].OnKeyPressed += SetItemMark;
-        menu["My SubMenu2"][0][1].OrientationOfChildren = Orientation.Horizontal;
-        menu["My SubMenu2"][0][1].PositionOffsetOfFirstChild = new Vector2(5, 0);
+        menu["My SubMenu2"][0][1].Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+            o.PositionOffsetOfFirstChild = new Vector2(5, 0);
+        });
         menu["My SubMenu2"][0].AddChild("My SubSubMenu2");
         menu["My SubMenu2"][0][2].AddChild("Sub1");
         menu["My SubMenu2"][0][2].AddChild("Sub2");
         menu["My SubMenu2"][0][2].AddChild("Sub3");
-        menu["My SubMenu2"][0][2].OrientationOfChildren = Orientation.Horizontal;
+        menu["My SubMenu2"][0][2].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         //menu["My SubMenu2"][0][2].SetRenderer<RadioButtonContentRenderer>();
         menu["My SubMenu2"][0][2].OnKeyPressed += (m, k) =>
         {
             if (k.Key == ConsoleKey.Enter)
             {
-                m.Content.IsMarked = !m.Content.IsMarked;
-                m.Content.Render();
+                m.Configure(x => x.IsMarked = !m.IsMarked);
+                // TODO: FIX Render(Render.content)
+                // m.Content.Render();
             }
         };
-        menu["My SubMenu2"][0].OrientationOfChildren = Orientation.Vertical;
+        menu["My SubMenu2"][0].Configure(o => { o.OrientationOfChildren = Orientation.Vertical; });
         menu["My SubMenu2"].AddChild("Sub2");
         menu["My SubMenu2"].AddChild("Sub3");
-        menu["My SubMenu2"].SetRenderer<CheckboxContentRender>();
+        menu["My SubMenu2"].Configure(x => x.ContentRenderer = new CheckboxContentRender());
         menu["My SubMenu2"].OnKeyPressed += SetItemMark;
-        menu["My SubMenu2"].Content.IsMarked = true;
+        menu["My SubMenu2"].Configure(x => x.IsMarked = true);
         menu["My SubMenu2"].OnSelectionChanged += x =>
         {
-            x.OldItem.IsChildrenVisible = false;
-            x.NewItem.IsChildrenVisible = true;
+            x.OldItem.Configure(o => o.IsChildrenVisible = false);
+            x.NewItem.Configure(o => o.IsChildrenVisible = true);
             x.NewItem.ReRender();
         };
         menu["My SubMenu2"].OnSelectionRendered += x =>
         {
-            x.Item.IsChildrenVisible = x.IsSelected;
+            x.Item.Configure(o => o.IsChildrenVisible = x.IsSelected);
             x.Item.ReRender();
         };
 
@@ -76,10 +80,14 @@ internal class All
         menu.AddChild("Plsdlfjksldkjfsldjfsldjflsjdfl");
         menu["Plsdlfjksldkjfsldjfsldjflsjdfl"].OnKeyPressed += SetItemMark;
         menu["Plsdlfjksldkjfsldjfsldjflsjdfl"].OnKeyPressed += SetItemMarkOnParent;
-        menu.OrientationOfChildren = Orientation.Vertical;
-        menu.PositionOffsetToNextChild = 1;
+        menu.Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Vertical;
+            o.PositionOffsetToNextChild = 1;
+        });
         //menu.SetRenderer<DefaultContentRender>();
-        menu.Content.IsSelected = true;
+        // TODO: Fix default Selected = True
+        menu.Configure(x => x.IsSelected = true);
         //menu.Content.IsMarked = false;
         menu.Render();
 
@@ -119,9 +127,9 @@ internal class All
         //    }
         //    item.Render();
         //}
-
-        item.Content.IsMarked = !item.Content.IsMarked;
-        item.Content.Render();
+        item.Configure(x => x.IsMarked = !item.IsMarked);
+        // TODO: Content Render!!
+        //        item.Content.Render();
         //item.SetRenderer<DefaultContentRender>();
 
         //item.ContentRenderer.Render(item.Position);
@@ -136,9 +144,15 @@ internal class All
 
         if (item.Parent is not null)
         {
-            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
-            item.Parent.Content.Render();
+            item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            item.Parent.Render(); // Replace me with below
+            // TODO: content Render!!
+            //            item.Parent.Content.Render();
         }
-        item.Content.Render();
+
+
+
+        // TODO: content Render!!
+        //item.Content.Render();
     }
 }

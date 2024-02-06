@@ -10,13 +10,19 @@ internal class SetRenderer
             Position = new Vector2(0, 1)
         };
         menu.AddChild("Menu 1");
-        menu[0].SetRenderer<CheckboxContentRender>();
+        menu[0].Configure(x => x.ContentRenderer = new CheckboxContentRender());
         menu.AddChild("Menu 2");
-        menu[1].SetRenderer<CheckboxContentRender>();
-        menu[1].Content.IsMarked = true;
+        menu[1].Configure(x =>
+        {
+            x.ContentRenderer = new CheckboxContentRender();
+            x.IsMarked = true;
+        });
         menu.AddChild("Menu 3");
-        menu[2].SetRenderer<CheckboxContentRender>();
-        menu.OrientationOfChildren = Orientation.Horizontal;
+        menu.Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+            o.ContentRenderer = new CheckboxContentRender();
+        });
         menu.Render();
 
         ConsoleKeyInfo keyInput;
