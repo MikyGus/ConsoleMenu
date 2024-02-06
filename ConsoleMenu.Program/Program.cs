@@ -1,4 +1,4 @@
-﻿using ConsoleMenu.Program.Examples;
+﻿using ConsoleMenu.Program.Playground;
 using System.Diagnostics;
 
 //Trace.Listeners.Add(new TextWriterTraceListener(
@@ -16,7 +16,7 @@ Debug.WriteLine("Application started");
 //SimpleMenu.Render_SimpleMenu_Horizontal();
 //SimpleMenu.Render_SimpleMenu_Vertical();
 
-AddChildren.Run();
+//AddChildren.Run();
 //RemoveChildren.Run();
 
 //PositionOffsetOfFirstChild.Run();
@@ -29,6 +29,6 @@ AddChildren.Run();
 //Console.SetCursorPosition(0, 10);
 //Console.WriteLine(textInputted.Text);
 
-//Evolution.Run();
+Evolution.Run();
 Debug.WriteLine("Application ended");
 Console.WriteLine("\n\n\n\n\n\n\n\n");

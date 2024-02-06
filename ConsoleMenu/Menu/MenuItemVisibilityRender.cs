@@ -6,9 +6,19 @@ using System.Diagnostics;
 namespace ConsoleMenu;
 public partial class MenuItem : IMenuItemVisibilityRender
 {
-    public void SetRenderer<T>() where T : IContentRenderer, new()
+    private IContentRenderer _contentRenderer;
+    public IContentRenderer ContentRenderer
     {
-        IContentRenderer contentRenderer = new T();
+        get => _contentRenderer;
+        set
+        {
+            ArgumentNullException.ThrowIfNull(value);
+            _contentRenderer = value;
+            SetRenderer(_contentRenderer);
+        }
+    }
+    private void SetRenderer(IContentRenderer contentRenderer)
+    {
         if (Content is Content c && c.IsCurrentlyVisible)
         {
             Content.EraseContent();

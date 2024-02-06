@@ -10,4 +10,5 @@ public interface IMenuItem :
     IMenuItem Parent { get; set; }
     Vector2 Position { get; set; }
     IContent Content { get; }
+    void Configure(Action<MenuItemOption> option);
 }

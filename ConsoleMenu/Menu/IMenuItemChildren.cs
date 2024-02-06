@@ -7,7 +7,8 @@ public interface IMenuItemChildren
     ///// <summary>
     ///// Set if the children should be rendered in a horizontal or vertical orientation.
     ///// </summary>
-    Orientation OrientationOfChildren { get; set; }
+    Orientation OrientationOfChildren { get; }
+
     /// <summary>
     /// Add a new MenuItem as a child.
     /// </summary>
@@ -32,13 +33,13 @@ public interface IMenuItemChildren
     /// Position offset for the first child to be rendered. 
     /// Mainly used for indentation below the owner rendation.
     /// </summary>
-    Vector2 PositionOffsetOfFirstChild { get; set; }
+    Vector2 PositionOffsetOfFirstChild { get; }
 
     /// <summary>
     /// How many position-steps from current childs upper-left corner
     /// to next childs upper-left corner. 
     /// This is the minimum steps. The area taken by the previous child might expand the steps to next child.
     /// </summary>
-    int PositionOffsetToNextChild { get; set; }
-    bool IsChildrenVisible { get; set; }
+    int PositionOffsetToNextChild { get; }
+    bool IsChildrenVisible { get; }
 }

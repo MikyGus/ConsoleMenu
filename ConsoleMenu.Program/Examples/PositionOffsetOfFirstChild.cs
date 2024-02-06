@@ -10,8 +10,11 @@ internal class PositionOffsetOfFirstChild
         menu.AddChild("Menu 1");
         menu.AddChild("Menu 2");
         menu.AddChild("Menu 3");
-        menu.OrientationOfChildren = Orientation.Horizontal;
-        menu.PositionOffsetOfFirstChild = new Vector2(10, 0);
+        menu.Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+            o.PositionOffsetOfFirstChild = new Vector2(10, 0);
+        });
         menu.Render();
 
         ConsoleKeyInfo keyInput;

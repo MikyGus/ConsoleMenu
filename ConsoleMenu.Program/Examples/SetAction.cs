@@ -18,7 +18,7 @@ internal class SetAction
             }
         };
         menu[0].AddChild("Sub 2");
-        menu[0].OrientationOfChildren = Orientation.Horizontal;
+        menu[0].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         menu[0].OnKeyPressed += SetItemMarkOnParent;
 
         menu.AddChild("My SubMenu #2");
@@ -26,7 +26,7 @@ internal class SetAction
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.IsChildrenVisible = !m.IsChildrenVisible;
+                m.Configure(o => o.IsChildrenVisible = !m.IsChildrenVisible);
                 m.ReRender();
             }
         };
@@ -37,7 +37,7 @@ internal class SetAction
         menu.AddChild("My SubMenu #3");
         menu[2].OnKeyPressed += SetItemMark;
 
-        menu.OrientationOfChildren = Orientation.Horizontal;
+        menu.Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         menu.Content.IsSelected = true;
         menu.Render();
 

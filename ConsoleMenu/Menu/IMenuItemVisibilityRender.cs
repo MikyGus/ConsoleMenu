@@ -7,8 +7,7 @@ public interface IMenuItemVisibilityRender : IVisibility, IRenderContent
     /// <summary>
     /// Sets the renderer of the content of the item. 
     /// </summary>
-    /// <typeparam name="T">ContentRenderer</typeparam>
-    void SetRenderer<T>() where T : IContentRenderer, new();
+    public IContentRenderer ContentRenderer { get; }
 
     /// <summary>
     /// Removes ALL nodes, starting at the root, and renders them again.

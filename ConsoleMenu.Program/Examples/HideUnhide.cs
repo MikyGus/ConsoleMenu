@@ -20,7 +20,10 @@ internal class HideUnhide
             }
         });
         menu["Settings"][0].AddChild("Sub2");
-        menu["Settings"][0].OrientationOfChildren = Orientation.Horizontal;
+        menu["Settings"][0].Configure(o =>
+        {
+            o.OrientationOfChildren = Orientation.Horizontal;
+        });
         menu["Settings"][0].OnKeyPressed += SetItemMarkOnParent;
 
 
@@ -29,7 +32,7 @@ internal class HideUnhide
         {
             if (k.Modifiers == ConsoleModifiers.Control && k.Key == ConsoleKey.H)
             {
-                m.IsChildrenVisible = !m.IsChildrenVisible;
+                m.Configure(o => o.IsChildrenVisible = !m.IsChildrenVisible);
                 m.ReRender();
             }
         });
@@ -40,7 +43,7 @@ internal class HideUnhide
         menu["Settings"]["My SubMenu #2"].AddChild("Sub2");
         menu["Settings"].AddChild("My SubMenu #3");
         menu["Settings"]["My SubMenu #3"].OnKeyPressed += SetItemMark;
-        menu["Settings"].OrientationOfChildren = Orientation.Horizontal;
+        menu["Settings"].Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
 
         menu.AddChild("Hello, World");
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));

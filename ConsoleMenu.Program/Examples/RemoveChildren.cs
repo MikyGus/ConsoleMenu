@@ -13,7 +13,7 @@ internal class RemoveChildren
         IMenuItem menuItem = menu[0];
         menu.RemoveChild(menuItem);
         menu.RemoveChild(1);
-        menu.OrientationOfChildren = Orientation.Horizontal;
+        menu.Configure(o => { o.OrientationOfChildren = Orientation.Horizontal; });
         menu.Render();
     }
 }

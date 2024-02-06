@@ -1,12 +1,25 @@
 ﻿using ConsoleMenu.Components;
+using ConsoleMenu.Render;
 
 namespace ConsoleMenu.Program.Playground;
 internal class Evolution
 {
     public static void Run()
     {
-        IMenuItem menuSettings = new MenuItem("Settings");
+        IMenuItem menuSettings = new MenuItem("Settings", x =>
+        {
+            x.IsVisible = true;
+            x.MayCollapse = true;
+            x.Title = "Hello... :)";
+            x.OrientationOfChildren = Orientation.Horizontal;
+            x.PositionOffsetOfFirstChild = new(0, 5);
+            x.PositionOffsetToNextChild = 20;
+        });
         menuSettings.AddChild("Sub 1");
+        menuSettings[0].Configure(x =>
+        {
+            x.ContentRenderer = new CheckboxContentRender();
+        });
         //menuSettings["Sub 1"].Content.Title = "New Sub 1";
         menuSettings["Sub 1"].AddChild("Sub Sub 1");
         menuSettings[0].AddChild("Sub Sub 2");
