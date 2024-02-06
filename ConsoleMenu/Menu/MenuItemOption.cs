@@ -3,7 +3,6 @@
 namespace ConsoleMenu;
 public class MenuItemOption
 {
-    public string Title { get; set; }
     public bool IsVisible { get; set; }
     public bool MayCollapse { get; set; }
 
@@ -18,5 +17,7 @@ public class MenuItemOption
     public IContentRenderer ContentRenderer { get; set; }
 
     // Content
+    public bool IsSelected { get; set; }
     public bool IsMarked { get; set; }
+    public string Title { get; set; }
 }

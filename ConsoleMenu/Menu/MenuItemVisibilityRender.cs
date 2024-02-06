@@ -19,15 +19,15 @@ public partial class MenuItem : IMenuItemVisibilityRender
     }
     private void SetRenderer(IContentRenderer contentRenderer)
     {
-        if (Content is Content c && c.IsCurrentlyVisible)
+        if (_content is Content c && c.IsCurrentlyVisible)
         {
-            Content.EraseContent();
-            Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-            Content.Render();
+            _content.EraseContent();
+            _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+            _content.Render();
             return;
         }
-        Content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now changed renderer.", "SetRenderer");
+        _content.SetRenderer(contentRenderer.Render, contentRenderer.AreaNeeded);
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now changed renderer.", "SetRenderer");
     }
     public void ReRender()
     {
@@ -70,21 +70,21 @@ public partial class MenuItem : IMenuItemVisibilityRender
         }
         _isCurrentlyVisible = true;
 
-        Content.Render();
-        Vector2 areaNeeded = Content.AreaNeeded();
+        _content.Render();
+        Vector2 areaNeeded = _content.AreaNeeded();
         _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
         _childrenManager.Render();
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been Rendered", "Render");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now been Rendered", "Render");
     }
     public void EraseContent()
     {
         if (_isCurrentlyVisible)
         {
-            Content.EraseContent();
+            _content.EraseContent();
             _childrenManager.EraseContent();
             _isCurrentlyVisible = false;
         }
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been erased.", "EraseContent");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now been erased.", "EraseContent");
     }
     public Vector2 AreaNeeded()
     {
@@ -92,7 +92,7 @@ public partial class MenuItem : IMenuItemVisibilityRender
         {
             return Vector2.ZERO;
         }
-        Vector2 contentArea = Content.AreaNeeded();
+        Vector2 contentArea = _content.AreaNeeded();
         Vector2 childrenArea = _childrenManager.AreaNeeded();
         return contentArea.MaxAdd_Vertical(childrenArea);
     }

@@ -15,8 +15,8 @@ internal class SetRenderer
         menu[1].Configure(x =>
         {
             x.ContentRenderer = new CheckboxContentRender();
+            x.IsMarked = true;
         });
-        menu[1].Content.IsMarked = true;
         menu.AddChild("Menu 3");
         menu.Configure(o =>
         {

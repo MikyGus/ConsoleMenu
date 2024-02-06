@@ -15,8 +15,9 @@ internal class HideUnhide
         {
             if (k.Key == ConsoleKey.Enter)
             {
-                m.Content.IsMarked = !m.Content.IsMarked;
-                m.Content.Render();
+                m.Configure(x => x.IsMarked = !m.IsMarked);
+                // TODO: content render!!
+                //                m.Content.Render();
             }
         });
         menu["Settings"][0].AddChild("Sub2");
@@ -47,7 +48,7 @@ internal class HideUnhide
 
         menu.AddChild("Hello, World");
         //menu.Children.Add(2, new MenuItem("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet justo ac mauris hendrerit dapibus. Donec urna dolor, dapibus a libero sed, tempus luctus libero. Aliquam fringilla mi vitae pulvinar efficitur."));
-        menu.Content.IsSelected = true;
+        menu.Configure(x => x.IsSelected = true);
 
         menu.Render();
 
@@ -83,8 +84,9 @@ internal class HideUnhide
             return;
         }
 
-        item.Content.IsMarked = !item.Content.IsMarked;
-        item.Content.Render();
+        item.Configure(x => x.IsMarked = !item.IsMarked);
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
@@ -96,10 +98,12 @@ internal class HideUnhide
 
         if (item.Parent is not null)
         {
-            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
-            item.Parent.Content.Render();
+            item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            // TODO: Content render
+            //item.Parent.Content.Render();
         }
-        item.Content.Render();
+        // TODO: Content render
+        //item.Content.Render();
     }
 
     static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
@@ -113,7 +117,7 @@ internal class HideUnhide
         {
             foreach (IMenuItem child in item.GetChildren())
             {
-                child.Content.IsMarked = !child.Content.IsMarked;
+                child.Configure(x => x.IsMarked = !child.IsMarked);
             }
             item.Render();
         }

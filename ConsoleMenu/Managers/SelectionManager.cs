@@ -61,7 +61,7 @@ internal class SelectionManager : ISelectionManager
             throw new ArgumentNullException("No children present!");
         }
         IMenuItem childItem = GetSelectedChild();
-        childItem.Content.IsSelected = isSelected;
+        childItem.Configure(x => x.IsSelected = isSelected);
         childItem.Render();
 
         SelectionRenderedEvent selectionRendered = new() { Sender = Owner.Owner, Item = childItem, IsSelected = isSelected };

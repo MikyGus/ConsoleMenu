@@ -19,7 +19,7 @@ internal class All
             if (k.Key == ConsoleKey.Enter)
             {
                 var value = new TextInput(m.Position, 20);
-                m.Content.Title = value.GetUserInput(out string _text) ? _text : m.Content.Title;
+                m.Configure(x => x.Title = value.GetUserInput(out string _text) ? _text : m.Title);
                 m.ReRender();
             }
         };
@@ -52,8 +52,9 @@ internal class All
         {
             if (k.Key == ConsoleKey.Enter)
             {
-                m.Content.IsMarked = !m.Content.IsMarked;
-                m.Content.Render();
+                m.Configure(x => x.IsMarked = !m.IsMarked);
+                // TODO: FIX Render(Render.content)
+                // m.Content.Render();
             }
         };
         menu["My SubMenu2"][0].Configure(o => { o.OrientationOfChildren = Orientation.Vertical; });
@@ -61,7 +62,7 @@ internal class All
         menu["My SubMenu2"].AddChild("Sub3");
         menu["My SubMenu2"].Configure(x => x.ContentRenderer = new CheckboxContentRender());
         menu["My SubMenu2"].OnKeyPressed += SetItemMark;
-        menu["My SubMenu2"].Content.IsMarked = true;
+        menu["My SubMenu2"].Configure(x => x.IsMarked = true);
         menu["My SubMenu2"].OnSelectionChanged += x =>
         {
             x.OldItem.Configure(o => o.IsChildrenVisible = false);
@@ -85,7 +86,8 @@ internal class All
             o.PositionOffsetToNextChild = 1;
         });
         //menu.SetRenderer<DefaultContentRender>();
-        menu.Content.IsSelected = true;
+        // TODO: Fix default Selected = True
+        menu.Configure(x => x.IsSelected = true);
         //menu.Content.IsMarked = false;
         menu.Render();
 
@@ -125,9 +127,9 @@ internal class All
         //    }
         //    item.Render();
         //}
-
-        item.Content.IsMarked = !item.Content.IsMarked;
-        item.Content.Render();
+        item.Configure(x => x.IsMarked = !item.IsMarked);
+        // TODO: Content Render!!
+        //        item.Content.Render();
         //item.SetRenderer<DefaultContentRender>();
 
         //item.ContentRenderer.Render(item.Position);
@@ -142,9 +144,11 @@ internal class All
 
         if (item.Parent is not null)
         {
-            item.Parent.Content.IsMarked = !item.Parent.Content.IsMarked;
-            item.Parent.Content.Render();
+            item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
+            // TODO: content Render!!
+            //            item.Parent.Content.Render();
         }
-        item.Content.Render();
+        // TODO: content Render!!
+        //item.Content.Render();
     }
 }

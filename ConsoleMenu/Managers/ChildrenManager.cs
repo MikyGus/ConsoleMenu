@@ -100,9 +100,10 @@ internal class ChildrenManager : IChildrenManager
         int index = 0;
         foreach (IMenuItem menuItem in _children)
         {
-            menuItem.Content.IsSelected = Owner is null
+            menuItem.Configure(x =>
+                x.IsSelected = Owner is null
                 ? Selection.CurrentIndex == index
-                : Selection.CurrentIndex == index && Owner.Content.IsSelected;
+                : Selection.CurrentIndex == index && Owner.IsSelected);
             menuItem.Position = position;
             menuItem.Render();
             position = NextChildPosition(position, menuItem.AreaNeeded());

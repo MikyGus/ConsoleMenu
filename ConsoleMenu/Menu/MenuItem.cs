@@ -7,10 +7,10 @@ namespace ConsoleMenu;
 public partial class MenuItem : IMenuItem
 {
     private MenuItemOption _menuItemSettings = new();
+    private IContent _content;
 
     public IMenuItem Parent { get; set; }
     public Vector2 Position { get; set; }
-    public IContent Content { get; private set; }
 
     public MenuItem(string title, Action<MenuItemOption> option = null)
     {
@@ -22,7 +22,7 @@ public partial class MenuItem : IMenuItem
         Parent = null;
         IsVisible = true;
         MayCollapse = true;
-        Content = new Content() { Owner = this, Title = title };
+        _content = new Content() { Owner = this, Title = title };
         _components = new List<IComponent>();
         ContentRenderer = new DefaultContentRender();
 
@@ -32,7 +32,7 @@ public partial class MenuItem : IMenuItem
             Configure(option);
         }
 
-        Debug.WriteLine($"MenuItem: '{Content.Title}' have now been created.", "Ctor");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' have now been created.", "Ctor");
     }
 
     public void Configure(Action<MenuItemOption> option)
@@ -46,8 +46,9 @@ public partial class MenuItem : IMenuItem
         MayCollapse = MayCollapse,
 
         // Content
-        Title = Content.Title,
-        IsMarked = Content.IsMarked,
+        Title = _content.Title,
+        IsMarked = _content.IsMarked,
+        IsSelected = _content.IsSelected,
 
         // ChildrenManager
         PositionInList = GetComponents<ListPriorityComponent>().FirstOrDefault()?.Value ?? int.MaxValue,
@@ -65,8 +66,9 @@ public partial class MenuItem : IMenuItem
         MayCollapse = menuItemOption.MayCollapse;
 
         // Content
-        Content.Title = menuItemOption.Title;
-        Content.IsMarked = menuItemOption.IsMarked;
+        _content.Title = menuItemOption.Title;
+        _content.IsMarked = menuItemOption.IsMarked;
+        _content.IsSelected = menuItemOption.IsSelected;
 
         // ChildrenManager
         SetPositionInList(menuItemOption.PositionInList);

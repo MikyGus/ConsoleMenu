@@ -10,7 +10,7 @@ public partial class MenuItem : IMenuItemChildren
     public Orientation OrientationOfChildren => _childrenManager.OrientationOfChildren;
     public bool IsChildrenVisible => _childrenManager.IsVisible;
     public IMenuItem this[int i] => _childrenManager.GetChild(i);
-    public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Content.Title == s);
+    public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Title == s);
     public void AddChild(string title, int positionInList = int.MaxValue)
     {
         IMenuItem menuItem = new MenuItem(title);

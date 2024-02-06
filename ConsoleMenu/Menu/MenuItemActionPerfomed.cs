@@ -9,7 +9,7 @@ public partial class MenuItem : IMenuItemActionPerformed
 
     public bool KeyPressed(ConsoleKeyInfo key)
     {
-        Debug.WriteLine($"MenuItem: '{Content.Title}' is about to process pressed keys", "KeyPressed");
+        Debug.WriteLine($"MenuItem: '{_content.Title}' is about to process pressed keys", "KeyPressed");
         if (HaveChildren())
         {
             if (GetSelectedChild().KeyPressed(key))
