@@ -53,8 +53,7 @@ internal class All
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Configure(x => x.IsMarked = !m.IsMarked);
-                // TODO: FIX Render(Render.content)
-                // m.Content.Render();
+,                m.Render(NodeRender.Content);
             }
         };
         menu["My SubMenu2"][0].Configure(o => { o.OrientationOfChildren = Orientation.Vertical; });
@@ -128,8 +127,7 @@ internal class All
         //    item.Render();
         //}
         item.Configure(x => x.IsMarked = !item.IsMarked);
-        // TODO: Content Render!!
-        //        item.Content.Render();
+        item.Render(NodeRender.Content);
         //item.SetRenderer<DefaultContentRender>();
 
         //item.ContentRenderer.Render(item.Position);
@@ -145,14 +143,8 @@ internal class All
         if (item.Parent is not null)
         {
             item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
-            item.Parent.Render(); // Replace me with below
-            // TODO: content Render!!
-            //            item.Parent.Content.Render();
+            item.Render(NodeRender.Content);
         }
-
-
-
-        // TODO: content Render!!
-        //item.Content.Render();
+        item.Render(NodeRender.Content);
     }
 }

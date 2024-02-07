@@ -16,8 +16,7 @@ internal class HideUnhide
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Configure(x => x.IsMarked = !m.IsMarked);
-                // TODO: content render!!
-                //                m.Content.Render();
+                m.Render(NodeRender.Content);
             }
         });
         menu["Settings"][0].AddChild("Sub2");
@@ -85,8 +84,7 @@ internal class HideUnhide
         }
 
         item.Configure(x => x.IsMarked = !item.IsMarked);
-        // TODO: Content render
-        //item.Content.Render();
+        item.Render(NodeRender.Content);
     }
 
     static void SetItemMarkOnParent(IMenuItem item, ConsoleKeyInfo key)
@@ -99,12 +97,9 @@ internal class HideUnhide
         if (item.Parent is not null)
         {
             item.Parent.Configure(x => x.IsMarked = !item.Parent.IsMarked);
-            item.Parent.Render(); // Replace me with below
-            // TODO: Content render
-            //item.Parent.Content.Render();
+            item.Parent.Render(NodeRender.Content);
         }
-        // TODO: Content render
-        //item.Content.Render();
+        item.Render(NodeRender.Content);
     }
 
     static void SetItemMarkChildren(IMenuItem item, ConsoleKeyInfo key)
