@@ -11,17 +11,17 @@ public partial class MenuItem : IMenuItemChildren
     public bool IsChildrenVisible => _childrenManager.IsVisible;
     public IMenuItem this[int i] => _childrenManager.GetChild(i);
     public IMenuItem this[string s] => _childrenManager.GetChildren().FirstOrDefault(x => x.Title == s);
-    public void AddChild(string title, int positionInList = int.MaxValue)
-    {
-        IMenuItem menuItem = new MenuItem(title);
-        AddChild(menuItem, positionInList);
-    }
 
     public void AddChild<T>(T value, string title, int positionInList = int.MaxValue)
     {
         IMenuItem menuItem = new MenuItem(title);
         menuItem.AddComponent(new ValueComponent<T>(value));
         AddChild(menuItem, positionInList);
+    }
+    public void AddChild(string title, Action<MenuItemOption> config = null)
+    {
+        IMenuItem menuItem = new MenuItem(title, config);
+        AddChild(menuItem, int.MaxValue);
     }
     private void AddChild(IMenuItem menuItem, int positionInList)
     {

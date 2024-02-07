@@ -123,9 +123,9 @@ After we have added a child-node to our MenuItem we can access it with a index.
 ### Add children
 To add children to a menuItem we use the ```MenuItem.AddChild()``` method
 
-```(void) MenuItem.AddChild(string MenuItemTitle, int positionInList = int.MaxValue) ```
+```void AddChild(string title, Action<MenuItemOption> config = null);```
 - The method takes one (1) string argument, used as the title of the menuItem.
-- As a second argument it takes a ```positionInList```. 
+- The second argument is a configuration. ```Action<MenuItemOption>```
 
 ```(void) MenuItem.AddChild<T>(T value, string title, int positionInList = int.MaxValue);```
 The method takes two (2) arguments. The first is the value to be added to this menu. The value is added as a ```ValueComponent```, se components. The second is the title (string) of the menuITem.
@@ -143,7 +143,7 @@ The method takes two (2) arguments. The first is the value to be added to this m
 
         // Add a normal menu at position 1. Will be ordered by lowest 'positionInList'-value first among its siblings.
         // No 'positionInList' set is valuated as int.MaxValue
-        menuSettings.AddChild("Sub 2", 1);
+        menuSettings.AddChild("Sub 2", x => x.PositionInList = 1);
 
         // Add a normal menu with a value associated with it
         menuSettings.AddChild<int>(42, "My SubMenu with a value");

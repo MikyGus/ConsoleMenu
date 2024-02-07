@@ -11,12 +11,6 @@ public interface IMenuItemChildren
 
     /// <summary>
     /// Add a new MenuItem as a child.
-    /// </summary>
-    /// <param name="title">Title of the new MenuItem</param>
-    /// <param name="positionInList">Position of the menuItem in the list</param>
-    void AddChild(string title, int positionInList = int.MaxValue);
-    /// <summary>
-    /// Add a new MenuItem as a child.
     /// Also adds a ValueComponent to this new child. 
     /// </summary>
     /// <typeparam name="T">Valuetype to add</typeparam>
@@ -24,6 +18,7 @@ public interface IMenuItemChildren
     /// <param name="value">Value to add to ValueComponent</param>
     /// <param name="positionInList">Position of the menuItem in the list</param>
     void AddChild<T>(T value, string title, int positionInList = int.MaxValue);
+    void AddChild(string title, Action<MenuItemOption> config = null);
     void RemoveChild(int i);
     void RemoveChild(IMenuItem menuItem);
     IEnumerable<IMenuItem> GetChildren();

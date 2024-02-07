@@ -15,7 +15,7 @@ internal class AddChildren
 
         // Add a normal menu at position 1. Will be ordered by lowest 'positionInList'-value first among its siblings.
         // No 'positionInList' set is valuated as int.MaxValue
-        menuSettings.AddChild("Sub 2", 1);
+        menuSettings.AddChild("Sub 2", x => x.PositionInList = 1);
 
         // Add a normal menu with a value associated with it
         menuSettings.AddChild<int>(42, "My SubMenu with a value");
