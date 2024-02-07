@@ -63,7 +63,8 @@ public partial class MenuItem : IMenuItemVisibilityRender
     // IRenderContent
     //************************************************************
     private bool _isCurrentlyVisible;
-    public void Render()
+    public void Render() => Render(NodeRender.Content | NodeRender.Children);
+    public void Render(NodeRender nodeRender = NodeRender.Content | NodeRender.Children)
     {
         if (IsVisible == false)
         {
@@ -71,10 +72,17 @@ public partial class MenuItem : IMenuItemVisibilityRender
         }
         _isCurrentlyVisible = true;
 
-        _content.Render();
-        Vector2 areaNeeded = _content.AreaNeeded();
-        _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
-        _childrenManager.Render();
+        if (nodeRender.HasFlag(NodeRender.Content))
+        {
+            _content.Render();
+        }
+
+        if (nodeRender.HasFlag(NodeRender.Children))
+        {
+            Vector2 areaNeeded = _content.AreaNeeded();
+            _childrenManager.PositionOfFirstChild = new Vector2(Position.X, Position.Y + areaNeeded.Y);
+            _childrenManager.Render();
+        }
         Debug.WriteLine($"MenuItem: '{_content.Title}' have now been Rendered", "Render");
     }
     public void EraseContent()
