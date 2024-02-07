@@ -53,7 +53,7 @@ internal class All
             if (k.Key == ConsoleKey.Enter)
             {
                 m.Configure(x => x.IsMarked = !m.IsMarked);
-,                m.Render(NodeRender.Content);
+                m.Render(NodeRender.Content);
             }
         };
         menu["My SubMenu2"][0].Configure(o => { o.OrientationOfChildren = Orientation.Vertical; });
