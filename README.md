@@ -1,6 +1,12 @@
 # Console Menu
 **Display a menu in your Console-app.**
 
+This is one of my hobby projects in learning C#. 
+
+With this menu you are able to add a menu to a Console-application. Set how each node is drawn and the orientaion (vertical or horizontal). 
+Move around the menu with your arrow-keys and WASD-keys. Dynamicly hide and unhide sections of the menu. 
+Set an action (Event-Delegate) to be performed when Enter is pressed. 
+
 ![Image of a Console-Menu example](./Documentation/Images/consolemenu.png "Console-Menu")
 
 [![Code Tests](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/MikyGus/ConsoleMenu/actions/workflows/ci.yaml)
